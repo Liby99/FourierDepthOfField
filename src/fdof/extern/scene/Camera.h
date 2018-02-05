@@ -15,7 +15,7 @@ namespace fdof {
         float aperture;
         Camera();
         Camera(glm::vec3 position, glm::vec3 target);
-        Ray getRay(glm::vec2 screenSample, glm::vec2 apertureSample);
+        Ray getRay(glm::vec2 & screenSample, glm::vec2 & apertureSample);
     };
 }
 

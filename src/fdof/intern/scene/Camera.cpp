@@ -12,9 +12,9 @@ Camera::Camera(glm::vec3 position, glm::vec3 target) :
 Ray Camera::getRay(glm::vec2 & screenSample, glm::vec2 & apertureSample) {
     
     // Setup camera variables
-    vec3 w = glm::normalize(target - position);
-    vec3 u = glm::normalize(glm::cross(w, up));
-    vec3 v = glm::cross(w, u);
+    glm::vec3 w = glm::normalize(target - position);
+    glm::vec3 u = glm::normalize(glm::cross(w, up));
+    glm::vec3 v = glm::cross(w, u);
     
     // Cached uniform variables
     float b = -tan(fovy / 2);
