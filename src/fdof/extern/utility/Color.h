@@ -4,8 +4,6 @@
 #include <iostream>
 #include <string>
 
-#include "util/Transform.h"
-
 namespace fdof {
 
     class Color {
@@ -61,7 +59,7 @@ namespace fdof {
         Color & operator*=(float scale);
         Color operator/(int count);
         Color & operator/=(int count);
-        operator string();
+        operator std::string();
         
         static Color parse(int c);
         

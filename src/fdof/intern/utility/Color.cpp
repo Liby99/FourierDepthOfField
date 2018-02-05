@@ -17,17 +17,9 @@ float bound(float f) {
     return (f <= 0) ? 0 : (f >= 1) ? 1 : f;
 }
 
-Color::Color() {
-    setR(DEFAULT_R);
-    setG(DEFAULT_G);
-    setB(DEFAULT_B);
-}
+Color::Color() : Color(DEFAULT_R, DEFAULT_G, DEFAULT_B) {}
 
-Color::Color(float r, float g, float b) {
-    setR(r);
-    setG(g);
-    setB(b);
-}
+Color::Color(float r, float g, float b) : r(r), g(g), b(b) {}
 
 float Color::getR() {
     return r;
@@ -124,8 +116,8 @@ Color & Color::operator/=(int count) {
     return *this;
 }
 
-Color::operator string() {
-    return "rgb(" + to_string(getIntR()) + ", " + to_string(getIntG()) + ", " + to_string(getIntB()) + ")";
+Color::operator std::string() {
+    return "rgb(" + std::to_string(getIntR()) + ", " + std::to_string(getIntG()) + ", " + std::to_string(getIntB()) + ")";
 }
 
 Color Color::parse(int c) {
@@ -144,6 +136,6 @@ bool Color::operator!=(const Color & c) const {
 }
 
 std::ostream & operator<< (std::ostream & stream, Color & color) {
-    stream << (string)color;
+    stream << (std::string)color;
     return stream;
 }
