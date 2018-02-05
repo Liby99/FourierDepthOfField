@@ -13,6 +13,8 @@ namespace fdof {
         Light();
         Light(Color color);
         bool intersect(Ray & ray, Intersection & itsct);
+        virtual float getBrightness(Intersection & objItsct, Intersection & lgtItsct);
+        virtual glm::vec3 getToLightDir(Intersection & itsct);
     };
 }
 
