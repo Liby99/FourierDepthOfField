@@ -16,6 +16,6 @@ Material & Object::getMaterial() {
     return *this->material;
 }
 
-virtual bool Object::intersect(Ray & ray, Intersection & itsct) {
+bool Object::intersect(Ray & ray, Intersection & itsct) {
     return false;
 }
