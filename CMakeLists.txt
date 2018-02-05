@@ -1,13 +1,13 @@
 # Basic setups
 cmake_minimum_required(VERSION 3.5)
-project(Fourier Depth of Field)
+project(FourierDepthOfField)
 
 # Basic flag
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++14")
 
 # Include GLM
-add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
-include_directories(lib/glm/)
+add_subdirectory(include/glm EXCLUDE_FROM_ALL)
+include_directories(include/glm/)
 
 # =========================================================================== #
 
