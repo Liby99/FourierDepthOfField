@@ -15,7 +15,7 @@ include_directories(include/glm/)
 include_directories(src/fdof/extern)
 
 # Compile all the cpp files and link to `animator` library along with NanoGui
-file(GLOB fdof_sources src/fdof/intern/*.cpp src/fdof/intern/*/*.cpp src/fdof/intern/*/*/*.cpp)
+file(GLOB fdof_sources src/intern/*.cpp src/intern/*/*.cpp src/intern/*/*/*.cpp src/extern/*.h src/extern/*/*.h src/extern/*/*/*.h)
 set(fdof ${fdof_sources})
 add_library(fdof ${fdof})
 target_link_libraries(fdof glm)
