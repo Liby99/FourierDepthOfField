@@ -13,8 +13,9 @@
 namespace recartyar {
     class Scene {
     public:
-        Color * background;
-        Camera * camera;
+        
+        Color background;
+        Camera camera;
         std::vector<Light *> lights;
         std::vector<Object *> objects;
         

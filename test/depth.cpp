@@ -1,3 +1,5 @@
+#include <recartyar/recartyar.h>
+
 using namespace recartyar;
 
 int main() {
