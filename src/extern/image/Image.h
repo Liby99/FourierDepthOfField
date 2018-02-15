@@ -11,6 +11,7 @@ namespace fdof {
         Color * pixels;
         Image(int width, int height);
         ~Image();
+        void resize(int width, int height);
         Color & getColor(int x, int y);
         void setColor(int x, int y, Color & color);
     };

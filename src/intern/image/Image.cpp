@@ -10,6 +10,13 @@ Image::~Image() {
     delete [] pixels;
 }
 
+void Image::resize(int width, int height) {
+    delete [] pixels;
+    this->width = width;
+    this->height = height;
+    this->pixels = new Color[width * height];
+}
+
 Color & Image::getColor(int x, int y) {
     return pixels[y * width + x];
 }
