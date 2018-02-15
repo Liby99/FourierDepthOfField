@@ -33,5 +33,7 @@ bool Intersection::update(float t, glm::vec3 position, glm::vec3 normal) {
         this->t = t;
         this->position = position;
         this->normal = normal;
+        return true;
     }
+    return false;
 }

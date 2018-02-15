@@ -12,12 +12,12 @@
 
 namespace recartyar {
     class Scene {
-    private:
-        Color background;
-        Camera camera;
+    public:
+        Color * background;
+        Camera * camera;
         std::vector<Light *> lights;
         std::vector<Object *> objects;
-    public:
+        
         Scene();
         
         void setBackground(Color & color);

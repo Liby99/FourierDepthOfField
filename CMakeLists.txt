@@ -12,7 +12,7 @@ include_directories(include/glm/)
 # =========================================================================== #
 
 # Set Include Directory to Extern
-include_directories(src/fdof/extern)
+include_directories(src/extern)
 
 # Compile all the cpp files and link to `animator` library along with NanoGui
 file(GLOB fdof_sources src/intern/*.cpp src/intern/*/*.cpp src/intern/*/*/*.cpp src/extern/*.h src/extern/*/*.h src/extern/*/*/*.h)
