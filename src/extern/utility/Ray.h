@@ -3,7 +3,7 @@
 
 #include <glm/glm.hpp>
 
-namespace fdof {
+namespace recartyar {
     class Ray {
     public:
         glm::vec3 origin;

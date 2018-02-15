@@ -6,7 +6,7 @@
 #include "utility/Ray.h"
 #include "material/Material.h"
 
-namespace fdof {
+namespace recartyar {
     class Object {
     public:
         

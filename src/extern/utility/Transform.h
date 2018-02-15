@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-namespace fdof {
+namespace recartyar {
     class Transform {
     public:
         glm::vec3 position;

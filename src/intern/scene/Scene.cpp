@@ -1,6 +1,6 @@
 #include "scene/Scene.h"
 
-using namespace fdof;
+using namespace recartyar;
 
 Scene::Scene() {};
 

@@ -1,6 +1,6 @@
 #include "scene/Camera.h"
 
-using namespace fdof;
+using namespace recartyar;
 
 Camera::Camera() : Camera(glm::vec3(0, 0, 1), glm::vec3(0, 0, 0)) {}
 

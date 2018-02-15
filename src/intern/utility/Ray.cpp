@@ -1,6 +1,6 @@
 #include "utility/Ray.h"
 
-using namespace fdof;
+using namespace recartyar;
 
 Ray::Ray() : Ray(glm::vec3(), glm::vec3(0, 0, 1)) {};
 

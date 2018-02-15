@@ -1,6 +1,6 @@
 #include "image/Image.h"
 
-using namespace fdof;
+using namespace recartyar;
 
 Image::Image(int width, int height) : width(width), height(height) {
     pixels = new Color[width * height];

@@ -3,7 +3,7 @@
 
 #include "utility/Ray.h"
 
-namespace fdof {
+namespace recartyar {
     class Camera {
     public:
         glm::vec3 position;

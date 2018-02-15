@@ -4,7 +4,7 @@
 #include "scene/Scene.h"
 #include "image/Image.h"
 
-namespace fdof {
+namespace recartyar {
     class Engine {
     public:
         int width;

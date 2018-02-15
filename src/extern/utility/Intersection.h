@@ -3,7 +3,7 @@
 
 #include "utility/Ray.h"
 
-namespace fdof {
+namespace recartyar {
     
     class Object;
     

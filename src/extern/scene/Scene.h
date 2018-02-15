@@ -10,7 +10,7 @@
 #include "utility/Ray.h"
 #include "utility/Color.h"
 
-namespace fdof {
+namespace recartyar {
     class Scene {
     private:
         Color background;

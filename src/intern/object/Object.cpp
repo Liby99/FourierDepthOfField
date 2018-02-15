@@ -1,6 +1,6 @@
 #include "object/Object.h"
 
-using namespace fdof;
+using namespace recartyar;
 
 Object::Object() : material(nullptr) {}
 

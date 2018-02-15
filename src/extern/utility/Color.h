@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-namespace fdof {
+namespace recartyar {
 
     class Color {
     private:

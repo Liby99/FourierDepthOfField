@@ -3,7 +3,7 @@
 
 #include "utility/Color.h"
 
-namespace fdof {
+namespace recartyar {
     class Image {
     public:
         int width;

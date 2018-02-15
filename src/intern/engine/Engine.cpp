@@ -1,6 +1,6 @@
 #include "engine/Engine.h"
 
-using namespace fdof;
+using namespace recartyar;
 
 Engine::Engine() : Engine(640, 480) {};
 
