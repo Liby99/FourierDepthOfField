@@ -11,7 +11,7 @@ namespace recartyar {
     class Material {
     public:
         Material();
-        virtual std::pair<Ray, Color> generateSample(Intersection & intersection, glm::vec2 sample);
+        virtual std::pair<Ray, Color> generateSample(Intersection & intersection, vec2 sample);
         virtual Color computeReflection(Intersection & i, Ray & out);
         virtual Color emission();
     };

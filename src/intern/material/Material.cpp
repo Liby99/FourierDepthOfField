@@ -8,7 +8,7 @@ Color Material::computeReflection(Intersection & itsct, Ray & out) {
     return Color();
 }
 
-std::pair<Ray, Color> Material::generateSample(Intersection & itsct, glm::vec2 sample) {
+std::pair<Ray, Color> Material::generateSample(Intersection & itsct, vec2 sample) {
     return std::make_pair(Ray(), Color::BLACK);
 }
 

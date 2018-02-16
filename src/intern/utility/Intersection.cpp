@@ -28,11 +28,12 @@ float Intersection::distToOrigin() {
     return t;
 }
 
-bool Intersection::update(float t, glm::vec3 position, glm::vec3 normal) {
+bool Intersection::update(float t, vec3 position, vec3 normal) {
     if (!hit || t < this->t) {
         this->t = t;
         this->position = position;
         this->normal = normal;
+        this->hit = true;
         return true;
     }
     return false;

@@ -2,14 +2,14 @@
 
 using namespace recartyar;
 
-Ray::Ray() : Ray(glm::vec3(), glm::vec3(0, 0, 1)) {};
+Ray::Ray() : Ray(vec3(), vec3(0, 0, 1)) {};
 
-Ray::Ray(glm::vec3 origin, glm::vec3 direction) {
+Ray::Ray(vec3 origin, vec3 direction) {
     this->origin = origin;
     this->direction = direction;
 }
 
-glm::vec3 Ray::getPoint(float t) {
+vec3 Ray::getPoint(float t) {
     return this->origin + t * this->direction;
 }
 

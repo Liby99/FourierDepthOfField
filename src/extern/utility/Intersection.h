@@ -11,8 +11,8 @@ namespace recartyar {
     public:
         Ray * ray;
         Object * object;
-        glm::vec3 position;
-        glm::vec3 normal;
+        vec3 position;
+        vec3 normal;
         float t;
         bool hit;
         
@@ -26,7 +26,7 @@ namespace recartyar {
         void setRay(Ray & ray);
         
         float distToOrigin();
-        bool update(float t, glm::vec3 position, glm::vec3 normal);
+        bool update(float t, vec3 position, vec3 normal);
     };
 }
 
