@@ -2,6 +2,8 @@
 
 using namespace recartyar;
 
+Cube::Cube() : Cube(1, 1, 1) {}
+
 Cube::Cube(float width, float height, float length) : width(width), height(height), length(length) {}
 
 bool Cube::intersect(Ray & ray, Intersection & itsct) {

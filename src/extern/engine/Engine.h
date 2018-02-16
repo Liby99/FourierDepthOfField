@@ -7,12 +7,8 @@
 namespace recartyar {
     class Engine {
     public:
-        int width;
-        int height;
         Engine();
-        Engine(int width, int height);
-        virtual Color getColor(Intersection & itsct);
-        virtual Image render(Scene & scn);
+        void render(Scene & scn, Image & img);
     };
 }
 

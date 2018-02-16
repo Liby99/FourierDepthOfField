@@ -3,21 +3,12 @@
 using namespace recartyar;
 
 int main() {
-    
-    /*
-    DepthTracer dt;
-    dt.setResolution(64, 48);
-    
+    PathTracer pt;
     Scene scn;
-    scn.setBackgroundColor(Color(0.3f, 0.3f, 0.8f));
-    scn.getCamera().setPosition(0.0f, 2.0f, 2.0f);
-    
-    Lambert lbt(Color(1.0f, 1.0f, 1.0f));
-    Cube c(1.0f);
-    c.setMaterial(lbt);
-    scn.addObject(c);
-    
-    Bitmap bmp = dt.render(scn);
-    bmp.save("depthmap.bmp");
-    */
+    scn.getCamera().position = vec3(0, 0, 5);
+    Cube cube;
+    scn.addObject(cube);
+    Image img(640, 480);
+    pt.render(scn, img);
+    img.save("depthtest.bmp");
 }

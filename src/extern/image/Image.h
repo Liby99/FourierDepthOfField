@@ -4,6 +4,18 @@
 #include "utility/Color.h"
 
 namespace recartyar {
+    
+    struct BitmapHeader {
+        int fileSize;
+        int reserved;
+        int startAddress;
+        int headerSize;
+        short width;
+        short height;
+        short colorPlanes;
+        short bitsPerPixel;
+    };
+    
     class Image {
     public:
         int width;
@@ -13,7 +25,8 @@ namespace recartyar {
         ~Image();
         void resize(int width, int height);
         Color & getColor(int x, int y);
-        void setColor(int x, int y, Color & color);
+        void setColor(int x, int y, Color color);
+        bool save(const char * filename);
     };
 }
 

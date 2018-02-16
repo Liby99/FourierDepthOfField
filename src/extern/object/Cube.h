@@ -9,6 +9,7 @@ namespace recartyar {
         float width;
         float height;
         float length;
+        Cube();
         Cube(float width, float height, float length);
         virtual bool intersect(Ray & ray, Intersection & itsct);
     };

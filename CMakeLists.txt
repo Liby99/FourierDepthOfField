@@ -11,6 +11,11 @@ include_directories(include/glm/)
 
 # =========================================================================== #
 
+# Generate single header file using the script
+execute_process(
+    COMMAND python ${CMAKE_CURRENT_LIST_DIR}/script/generate_header.py recartyar ${CMAKE_CURRENT_LIST_DIR}/src/extern/
+)
+
 # Set Include Directory to Extern
 include_directories(src/extern)
 
