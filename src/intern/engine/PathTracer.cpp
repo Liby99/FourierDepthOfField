@@ -1,3 +1,4 @@
+#include <iostream>
 #include "engine/PathTracer.h"
 
 using namespace recartyar;

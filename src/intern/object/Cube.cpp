@@ -1,3 +1,5 @@
+
+#include <iostream>
 #include "object/Cube.h"
 
 using namespace recartyar;
@@ -7,6 +9,8 @@ Cube::Cube() : Cube(1, 1, 1) {}
 Cube::Cube(float width, float height, float length) : width(width), height(height), length(length) {}
 
 bool Cube::intersect(Ray & ray, Intersection & itsct) {
+    
+    // std::cout << "checking intersection" << std::endl;
     
     float hw = width / 2, hh = height / 2, hl = length / 2;
     
@@ -30,6 +34,7 @@ bool Cube::intersect(Ray & ray, Intersection & itsct) {
     float tmax = fmin(fmin(txmax, tymax), tzmax);
     
     if (tmax - tmin < 0) {
+        std::cout << "tmax - tmin < 0" << std::endl;
         return false;
     }
     
@@ -45,6 +50,7 @@ bool Cube::intersect(Ray & ray, Intersection & itsct) {
         sign = -1;
     }
     else {
+        std::cout << tmin << " " << tmax << std::endl;
         return false;
     }
     
@@ -54,6 +60,8 @@ bool Cube::intersect(Ray & ray, Intersection & itsct) {
     if (t == tymin || t == tymax) normal = position[1] > 0 ? vec3(0, 1, 0) : vec3(0, -1, 0);
     else if (t == tzmin || t == tzmax) normal = position[2] > 0 ? vec3(0, 0, 1) : vec3(0, 0, -1);
     else normal = position[0] > 0 ? vec3(1, 0, 0) : vec3(-1, 0, 0);
+    
+    std::cout << "intersect" << std::endl;
     
     // Try updating the intersection
     return itsct.update(t, position, sign * normal);

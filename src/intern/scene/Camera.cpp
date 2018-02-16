@@ -28,5 +28,5 @@ Ray Camera::getRay(const vec2 & screenSample, const vec2 & apertureSample) {
     vec3 dir = glm::normalize(position - start + focalDistance * glm::normalize(a * screenSample.x * u + b * screenSample.y * v + w));
     
     // Return the ray
-    return Ray(start, target);
+    return Ray(start, dir);
 }
