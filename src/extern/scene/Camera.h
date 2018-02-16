@@ -6,16 +6,16 @@
 namespace recartyar {
     class Camera {
     public:
-        glm::vec3 position;
-        glm::vec3 target;
-        glm::vec3 up;
+        vec3 position;
+        vec3 target;
+        vec3 up;
         float aspect;
         float fovy;
         float focalDistance;
         float aperture;
         Camera();
-        Camera(glm::vec3 position, glm::vec3 target);
-        Ray getRay(glm::vec2 & screenSample, glm::vec2 & apertureSample);
+        Camera(vec3 position, vec3 target);
+        Ray getRay(vec2 & screenSample, vec2 & apertureSample);
     };
 }
 

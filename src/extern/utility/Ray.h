@@ -1,7 +1,7 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include <glm/glm.hpp>
+#include "utility/Math.h"
 
 namespace recartyar {
     class Ray {

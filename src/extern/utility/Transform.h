@@ -1,23 +1,23 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-#include <glm/glm.hpp>
+#include "utility/Math.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace recartyar {
     class Transform {
     public:
-        glm::vec3 position;
-        glm::vec3 rotation;
-        glm::vec3 scale;
+        vec3 position;
+        vec3 rotation;
+        vec3 scale;
         Transform();
-        glm::mat4 getTranslateMatrix();
-        glm::mat4 getRotateXMatrix();
-        glm::mat4 getRotateYMatrix();
-        glm::mat4 getRotateZMatrix();
-        glm::mat4 getRotateMatrix();
-        glm::mat4 getScaleMatrix();
-        glm::mat4 getTransform();
+        mat4 getTranslateMatrix();
+        mat4 getRotateXMatrix();
+        mat4 getRotateYMatrix();
+        mat4 getRotateZMatrix();
+        mat4 getRotateMatrix();
+        mat4 getScaleMatrix();
+        mat4 getTransform();
     };
 }
 

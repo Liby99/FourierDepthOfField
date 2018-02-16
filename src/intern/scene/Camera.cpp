@@ -2,14 +2,14 @@
 
 using namespace recartyar;
 
-Camera::Camera() : Camera(glm::vec3(0, 0, 1), glm::vec3(0, 0, 0)) {}
+Camera::Camera() : Camera(vec3(0, 0, 1), vec3(0, 0, 0)) {}
 
-Camera::Camera(glm::vec3 position, glm::vec3 target) :
+Camera::Camera(vec3 position, vec3 target) :
     position(position), target(target), up(glm::vec3(0, 1, 0)),
     aspect(16.0f / 9.0f), fovy(glm::radians(60.0f)),
     focalDistance(1.0f), aperture(0.01f) {};
 
-Ray Camera::getRay(glm::vec2 & screenSample, glm::vec2 & apertureSample) {
+Ray Camera::getRay(vec2 & screenSample, vec2 & apertureSample) {
     
     // Setup camera variables
     glm::vec3 w = glm::normalize(target - position);
