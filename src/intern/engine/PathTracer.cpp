@@ -6,13 +6,14 @@ using namespace recartyar;
 PathTracer::PathTracer() : Engine() {}
 
 void PathTracer::render(Scene & scn, Image & img) {
-    int width = img.width, height = img.height;
+    int width = img.width, height = img.height, hw = width / 2, hh = height / 2;
     Camera & cam = scn.getCamera();
+    cam.aspect = float(width) / float(height);
     #pragma omp parallel for collapse(2)
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            float x = float(i) / float(width) + 0.5f, y = float(j) / float(height) + 0.5f;
-            Ray ray = cam.getRay(vec2(x, y), vec2(0, 0));
+            float x = float(i - hw + 0.5) / float(hw), y = float(j - hh + 0.5) / float(hh);
+            Ray ray = cam.getRay(vec2(x, y));
             img.setColor(i, j, getColor(scn, ray));
         }
     }

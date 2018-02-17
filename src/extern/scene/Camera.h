@@ -15,7 +15,7 @@ namespace recartyar {
         float aperture;
         Camera();
         Camera(vec3 position, vec3 target);
-        Ray getRay(const vec2 & screenSample, const vec2 & apertureSample);
+        Ray getRay(const vec2 & screenSample);
     };
 }
 

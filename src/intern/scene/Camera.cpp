@@ -9,7 +9,7 @@ Camera::Camera(vec3 position, vec3 target) :
     aspect(16.0f / 9.0f), fovy(glm::radians(60.0f)),
     focalDistance(1.0f), aperture(0.01f) {};
 
-Ray Camera::getRay(const vec2 & screenSample, const vec2 & apertureSample) {
+Ray Camera::getRay(const vec2 & screenSample) {
     
     // Setup camera variables
     vec3 w = glm::normalize(target - position);
@@ -22,7 +22,7 @@ Ray Camera::getRay(const vec2 & screenSample, const vec2 & apertureSample) {
     
     // Calculate start
     vec3 start = position;
-    start += u * apertureSample.x + v * apertureSample.y;
+    // start += u * apertureSample.x + v * apertureSample.y;
     
     // Calculate direction
     vec3 dir = glm::normalize(position - start + focalDistance * glm::normalize(a * screenSample.x * u + b * screenSample.y * v + w));
