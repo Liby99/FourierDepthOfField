@@ -13,7 +13,7 @@ void PathTracer::render(Scene & scn, Image & img) {
 void PathTracer::generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples) {
     int width = img.width, height = img.height, hw = width / 2, hh = height / 2;
     Camera & cam = scn.getCamera();
-    cam.aspect = float(width) / float(height);
+    cam.setAspect(float(width) / float(height));
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
             for (int k = 0; k < spp; k++) {
