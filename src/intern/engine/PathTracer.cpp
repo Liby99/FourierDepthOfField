@@ -2,7 +2,23 @@
 
 using namespace recartyar;
 
-PathTracer::PathTracer() : Engine(), spp(4), depth(5) {}
+PathTracer::PathTracer() : Engine(), mSpp(4), mDepth(5) {}
+
+int PathTracer::superSampling() {
+    return mSpp;
+}
+
+void PathTracer::setSuperSampling(int spp) {
+    mSpp = spp;
+}
+
+int PathTracer::depth() {
+    return mDepth;
+}
+
+void PathTracer::setDepth(int d) {
+    mDepth = d;
+}
 
 void PathTracer::render(Scene & scn, Image & img) {
     std::vector<RaySample> samples;
@@ -16,7 +32,7 @@ void PathTracer::generateSamples(Scene & scn, Image & img, std::vector<RaySample
     cam.setAspect(float(width) / float(height));
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            for (int k = 0; k < spp; k++) {
+            for (int k = 0; k < mSpp; k++) {
                 vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle(),
                     imgsp = vec2(float(i - hw + sp.x) / hw, float(j - hh + sp.y) / hh);
                 samples.push_back(RaySample(i, j, imgsp, aptsp));
@@ -35,7 +51,7 @@ void PathTracer::renderWithSample(Scene & scn, Image & img, std::vector<RaySampl
 }
 
 Color PathTracer::getColor(Scene & scn, Ray & ray) {
-    if (ray.depth < depth) {
+    if (ray.depth < mDepth) {
         Intersection itsct(ray);
         if (scn.intersect(ray, itsct)) {
             return getColor(scn, itsct);
