@@ -6,6 +6,7 @@
 #include "scene/Camera.h"
 #include "scene/Scene.h"
 #include "engine/PathTracer.h"
+#include "engine/DepthTracer.h"
 #include "engine/Engine.h"
 #include "engine/RaySample.h"
 #include "material/Lambert.h"

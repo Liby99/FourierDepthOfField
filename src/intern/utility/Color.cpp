@@ -15,6 +15,8 @@ const Color Color::BLUE = Color(0, 0, 1);
 
 Color::Color() : Color(DEFAULT_R, DEFAULT_G, DEFAULT_B) {}
 
+Color::Color(float c) : Color(c, c, c) {}
+
 Color::Color(float r, float g, float b) : r(r), g(g), b(b) {}
 
 float Color::getR() {

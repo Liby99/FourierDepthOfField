@@ -25,7 +25,7 @@ void Intersection::setRay(Ray & ray) {
 }
 
 float Intersection::distToOrigin() {
-    return t;
+    return glm::length(position - ray->origin);
 }
 
 bool Intersection::update(float t, vec3 position, vec3 normal) {

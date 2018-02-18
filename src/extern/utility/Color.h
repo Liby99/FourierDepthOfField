@@ -28,6 +28,7 @@ namespace recartyar {
         
         // Constructors
         Color();
+        Color(float c);
         Color(float r, float g, float b);
         
         // Getters
