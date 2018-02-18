@@ -10,8 +10,9 @@ int main() {
     scn.getCamera().setFocalDistance(6);
     scn.getCamera().setAperture(0.1);
     DirectLight dl;
+    dl.color = Color(0.8, 0.8, 0.8);
     scn.addLight(dl);
-    Lambert lbt;
+    Lambert lbt(Color(0.7, 0.7, 0.8));
     Cube cube;
     cube.setMaterial(lbt);
     scn.addObject(cube);

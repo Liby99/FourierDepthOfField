@@ -61,7 +61,7 @@ Color PathTracer::getColor(Scene & scn, Ray & ray) {
         }
     }
     else {
-        return scn.getBackground();
+        return Color::BLACK;
     }
 }
 
@@ -71,14 +71,14 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
         Material & mat = obj.getMaterial();
         
         // First calculate emission
-        Color c = mat.emission();
+        Color e = mat.emission(), b = Color::BLACK, l = Color::BLACK;
         
         // Then calculate scene reflection
         std::pair<Ray, Color> p = mat.reflect(itsct);
         if (p.second != Color::BLACK) {
             p.first.increment();
             p.first.depth = itsct.getRay().depth + 1;
-            c += p.second * getColor(scn, p.first);
+            b =  p.second * getColor(scn, p.first);
         }
         
         // Finally compute light reflection
@@ -88,11 +88,11 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
             ref.increment();
             Intersection sditsct(ref);
             if (!scn.intersect(ref, sditsct)) {
-                c += mat.brdf(itsct, ref) * lgt.getColor(itsct, sditsct);
+                l = mat.brdf(itsct, ref) * lgt.getColor(itsct, sditsct);
             }
         }
         
-        return c;
+        return e + b + l;
     }
     else {
         return Color::BLACK;
