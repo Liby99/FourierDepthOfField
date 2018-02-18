@@ -6,6 +6,7 @@
 namespace recartyar {
     class Ray {
     public:
+        int depth;
         vec3 origin;
         vec3 direction;
         Ray();

@@ -2,15 +2,7 @@
 
 using namespace recartyar;
 
-PathTracer::PathTracer() : Engine(), spp(4) {}
-
-void PathTracer::setSuperSampling(int spp) {
-    this->spp = spp;
-}
-
-int PathTracer::getSuperSampling() {
-    return spp;
-}
+PathTracer::PathTracer() : Engine(), spp(4), depth(5) {}
 
 void PathTracer::render(Scene & scn, Image & img) {
     std::vector<RaySample> samples;
@@ -43,9 +35,14 @@ void PathTracer::renderWithSample(Scene & scn, Image & img, std::vector<RaySampl
 }
 
 Color PathTracer::getColor(Scene & scn, Ray & ray) {
-    Intersection itsct(ray);
-    if (scn.intersect(ray, itsct)) {
-        return getColor(scn, itsct);
+    if (ray.depth < depth) {
+        Intersection itsct(ray);
+        if (scn.intersect(ray, itsct)) {
+            return getColor(scn, itsct);
+        }
+        else {
+            return scn.getBackground();
+        }
     }
     else {
         return scn.getBackground();
@@ -53,9 +50,6 @@ Color PathTracer::getColor(Scene & scn, Ray & ray) {
 }
 
 Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
-    
-    return Color(1, 1, 1);
-    
     Object & obj = itsct.getObject();
     if (obj.hasMaterial()) {
         Material & mat = obj.getMaterial();
@@ -66,13 +60,20 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
         // Then calculate scene reflection
         std::pair<Ray, Color> p = mat.reflect(itsct);
         if (p.second != Color::BLACK) {
+            p.first.increment();
+            p.first.depth = itsct.getRay().depth + 1;
             c += p.second * getColor(scn, p.first);
         }
         
         // Finally compute light reflection
         if (scn.hasLight()) {
             Light & lgt = getRandomLight(scn);
-            
+            Ray ref(itsct.position, lgt.getToLightDir(itsct));
+            ref.increment();
+            Intersection sditsct(ref);
+            if (!scn.intersect(ref, sditsct)) {
+                c += mat.brdf(itsct, ref) * lgt.getBrightness(itsct, sditsct) * lgt.color * lgt.intensity;
+            }
         }
         
         return c;

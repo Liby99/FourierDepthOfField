@@ -4,7 +4,7 @@ using namespace recartyar;
 
 Material::Material() {}
 
-Color Material::getReflection(Intersection & itsct, Ray & out) {
+Color Material::brdf(Intersection & itsct, Ray & out) {
     return Color();
 }
 

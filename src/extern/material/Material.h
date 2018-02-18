@@ -11,7 +11,7 @@ namespace recartyar {
     class Material {
     public:
         Material();
-        virtual Color getReflection(Intersection & i, Ray & out);
+        virtual Color brdf(Intersection & i, Ray & out);
         virtual std::pair<Ray, Color> reflect(Intersection & intersection);
         virtual Color emission();
     };

@@ -10,10 +10,8 @@
 namespace recartyar {
     class PathTracer : public Engine {
     public:
-        int spp;
+        int spp, depth;
         PathTracer();
-        void setSuperSampling(int spp);
-        int getSuperSampling();
         void render(Scene & scn, Image & img);
     protected:
         virtual void generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples);
