@@ -2,7 +2,7 @@
 
 using namespace recartyar;
 
-PathTracer::PathTracer() : Engine(), mSpp(4), mDepth(5) {}
+PathTracer::PathTracer() : Engine(), mSpp(4) {}
 
 int PathTracer::superSampling() {
     return mSpp;
@@ -10,20 +10,6 @@ int PathTracer::superSampling() {
 
 void PathTracer::setSuperSampling(int spp) {
     mSpp = spp;
-}
-
-int PathTracer::depth() {
-    return mDepth;
-}
-
-void PathTracer::setDepth(int d) {
-    mDepth = d;
-}
-
-void PathTracer::render(Scene & scn, Image & img) {
-    std::vector<RaySample> samples;
-    generateSamples(scn, img, samples);
-    renderWithSample(scn, img, samples);
 }
 
 void PathTracer::generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples) {
@@ -41,30 +27,6 @@ void PathTracer::generateSamples(Scene & scn, Image & img, std::vector<RaySample
     }
 }
 
-void PathTracer::renderWithSample(Scene & scn, Image & img, std::vector<RaySample> & samples) {
-    Camera & cam = scn.getCamera();
-    #pragma omp parallel for
-    for (int i = 0; i < samples.size(); i++) {
-        Ray ray = cam.getRay(samples[i].imageSample, samples[i].apertureSample);
-        img.addColor(samples[i].i, samples[i].j, getColor(scn, ray));
-    }
-}
-
-Color PathTracer::getColor(Scene & scn, Ray & ray) {
-    if (ray.depth < mDepth) {
-        Intersection itsct(ray);
-        if (scn.intersect(ray, itsct)) {
-            return getColor(scn, itsct);
-        }
-        else {
-            return scn.getBackground();
-        }
-    }
-    else {
-        return Color::BLACK;
-    }
-}
-
 Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
     Object & obj = itsct.getObject();
     if (obj.hasMaterial()) {
@@ -78,7 +40,7 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
         if (p.second != Color::BLACK) {
             p.first.increment();
             p.first.depth = itsct.getRay().depth + 1;
-            b =  p.second * getColor(scn, p.first);
+            b =  p.second * Engine::getColor(scn, p.first);
         }
         
         // Finally compute light reflection
