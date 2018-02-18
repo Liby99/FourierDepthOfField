@@ -10,6 +10,7 @@
 namespace recartyar {
     class PathTracer : public Engine {
     public:
+        int spp;
         PathTracer();
         void render(Scene & scn, Image & img);
     protected:

@@ -2,15 +2,11 @@
 
 using namespace recartyar;
 
-PathTracer::PathTracer() : Engine() {}
+PathTracer::PathTracer() : Engine(), spp(4) {}
 
 void PathTracer::render(Scene & scn, Image & img) {
-    
-    // First generate samples
     std::vector<RaySample> samples;
     generateSamples(scn, img, samples);
-    
-    // Then render samples to the image
     renderWithSample(scn, img, samples);
 }
 
@@ -20,10 +16,11 @@ void PathTracer::generateSamples(Scene & scn, Image & img, std::vector<RaySample
     cam.aspect = float(width) / float(height);
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            samples.push_back(RaySample(i, j, vec2(float(i - hw + 0.25) / float(hw), float(j - hh + 0.25) / float(hh)), vec2(0, 0)));
-            samples.push_back(RaySample(i, j, vec2(float(i - hw + 0.25) / float(hw), float(j - hh + 0.75) / float(hh)), vec2(0, 0)));
-            samples.push_back(RaySample(i, j, vec2(float(i - hw + 0.75) / float(hw), float(j - hh + 0.25) / float(hh)), vec2(0, 0)));
-            samples.push_back(RaySample(i, j, vec2(float(i - hw + 0.75) / float(hw), float(j - hh + 0.75) / float(hh)), vec2(0, 0)));
+            for (int k = 0; k < spp; k++) {
+                vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle(),
+                    imgsp = vec2(float(i - hw + sp.x) / hw, float(j - hh + sp.y) / hh);
+                samples.push_back(RaySample(i, j, imgsp, aptsp));
+            }
         }
     }
 }
