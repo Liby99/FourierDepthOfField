@@ -2,27 +2,36 @@
 
 using namespace recartyar;
 
-Image::Image(int width, int height) : width(width), height(height) {
-    pixels = new Color[width * height];
+Image::Image(int width, int height) {
+    initiate(width, height);
 }
 
 Image::~Image() {
-    delete [] pixels;
+    clear();
 }
 
 void Image::resize(int width, int height) {
-    delete [] pixels;
-    this->width = width;
-    this->height = height;
-    this->pixels = new Color[width * height];
+    clear();
+    initiate(width, height);
 }
 
-Color & Image::getColor(int x, int y) {
-    return pixels[y * width + x];
+Color Image::getColor(int x, int y) {
+    if (addCounts[y * width + x] == 0) {
+        return pixels[y * width + x];
+    }
+    else {
+        return pixels[y * width + x] / addCounts[y * width + x];
+    }
 }
 
 void Image::setColor(int x, int y, Color color) {
     pixels[y * width + x] = color;
+    addCounts[y * width + x] = 0;
+}
+
+void Image::addColor(int x, int y, Color color) {
+    pixels[y * width + x] += color;
+    addCounts[y * width + x]++;
 }
 
 bool Image::save(const char * filename) {
@@ -59,4 +68,19 @@ bool Image::save(const char * filename) {
     fwrite(intPixels, sizeof(int), numPixels, f);
     fclose(f);
     return true;
+}
+
+void Image::clear() {
+    delete [] pixels;
+    delete [] addCounts;
+}
+
+void Image::initiate(int width, int height) {
+    this->width = width;
+    this->height = height;
+    this->pixels = new Color[width * height];
+    this->addCounts = new int[width * height];
+    for (int i = 0; i < width * height; i++) {
+        addCounts[i] = 0;
+    }
 }

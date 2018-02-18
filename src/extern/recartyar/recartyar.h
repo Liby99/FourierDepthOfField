@@ -6,6 +6,7 @@
 #include "scene/Scene.h"
 #include "engine/PathTracer.h"
 #include "engine/Engine.h"
+#include "engine/RaySample.h"
 #include "material/Material.h"
 #include "utility/Intersection.h"
 #include "utility/Sampler.h"

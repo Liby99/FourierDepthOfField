@@ -13,10 +13,6 @@ const Color Color::RED = Color(1, 0, 0);
 const Color Color::GREEN = Color(0, 1, 0);
 const Color Color::BLUE = Color(0, 0, 1);
 
-float bound(float f) {
-    return (f <= 0) ? 0 : (f >= 1) ? 1 : f;
-}
-
 Color::Color() : Color(DEFAULT_R, DEFAULT_G, DEFAULT_B) {}
 
 Color::Color(float r, float g, float b) : r(r), g(g), b(b) {}
@@ -125,6 +121,10 @@ Color Color::parse(int c) {
     int g = (float) ((c >> 8) & 0xff) / MAX;
     int b = (float) (c & 0xff) / MAX;
     return Color(r, g, b);
+}
+
+float Color::bound(float f) {
+    return (f <= 0) ? 0 : (f >= 1) ? 1 : f;
 }
 
 bool Color::operator==(const Color & c) const {

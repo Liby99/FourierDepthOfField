@@ -21,12 +21,17 @@ namespace recartyar {
         int width;
         int height;
         Color * pixels;
+        int * addCounts;
         Image(int width, int height);
         ~Image();
         void resize(int width, int height);
-        Color & getColor(int x, int y);
+        Color getColor(int x, int y);
         void setColor(int x, int y, Color color);
+        void addColor(int x, int y, Color color);
         bool save(const char * filename);
+    private:
+        void clear();
+        void initiate(int width, int height);
     };
 }
 

@@ -25,6 +25,7 @@ namespace recartyar {
         Color & getBackground();
         
         Camera & getCamera();
+        bool hasLight();
         int lightCount();
         void addLight(Light & light);
         Light & getLight(int i);

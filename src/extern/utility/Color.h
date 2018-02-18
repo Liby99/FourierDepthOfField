@@ -62,6 +62,7 @@ namespace recartyar {
         operator std::string();
         
         static Color parse(int c);
+        static float bound(float f);
         
         bool operator==(const Color & c) const;
         bool operator!=(const Color & c) const;

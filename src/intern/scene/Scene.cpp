@@ -16,6 +16,10 @@ Camera & Scene::getCamera() {
     return camera;
 }
 
+bool Scene::hasLight() {
+    return lightCount() != 0;
+}
+
 int Scene::lightCount() {
     return lights.size();
 }
@@ -44,11 +48,6 @@ bool Scene::intersect(Ray & ray, Intersection & itsct) {
     bool hit = false;
     for (int i = 0; i < objects.size(); i++) {
         if (objects[i]->intersect(ray, itsct)) {
-            hit = true;
-        }
-    }
-    for (int i = 0; i < lights.size(); i++) {
-        if (lights[i]->intersect(ray, itsct)) {
             hit = true;
         }
     }
