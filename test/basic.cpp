@@ -6,13 +6,14 @@ int main() {
     PathTracer pt;
     pt.setSuperSampling(100);
     Scene scn;
+    scn.background = Color(0.7, 0.8, 0.9);
     scn.getCamera().setPosition(vec3(-3, 1, 5));
     scn.getCamera().setFocalDistance(6);
     scn.getCamera().setAperture(0.1);
     DirectLight dl;
     dl.color = Color(0.8, 0.8, 0.8);
     scn.addLight(dl);
-    Lambert lbt(Color(0.7, 0.7, 0.8));
+    Lambert lbt(Color(0.3, 0.3, 0.4));
     Cube cube;
     cube.setMaterial(lbt);
     scn.addObject(cube);
