@@ -12,7 +12,7 @@ namespace recartyar {
         float intensity;
         Light();
         Light(Color color);
-        bool intersect(Ray & ray, Intersection & itsct);
+        Color getColor(Intersection & objItsct, Intersection & lgtItsct);
         virtual float getBrightness(Intersection & objItsct, Intersection & lgtItsct);
         virtual vec3 getToLightDir(Intersection & itsct);
     };

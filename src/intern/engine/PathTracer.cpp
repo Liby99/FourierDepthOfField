@@ -72,7 +72,7 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
             ref.increment();
             Intersection sditsct(ref);
             if (!scn.intersect(ref, sditsct)) {
-                c += mat.brdf(itsct, ref) * lgt.getBrightness(itsct, sditsct) * lgt.color * lgt.intensity;
+                c += mat.brdf(itsct, ref) * lgt.getColor(itsct, sditsct);
             }
         }
         
