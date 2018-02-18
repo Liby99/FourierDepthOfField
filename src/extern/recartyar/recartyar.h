@@ -7,7 +7,7 @@
 #include "scene/Scene.h"
 #include "engine/PathTracer.h"
 #include "engine/DepthTracer.h"
-#include "engine/Engine.h"
+#include "engine/RenderEngine.h"
 #include "engine/RaySample.h"
 #include "material/Lambert.h"
 #include "material/Material.h"

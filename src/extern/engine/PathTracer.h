@@ -1,13 +1,13 @@
 #ifndef PATH_TRACER_H
 #define PATH_TRACER_H
 
-#include "engine/Engine.h"
+#include "engine/RenderEngine.h"
 #include "scene/Scene.h"
 #include "image/Image.h"
 #include "utility/Sampler.h"
 
 namespace recartyar {
-    class PathTracer : public Engine {
+    class PathTracer : public RenderEngine {
     public:
         int mSpp;
         PathTracer();

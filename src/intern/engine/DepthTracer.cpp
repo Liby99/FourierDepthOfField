@@ -2,7 +2,7 @@
 
 using namespace recartyar;
 
-DepthTracer::DepthTracer() : Engine(), mNear(0.1f), mFar(100.0f) {}
+DepthTracer::DepthTracer() : RenderEngine(), mNear(0.1f), mFar(100.0f) {}
 
 float DepthTracer::near() {
     return mNear;

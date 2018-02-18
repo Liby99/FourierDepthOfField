@@ -1,28 +1,28 @@
-#include "engine/Engine.h"
+#include "engine/RenderEngine.h"
 
 using namespace recartyar;
 
-Engine::Engine() {};
+RenderEngine::RenderEngine() {};
 
-int Engine::depth() {
+int RenderEngine::depth() {
     return mDepth;
 }
 
-void Engine::setDepth(int d) {
+void RenderEngine::setDepth(int d) {
     mDepth = d;
 }
 
-void Engine::render(Scene & scn, Image & img) {
+void RenderEngine::render(Scene & scn, Image & img) {
     std::vector<RaySample> samples;
     generateSamples(scn, img, samples);
     renderWithSample(scn, img, samples);
 }
 
-void Engine::generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples) {
+void RenderEngine::generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples) {
     // Do nothing
 }
 
-void Engine::renderWithSample(Scene & scn, Image & img, std::vector<RaySample> & samples) {
+void RenderEngine::renderWithSample(Scene & scn, Image & img, std::vector<RaySample> & samples) {
     Camera & cam = scn.getCamera();
     #pragma omp parallel for
     for (int i = 0; i < samples.size(); i++) {
@@ -31,7 +31,7 @@ void Engine::renderWithSample(Scene & scn, Image & img, std::vector<RaySample> &
     }
 }
 
-Color Engine::getColor(Scene & scn, Ray & ray) {
+Color RenderEngine::getColor(Scene & scn, Ray & ray) {
     if (ray.depth < mDepth) {
         Intersection itsct(ray);
         if (scn.intersect(ray, itsct)) {
@@ -46,6 +46,6 @@ Color Engine::getColor(Scene & scn, Ray & ray) {
     }
 }
 
-Color Engine::getColor(Scene & scn, Intersection & itsct) {
+Color RenderEngine::getColor(Scene & scn, Intersection & itsct) {
     return Color::BLACK;
 }

@@ -2,7 +2,7 @@
 
 using namespace recartyar;
 
-PathTracer::PathTracer() : Engine(), mSpp(4) {}
+PathTracer::PathTracer() : RenderEngine(), mSpp(4) {}
 
 int PathTracer::superSampling() {
     return mSpp;
@@ -40,7 +40,7 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
         if (p.second != Color::BLACK) {
             p.first.increment();
             p.first.depth = itsct.getRay().depth + 1;
-            b =  p.second * Engine::getColor(scn, p.first);
+            b =  p.second * RenderEngine::getColor(scn, p.first);
         }
         
         // Finally compute light reflection

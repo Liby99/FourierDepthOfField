@@ -1,15 +1,15 @@
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef RENDER_ENGINE_H
+#define RENDER_ENGINE_H
 
 #include "scene/Scene.h"
 #include "image/Image.h"
 #include "engine/RaySample.h"
 
 namespace recartyar {
-    class Engine {
+    class RenderEngine {
     public:
         int mDepth;
-        Engine();
+        RenderEngine();
         int depth();
         void setDepth(int depth);
         void render(Scene & scn, Image & img);

@@ -2,10 +2,10 @@
 #define DEPTH_TRACER_H
 
 #include <limits>
-#include "engine/Engine.h"
+#include "engine/RenderEngine.h"
 
 namespace recartyar {
-    class DepthTracer : public Engine {
+    class DepthTracer : public RenderEngine {
     public:
         float mNear;
         float mFar;
