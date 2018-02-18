@@ -11,7 +11,7 @@ namespace recartyar {
         float length;
         Cube();
         Cube(float width, float height, float length);
-        virtual bool intersect(Ray & ray, Intersection & itsct);
+        virtual bool updateIntersect(Ray & ray, Intersection & itsct);
     };
 }
 

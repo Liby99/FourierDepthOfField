@@ -17,5 +17,17 @@ Material & Object::getMaterial() {
 }
 
 bool Object::intersect(Ray & ray, Intersection & itsct) {
+    Ray transfRay = ray.inverseTransform(transform.getTransform());
+    if (updateIntersect(transfRay, itsct)) {
+        itsct.transform(transform.getTransform());
+        itsct.setObject(*this);
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+bool Object::updateIntersect(Ray & ray, Intersection & itsct) {
     return false;
 }

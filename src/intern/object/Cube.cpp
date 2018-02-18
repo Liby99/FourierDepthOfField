@@ -6,7 +6,7 @@ Cube::Cube() : Cube(1, 1, 1) {}
 
 Cube::Cube(float width, float height, float length) : width(width), height(height), length(length) {}
 
-bool Cube::intersect(Ray & ray, Intersection & itsct) {
+bool Cube::updateIntersect(Ray & ray, Intersection & itsct) {
     
     float hw = width / 2, hh = height / 2, hl = length / 2;
     

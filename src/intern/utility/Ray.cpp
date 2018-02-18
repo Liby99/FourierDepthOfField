@@ -13,3 +13,14 @@ vec3 Ray::getPoint(float t) {
 void Ray::increment() {
     this->origin += this->direction * 0.0001f;
 }
+
+Ray Ray::transform(mat4 transf) {
+    vec4 o = transf * vec4(origin, 1);
+    vec3 no = vec3(o) / o.w;
+    vec3 nd = vec3(transf * vec4(direction, 0));
+    return Ray(no, nd);
+}
+
+Ray Ray::inverseTransform(mat4 transf) {
+    return transform(inverse(transf));
+}

@@ -38,3 +38,10 @@ bool Intersection::update(float t, vec3 position, vec3 normal) {
     }
     return false;
 }
+
+void Intersection::transform(mat4 transf) {
+    vec4 nPos = transf * vec4(position, 1);
+    vec4 nNorm = transpose(inverse(transf)) * vec4(normal, 0);
+    position = vec3(nPos) / nPos.w;
+    normal = vec3(nNorm);
+}

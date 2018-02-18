@@ -9,17 +9,15 @@
 namespace recartyar {
     class Object {
     public:
-        
         Transform transform;
         Material * material;
-        
         Object();
-        
         bool hasMaterial();
         void setMaterial(Material & mtl);
         Material & getMaterial();
-        
-        virtual bool intersect(Ray & ray, Intersection & itsct);
+        bool intersect(Ray & ray, Intersection & itsct);
+    protected:
+        virtual bool updateIntersect(Ray & ray, Intersection & itsct);
     };
 }
 

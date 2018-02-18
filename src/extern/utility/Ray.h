@@ -13,6 +13,8 @@ namespace recartyar {
         Ray(vec3 origin, vec3 direction);
         vec3 getPoint(float t);
         void increment();
+        Ray inverseTransform(mat4 transf);
+        Ray transform(mat4 transf);
     };
 };
 

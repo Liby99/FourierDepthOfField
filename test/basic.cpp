@@ -9,7 +9,7 @@ int main() {
     Cube cube;
     scn.addObject(cube);
     Cube flr(5, 0.01, 5);
-    flr.transform.position = vec3(0, -0.5, 0);
+    flr.transform.setPosition(vec3(0, -0.5, 0));
     scn.addObject(flr);
     Image img(640, 480);
     pt.render(scn, img);
