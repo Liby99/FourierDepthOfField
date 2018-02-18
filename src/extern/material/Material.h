@@ -3,6 +3,7 @@
 
 #include <utility>
 
+#include "utility/Sampler.h"
 #include "utility/Color.h"
 #include "utility/Intersection.h"
 #include "utility/Ray.h"
