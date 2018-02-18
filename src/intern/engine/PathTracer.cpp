@@ -4,6 +4,14 @@ using namespace recartyar;
 
 PathTracer::PathTracer() : Engine(), spp(4) {}
 
+void PathTracer::setSuperSampling(int spp) {
+    this->spp = spp;
+}
+
+int PathTracer::getSuperSampling() {
+    return spp;
+}
+
 void PathTracer::render(Scene & scn, Image & img) {
     std::vector<RaySample> samples;
     generateSamples(scn, img, samples);
