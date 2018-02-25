@@ -54,6 +54,7 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
             }
         }
         
+        // Add up all the color
         return e + b + l;
     }
     else {

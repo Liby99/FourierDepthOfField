@@ -44,5 +44,5 @@ void Intersection::transform(mat4 transf) {
     vec4 nNorm = transpose(inverse(transf)) * vec4(normal, 0);
     position = vec3(nPos) / nPos.w;
     normal = vec3(nNorm);
-    t = distToOrigin();
+    // t = distToOrigin();
 }

@@ -23,6 +23,6 @@ int main() {
     scn.addObject(flr);
     Image img(640, 480);
     pt.render(scn, img);
-    img.save("depthtest.bmp");
-    system("open depthtest.bmp");
+    img.save("basictest.bmp");
+    system("open basictest.bmp");
 }
