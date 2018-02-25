@@ -2,7 +2,7 @@
 
 using namespace recartyar;
 
-RenderEngine::RenderEngine() {};
+RenderEngine::RenderEngine() : mDepth(5) {};
 
 int RenderEngine::depth() {
     return mDepth;
