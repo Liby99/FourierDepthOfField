@@ -13,7 +13,7 @@ Color Lambert::brdf(Intersection & itsct, Ray & out) {
 
 std::pair<Ray, Color> Lambert::reflect(Intersection & itsct) {
     vec2 sp = Sampler::random2D();
-    float u = 2 * M_PI * sp.x, v = sqrt(1 - sp.y);
+    float u = 2 * pi * sp.x, v = sqrt(1 - sp.y);
     vec3 magic = vec3(0.2f, 0.7f, 0.1f),
          norm = itsct.normal,
          udir = normalize(cross(norm, norm + magic)),

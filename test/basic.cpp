@@ -4,7 +4,7 @@ using namespace recartyar;
 
 int main() {
     PathTracer pt;
-    pt.setSuperSampling(100);
+    pt.setSuperSampling(4);
     Scene scn;
     scn.background = Color(0.7, 0.8, 0.9);
     scn.getCamera().setPosition(vec3(-3, 1, 5));

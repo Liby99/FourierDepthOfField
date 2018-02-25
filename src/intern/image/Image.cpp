@@ -38,7 +38,7 @@ bool Image::save(const char * filename) {
     
     // Initiate
     int numPixels = width * height;
-    int intPixels[numPixels];
+    int* intPixels = new int[numPixels];
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
             intPixels[i + width * j] = getColor(i, j).toInt();
@@ -67,6 +67,7 @@ bool Image::save(const char * filename) {
     fwrite(&head, sizeof(BitmapHeader), 1, f);
     fwrite(intPixels, sizeof(int), numPixels, f);
     fclose(f);
+	delete [] intPixels;
     return true;
 }
 
