@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 namespace recartyar {
+	const float pi = 3.14159265;
     typedef glm::vec2 vec2;
     typedef glm::vec3 vec3;
     typedef glm::vec4 vec4;

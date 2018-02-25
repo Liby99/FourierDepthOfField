@@ -4,7 +4,7 @@ using namespace recartyar;
 
 int main() {
     PathTracer pt;
-    pt.setSuperSampling(100);
+    pt.setSuperSampling(4);
     Scene scn;
     scn.background = Color(0.7, 0.8, 0.9);
     scn.getCamera().setPosition(vec3(-3, 1, 5));
@@ -23,6 +23,6 @@ int main() {
     scn.addObject(flr);
     Image img(640, 480);
     pt.render(scn, img);
-    img.save("depthtest.bmp");
-    system("open depthtest.bmp");
+    img.save("basictest.bmp");
+    system("open basictest.bmp");
 }

@@ -4,7 +4,7 @@ using namespace recartyar;
 
 vec2 Sampler::gaussianWeight(vec2 r) {
     float a = 0.4f * sqrt(-2.0f * log(r.x));
-    float b = 2.0f * M_PI * r.y;
+    float b = 2.0f * pi * r.y;
     return vec2(0.5 + a * sin(b), 0.5 + a * cos(b));
 }
 
@@ -133,7 +133,7 @@ vec2 Sampler::random2D() {
 
 vec2 Sampler::randomCircle() {
     vec2 s = random2D();
-    float a = s.x * 2 * M_PI;
+    float a = s.x * 2 * pi;
     float r = sqrt(s.y);
     return vec2(r * cos(a), r * sin(a));
 }
