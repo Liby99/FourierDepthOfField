@@ -3,8 +3,10 @@
 using namespace recartyar;
 
 int main() {
-    PathTracer pt;
-    pt.setSuperSampling(100);
+    
+    DepthTracer dt;
+    dt.setFar(5);
+    
     Scene scn;
     scn.background = Color(0.5, 0.6, 0.8);
     scn.getCamera().setPosition(vec3(-0.1, 0.3, 2));
@@ -31,9 +33,9 @@ int main() {
     }
     
     Image img(640, 480);
-    pt.render(scn, img);
-    img.save("cubes.bmp");
-    system("open cubes.bmp");
+    dt.render(scn, img);
+    img.save("cubes_depth.bmp");
+    system("open cubes_depth.bmp");
     
     for (int i = 0; i < cubes.size(); i++) {
         delete cubes[i];
