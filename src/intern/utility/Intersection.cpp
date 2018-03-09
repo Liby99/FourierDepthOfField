@@ -28,8 +28,12 @@ float Intersection::distToOrigin() {
     return glm::length(position - ray->origin);
 }
 
+bool Intersection::needUpdate(float t) {
+    return !hit || t < this->t;
+}
+
 bool Intersection::update(float t, vec3 position, vec3 normal) {
-    if (!hit || t < this->t) {
+    if (needUpdate(t)) {
         this->t = t;
         this->position = position;
         this->normal = normal;

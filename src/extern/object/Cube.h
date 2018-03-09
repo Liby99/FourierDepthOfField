@@ -11,7 +11,9 @@ namespace recartyar {
         float length;
         Cube();
         Cube(float width, float height, float length);
-        virtual bool updateIntersect(Ray & ray, Intersection & itsct);
+    protected:
+        virtual void getBoundingVertices(std::vector<vec3> & bvs) override;
+        virtual bool updateIntersect(Ray & ray, Intersection & itsct) override;
     };
 }
 

@@ -2,7 +2,7 @@
 
 using namespace recartyar;
 
-Scene::Scene() {};
+Scene::Scene() : boxTree(nullptr) {};
 
 void Scene::setBackground(Color & color) {
     background = color;
@@ -45,11 +45,12 @@ Object & Scene::getObject(int i) {
 }
 
 bool Scene::intersect(Ray & ray, Intersection & itsct) {
-    bool hit = false;
-    for (int i = 0; i < objects.size(); i++) {
-        if (objects[i]->intersect(ray, itsct)) {
-            hit = true;
-        }
+    
+    // Initiate box tree if not exists
+    if (!boxTree) {
+        boxTree = new BoxTree(objects);
     }
-    return hit;
+    
+    // Then traverse the box tree to get intersection
+    return boxTree->intersect(ray, itsct);
 }

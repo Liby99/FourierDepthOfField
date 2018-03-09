@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "scene/Camera.h"
+#include "scene/BoxTree.h"
 #include "light/Light.h"
 #include "object/Object.h"
 #include "utility/Intersection.h"
@@ -18,6 +19,7 @@ namespace recartyar {
         Camera camera;
         std::vector<Light *> lights;
         std::vector<Object *> objects;
+        BoxTree * boxTree;
         
         Scene();
         

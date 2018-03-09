@@ -6,6 +6,18 @@ Cube::Cube() : Cube(1, 1, 1) {}
 
 Cube::Cube(float width, float height, float length) : width(width), height(height), length(length) {}
 
+void Cube::getBoundingVertices(std::vector<vec3> & bvs) {
+    float hw = width / 2, hh = height / 2, hl = length / 2;
+    bvs.push_back(vec3(hw, hh, hl));
+    bvs.push_back(vec3(hw, hh, -hl));
+    bvs.push_back(vec3(hw, -hh, hl));
+    bvs.push_back(vec3(hw, -hh, -hl));
+    bvs.push_back(vec3(-hw, hh, hl));
+    bvs.push_back(vec3(-hw, hh, -hl));
+    bvs.push_back(vec3(-hw, -hh, hl));
+    bvs.push_back(vec3(-hw, -hh, -hl));
+}
+
 bool Cube::updateIntersect(Ray & ray, Intersection & itsct) {
     
     float hw = width / 2, hh = height / 2, hl = length / 2;
