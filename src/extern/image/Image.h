@@ -25,6 +25,7 @@ namespace recartyar {
         Image(int width, int height);
         ~Image();
         void resize(int width, int height);
+        Color getRawColor(int x, int y);
         Color getColor(int x, int y);
         void setColor(int x, int y, Color color);
         void addColor(int x, int y, Color color);

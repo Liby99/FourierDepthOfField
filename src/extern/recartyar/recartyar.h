@@ -10,6 +10,7 @@
 #include "engine/DepthTracer.h"
 #include "engine/RenderEngine.h"
 #include "engine/RaySample.h"
+#include "engine/DiscontinuityTracer.h"
 #include "material/Lambert.h"
 #include "material/Material.h"
 #include "utility/Intersection.h"

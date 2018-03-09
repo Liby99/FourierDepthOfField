@@ -15,6 +15,10 @@ void Image::resize(int width, int height) {
     initiate(width, height);
 }
 
+Color Image::getRawColor(int x, int y) {
+    return pixels[y * width + x];
+}
+
 Color Image::getColor(int x, int y) {
     if (addCounts[y * width + x] == 0) {
         return pixels[y * width + x];
