@@ -16,6 +16,7 @@ void RenderEngine::render(Scene & scn, Image & img) {
     std::vector<RaySample> samples;
     generateSamples(scn, img, samples);
     renderWithSample(scn, img, samples);
+    postProcessing(scn, img, samples);
 }
 
 void RenderEngine::generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples) {
@@ -29,6 +30,10 @@ void RenderEngine::renderWithSample(Scene & scn, Image & img, std::vector<RaySam
         Ray ray = cam.getRay(samples[i].imageSample, samples[i].apertureSample);
         img.addColor(samples[i].i, samples[i].j, getColor(scn, ray));
     }
+}
+
+void RenderEngine::postProcessing(Scene &scn, Image &img, std::vector<RaySample> &samples) {
+    // Do nothing
 }
 
 Color RenderEngine::getColor(Scene & scn, Ray & ray) {

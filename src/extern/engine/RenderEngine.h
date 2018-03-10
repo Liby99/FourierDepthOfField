@@ -16,6 +16,7 @@ namespace recartyar {
     protected:
         virtual void generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples);
         virtual void renderWithSample(Scene & scn, Image & img, std::vector<RaySample> & samples);
+        virtual void postProcessing(Scene & scn, Image & img, std::vector<RaySample> & samples);
         virtual Color getColor(Scene & scn, Ray & ray);
         virtual Color getColor(Scene & scn, Intersection & itsct);
     };
