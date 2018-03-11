@@ -24,7 +24,8 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
 //    }
 //    cocImg.save("cubes_coc_new.bmp");
 
-
+    std::vector<Spectrum> spectra;
+    propagateSpectra(scn, img, itscts, cocs, spectra);
 }
 
 void FDOFTracer::generatePrimaryRays(Scene & scn, Image & img, std::vector<RaySample> & samples) {
@@ -55,7 +56,7 @@ float FDOFTracer::getCircleOfConfusion(Camera & cam, Intersection & itsct) {
         return glm::abs(cam.focalDistance() - dp) / dp * cam.aperture();
     }
     else {
-        return 0;
+        return cam.aperture();
     }
 }
 
@@ -65,6 +66,86 @@ void FDOFTracer::traceCircleOfConfusion(Scene & scn, Image & img, std::vector<In
     float ratio = img.height / h;
     for (auto &itsct : itscts) {
         cocs.push_back((int) glm::ceil(getCircleOfConfusion(cam, itsct) * ratio));
+    }
+}
+
+bool FDOFTracer::checkOcclusion(Camera & cam, Intersection & i1, Intersection & i2) {
+    vec3 c = cam.position(), f = glm::normalize(cam.target() - cam.position());
+
+    // Check the hit status
+    if (i1.hit && i2.hit) {
+
+        // If neighbor is further than current then the current is not occluded
+        if (i2.t > i1.t) {
+            return false;
+        }
+
+        // Calculate the occlusion
+        vec3 p = i1.position, q = i2.position;
+        float dp = glm::dot(p - c, f), dq = glm::dot(q - c, f);
+        float ap = (dp - dq) / dp * cam.aperture();
+        vec3 pp = c + (p - c) * dq / dp;
+        return glm::length(q - pp) < ap;
+    }
+    else if (i1.hit) {
+
+        // If current is hit but the neighbor is not hit then not occluded
+        return false;
+    }
+    else if (i2.hit) {
+
+        // If current is not hit but the neighbor is hit then calculate the occlusion
+        vec3 q = i2.position, d = i1.getRay().direction;
+        float dq = glm::dot(q - c, f);
+        vec3 pp = c + d * dq / glm::dot(d, f);
+        return glm::length(q - pp) < cam.aperture();
+    }
+    else {
+
+        // If both are not hit then not occluded
+        return false;
+    }
+}
+
+void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs, std::vector<Spectrum> & spectra) {
+
+    // Cache the camera
+    Camera & cam = scn.getCamera();
+
+    // Loop through all the pixels
+    for (int j = 0; j < img.height; j++) {
+        for (int i = 0; i < img.width; i++) {
+
+            // First cache the current index
+            int currIndex = j * img.width + i;
+
+            // Then generate the spectrum
+            Spectrum spctm = Spectrum(10);
+
+            // Cache the information
+            Intersection & itsct = itscts[currIndex];
+            int coc = cocs[currIndex];
+
+            // Generate set of occluders
+            std::vector<float> occluders;
+            for (int l = j - coc; l < j + coc; l++) {
+                for (int k = i - coc; k < i + coc; k++) {
+                    float d = glm::length(vec2(i, j) - vec2(k, l));
+                    if (k >= 0 && k < img.width && l >= 0 && l < img.height && d <= coc) {
+
+                        // Cache the index of the neighbor
+                        int nbIndex = l * img.width + k;
+                        Intersection & nbItsct = itscts[nbIndex];
+
+                        // Check occlusion
+                        if (checkOcclusion(cam, itsct, nbItsct)) {
+                            occluders.push_back(nbItsct.t);
+                        }
+                    }
+                }
+            }
+            
+        }
     }
 }
 

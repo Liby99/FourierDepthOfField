@@ -14,6 +14,8 @@ namespace recartyar {
         void traceIntersections(Scene & scn, std::vector<RaySample> & samples, std::vector<Intersection> & itscts);
         float getCircleOfConfusion(Camera & cam, Intersection & itsct);
         void traceCircleOfConfusion(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs);
+        bool checkOcclusion(Camera & cam, Intersection & i1, Intersection & i2);
+        void propagateSpectra(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs, std::vector<Spectrum> & spectra);
     };
 }
 
