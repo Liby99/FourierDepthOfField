@@ -111,6 +111,8 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
 
     // Cache the camera
     Camera & cam = scn.getCamera();
+    float h = glm::tan(cam.fovy() / 2) * cam.focalDistance() * 2;
+    float ox = h / img.height;
 
     // Loop through all the pixels
     for (int j = 0; j < img.height; j++) {
@@ -147,9 +149,6 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
             // Sort the occluders from back to front
             std::sort(occluders.begin(), occluders.end(), std::greater<>());
 
-            float h = glm::tan(cam.fovy() / 2) * cam.focalDistance() * 2;
-            float ox = h / img.height;
-
             // Generate the spectrum and propagate it
             Spectrum spctm = Spectrum(100);
             float prev = itsct.t;
@@ -160,9 +159,9 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
             }
 
             // Temporary
-            if (Sampler::random() < 0.0001f) {
-                spctm.saveImage(std::to_string(i) + "_" + std::to_string(j) + "_spctm.bmp");
-            }
+//            if (occluders.size() > 0 && Sampler::random() < 0.01f) {
+//                spctm.saveImage(std::to_string(i) + "_" + std::to_string(j) + "_spctm.bmp");
+//            }
         }
     }
 }

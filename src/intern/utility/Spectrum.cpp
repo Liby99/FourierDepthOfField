@@ -19,14 +19,17 @@ void Spectrum::transport(float dist) {
 
 void Spectrum::occlude(float ox) {
     for (int i = 0; i < samples.size(); i++) {
-        samples[i].x += ox * (glm::floor(glm::mod(Sampler::random(), 1.0f) * 3) - 2);
+        samples[i].x += 1 / ox * (glm::floor(glm::mod(Sampler::random(), 1.0f) * 3.0f) - 1.0f);
     }
 }
 
 void Spectrum::saveImage(const std::string & name) {
     Image img(40, 40);
     for (int i = 0; i < samples.size(); i++) {
-        img.setColor(samples[i].x + 20, samples[i].y + 20, rgb::WHITE);
+        int x = samples[i].x + 20, y = samples[i].y + 20;
+        if (x >= 0 && x < img.width && y >= 0 && y < img.height) {
+            img.setColor(x, y, rgb::WHITE);
+        }
     }
     img.save(name.c_str());
 }
