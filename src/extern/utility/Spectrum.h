@@ -2,6 +2,7 @@
 #define SPECTRUM_H
 
 #include <vector>
+#include "image/Image.h"
 #include "utility/Sampler.h"
 #include "utility/Math.h"
 
@@ -13,7 +14,9 @@ namespace recartyar {
 
         explicit Spectrum(int num);
         void transport(float dist);
-        void occlude(Spectrum & other);
+        void occlude(float ox);
+
+        void saveImage(const std::string & name);
     };
 }
 

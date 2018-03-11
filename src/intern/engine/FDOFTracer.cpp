@@ -120,7 +120,6 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
             int currIndex = j * img.width + i;
 
             // Then generate the spectrum
-            Spectrum spctm = Spectrum(10);
 
             // Cache the information
             Intersection & itsct = itscts[currIndex];
@@ -144,7 +143,26 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
                     }
                 }
             }
-            
+
+            // Sort the occluders from back to front
+            std::sort(occluders.begin(), occluders.end(), std::greater<>());
+
+            float h = glm::tan(cam.fovy() / 2) * cam.focalDistance() * 2;
+            float ox = h / img.height;
+
+            // Generate the spectrum and propagate it
+            Spectrum spctm = Spectrum(100);
+            float prev = itsct.t;
+            for (int m = 0; m < occluders.size(); m++) {
+                spctm.transport(occluders[m] - prev);
+                prev = occluders[m];
+                spctm.occlude(ox);
+            }
+
+            // Temporary
+            if (Sampler::random() < 0.0001f) {
+                spctm.saveImage(std::to_string(i) + "_" + std::to_string(j) + "_spctm.bmp");
+            }
         }
     }
 }
