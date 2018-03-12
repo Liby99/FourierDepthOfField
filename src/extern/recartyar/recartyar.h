@@ -13,6 +13,7 @@
 #include "engine/RaySample.h"
 #include "engine/FDOFTracer.h"
 #include "engine/DiscontinuityTracer.h"
+#include "engine/SpatialDensitySampler.h"
 #include "material/Lambert.h"
 #include "material/Material.h"
 #include "utility/Intersection.h"

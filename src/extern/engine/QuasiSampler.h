@@ -60,7 +60,7 @@ namespace quasisampler {
         double d2() const;
     };
 
-    class Quasisampler {
+    class QuasiSampler {
     protected:
 
         static const unsigned fiboTable[32];
@@ -404,13 +404,13 @@ namespace quasisampler {
         double width, height;
 
         /// Protected constructor, which initializes the Region of Interest.
-        Quasisampler(double width = 0.0, double height = 0.0) {
+        QuasiSampler(double width = 0.0, double height = 0.0) {
             this->width = width;
             this->height = height;
             root = NULL;
         }
 
-        virtual ~Quasisampler() { if (root) delete root; }
+        virtual ~QuasiSampler() { if (root) delete root; }
 
 
         /// This is a helper function which constrains the incoming points
