@@ -4,7 +4,7 @@ using namespace recartyar;
 
 int main() {
     
-    FDOFTracer ft;
+    FDOFTracer ft(4);
     
     Scene scn;
     scn.background = Color(0.5, 0.6, 0.8);

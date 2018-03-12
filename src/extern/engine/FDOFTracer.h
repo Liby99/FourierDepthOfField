@@ -7,8 +7,12 @@
 namespace recartyar {
     class FDOFTracer : public PathTracer {
     public:
+
+        float k;
+
         FDOFTracer();
-        virtual void generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples) override;
+        explicit FDOFTracer(float k);
+        void generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples) override;
     protected:
         void generatePrimaryRays(Scene &scn, Image &img, std::vector<RaySample> &samples);
         void traceIntersections(Scene & scn, std::vector<RaySample> & samples, std::vector<Intersection> & itscts);

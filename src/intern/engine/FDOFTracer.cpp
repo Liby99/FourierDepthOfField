@@ -2,7 +2,9 @@
 
 using namespace recartyar;
 
-FDOFTracer::FDOFTracer() : PathTracer() {}
+FDOFTracer::FDOFTracer() : FDOFTracer(1.0f) {}
+
+FDOFTracer::FDOFTracer(float k) : PathTracer(), k(k) {}
 
 void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> &samples) {
 
@@ -76,9 +78,9 @@ bool FDOFTracer::checkOcclusion(Camera & cam, Intersection & i1, Intersection & 
     if (i1.hit && i2.hit) {
 
         // If neighbor is further than current then the current is not occluded
-        if (i2.t > i1.t) {
-            return false;
-        }
+//        if (i2.t > i1.t) {
+//            return false;
+//        }
 
         // Calculate the occlusion
         vec3 p = i1.position, q = i2.position;
@@ -90,10 +92,12 @@ bool FDOFTracer::checkOcclusion(Camera & cam, Intersection & i1, Intersection & 
     else if (i1.hit) {
 
         // If current is hit but the neighbor is not hit then not occluded
-        return false;
+        return true;
     }
     else if (i2.hit) {
-        return true;
+
+
+        return false;
     }
     else {
 
@@ -108,34 +112,85 @@ bool occluderCmp(const vec2 & o1, const vec2 & o2) {
 
 void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs, std::vector<Spectrum> & spectra) {
 
-    float k = 1.0f;
-
     // Cache the camera
     Camera & cam = scn.getCamera();
     float h = glm::tan(cam.fovy() / 2) * cam.focalDistance() * 2;
     float ox = h / img.height;
 
-    std::vector<float> * occluderBuffer = new std::vector<float>[img.width * img.height];
+    std::vector<float> occluderBuffer[img.width * img.height];
 
     // Loop through all the pixels
     for (int j = 0; j < img.height; j++) {
         for (int i = 0; i < img.width; i++) {
 
             int currIndex = j * img.width + i;
+            int coc = cocs[currIndex];
             Intersection & itsct = itscts[currIndex];
 
+            bool flag = false;
             for (int l = j - 1; l <= j + 1; l++) {
                 for (int k = i - 1; k <= i + 1; k++) {
                     if (k >= 0 && k < img.width && l >= 0 && l < img.height && !(l == j && k == i)) {
 
-                        int nbIndex = k * img.width + l;
+                        int nbIndex = l * img.width + k;
                         Intersection & nbItsct = itscts[nbIndex];
 
                         if (checkOcclusion(cam, itsct, nbItsct)) {
-                            occluderBuffer[];
+                            flag = true;
+                            break;
                         }
                     }
                 }
+                if (flag) {
+                    break;
+                }
+            }
+
+            if (flag) {
+                for (int l = j - coc; l < j + coc; l++) {
+                    for (int k = i - coc; k < i + coc; k++) {
+                        float d = glm::length(vec2(i, j) - vec2(k, l));
+                        if (k >= 0 && k < img.width && l >= 0 && l < img.height && !(i == k && j == l) && d < coc) {
+                            int ocIndex = l * img.width + k;
+                            occluderBuffer[ocIndex].push_back(itsct.t);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    for (int j = 0; j < img.height; j++) {
+        for (int i = 0; i < img.width; i++) {
+            int currIndex = j * img.width + i;
+            Intersection & itsct = itscts[currIndex];
+            std::vector<float> & occluders = occluderBuffer[currIndex];
+
+            Spectrum spctm(100);
+
+            std::sort(occluders.begin(), occluders.end(), std::less<>());
+
+            float prev = 0;
+            for (int o = 0; o < occluders.size(); o++) {
+                spctm.transport(prev - occluders[o]);
+                spctm.occlude(3);
+                prev = occluders[o];
+            }
+
+            if (itsct.hit || occluders.size() > 0) {
+
+                // If hit, transport to hit position
+                if (itsct.hit) {
+                    spctm.transport(prev - itsct.t);
+                }
+
+                // Get variance
+                float variance = spctm.getVariance(cam.focalDistance());
+                int ns = (int) glm::ceil(this->k * std::pow(variance, 0.66667f));
+                img.setColor(i, j, rgb(ns / 50.0f));
+            }
+            else {
+
             }
         }
     }
