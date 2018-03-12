@@ -4,32 +4,39 @@ using namespace recartyar;
 
 FDOFTracer::FDOFTracer() : FDOFTracer(1.0f) {}
 
-FDOFTracer::FDOFTracer(float k) : PathTracer(), k(k) {}
+FDOFTracer::FDOFTracer(float k) : PathTracer(), k(k), energy(10000), importance(4) {}
 
 void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> &samples) {
 
+    int width = img.width, height = img.height, hw = width / 2, hh = height / 2;
+
+    // First Generate Primary Samples
     std::vector<RaySample> primSmpls;
     generatePrimaryRays(scn, img, primSmpls);
 
+    // Trace Intersections
     std::vector<Intersection> itscts;
     traceIntersections(scn, primSmpls, itscts);
 
+    // Get circle of confusion
     std::vector<int> cocs;
     traceCircleOfConfusion(scn, img, itscts, cocs);
 
+    // Propagate lens density and spatial density
     Image lensDensity(img.width, img.height);
     Image spatialDensity(img.width, img.height);
     propagateSpectra(scn, img, itscts, cocs, spatialDensity, lensDensity);
 
-
+    // Trace sampling points
     SpatialDensitySampler sds(spatialDensity);
-
-    Image temp(img.width, img.height);
-    std::vector<quasisampler::Point2D> sppts = sds.getSamplingPoints();
-    for (int i = 0; i < sppts.size(); i++) {
-        temp.setColor(sppts[i].x, sppts[i].y, rgb::WHITE);
+    for (auto pt : sds.getSamplingPoints()) {
+        int ns = (int) lensDensity.getColor((int) pt.x, (int) pt.y).r;
+        for (int i = 0; i < ns; i++) {
+            vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle();
+            vec2 imgsp = vec2(float(pt.x - hw + sp.x) / hw, float(pt.y - hh + sp.y) / hh);
+            samples.push_back(RaySample(pt.x, pt.y, imgsp, aptsp));
+        }
     }
-    temp.save("sampling_points.bmp");
 }
 
 void FDOFTracer::generatePrimaryRays(Scene & scn, Image & img, std::vector<RaySample> & samples) {
@@ -153,8 +160,6 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
         }
     }
 
-    Image temp(img.width, img.height);
-
     for (int j = 0; j < img.height; j++) {
         for (int i = 0; i < img.width; i++) {
             int currIndex = j * img.width + i;
@@ -188,21 +193,17 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
                 // Get Maximum Band Width
                 spctm.filterAperture(cam.aperture(), cam.focalDistance());
                 float mb = spctm.getMaximumBandwidth();
-                ps = mb * mb;
+                ps = importance * mb * mb;
             }
             else {
 
-                ns = 0;
+                ns = 1;
                 ps = 1;
             }
 
-            temp.setColor(i, j, rgb(ps / 100.0f));
-
-            spatialDensity.setColor(i, j, rgb(ps * 10000));
+            spatialDensity.setColor(i, j, rgb(ps * energy));
             lensDensity.setColor(i, j, rgb(ns));
         }
     }
-
-    temp.save("spatial_density_2.bmp");
 }
 

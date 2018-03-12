@@ -4,7 +4,9 @@ using namespace recartyar;
 
 int main() {
     
-    FDOFTracer ft(4);
+    FDOFTracer ft(10);
+    ft.importance = 10;
+    ft.energy = 50000;
     
     Scene scn;
     scn.background = Color(0.5, 0.6, 0.8);
@@ -33,8 +35,8 @@ int main() {
     
     Image img(640, 480);
     ft.render(scn, img);
-    img.save("cubes_coc.bmp");
-    system("open cubes_coc.bmp");
+    img.save("cubes_fdof.bmp");
+    system("open cubes_fdof.bmp");
     
     for (int i = 0; i < cubes.size(); i++) {
         delete cubes[i];
