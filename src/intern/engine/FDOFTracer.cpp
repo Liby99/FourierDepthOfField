@@ -21,14 +21,15 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
     Image spatialDensity(img.width, img.height);
     propagateSpectra(scn, img, itscts, cocs, spatialDensity, lensDensity);
 
-//    SpatialDensitySampler sds(spatialDensity);
-//
-//    Image temp(img.width, img.height);
-//    std::vector<quasi_sampler::Point2D> sppts = sds.getSamplingPoints();
-//    for (int i = 0; i < sppts.size(); i++) {
-//        temp.setColor(sppts[i].x, sppts[i].y, rgb::WHITE);
-//    }
-//    temp.save("sampling_points.bmp");
+
+    SpatialDensitySampler sds(spatialDensity);
+
+    Image temp(img.width, img.height);
+    std::vector<quasisampler::Point2D> sppts = sds.getSamplingPoints();
+    for (int i = 0; i < sppts.size(); i++) {
+        temp.setColor(sppts[i].x, sppts[i].y, rgb::WHITE);
+    }
+    temp.save("sampling_points.bmp");
 }
 
 void FDOFTracer::generatePrimaryRays(Scene & scn, Image & img, std::vector<RaySample> & samples) {
@@ -152,6 +153,8 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
         }
     }
 
+    Image temp(img.width, img.height);
+
     for (int j = 0; j < img.height; j++) {
         for (int i = 0; i < img.width; i++) {
             int currIndex = j * img.width + i;
@@ -190,12 +193,16 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
             else {
 
                 ns = 0;
-                ps = 0;
+                ps = 1;
             }
 
-            spatialDensity.setColor(i, j, rgb(ps));
+            temp.setColor(i, j, rgb(ps / 100.0f));
+
+            spatialDensity.setColor(i, j, rgb(ps * 10000));
             lensDensity.setColor(i, j, rgb(ns));
         }
     }
+
+    temp.save("spatial_density_2.bmp");
 }
 
