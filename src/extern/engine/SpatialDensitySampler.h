@@ -1,16 +1,16 @@
 #ifndef SPATIAL_DENSITY_SAMPLER_H
 #define SPATIAL_DENSITY_SAMPLER_H
 
-#include <quasisampler_prototype.h>
+#include "engine/QuasiSampler.h"
 #include "image/Image.h"
 
 namespace recartyar {
-    class SpatialDensitySampler : public quasi_sampler::Quasisampler {
+    class SpatialDensitySampler : public quasisampler::QuasiSampler {
     private:
         Image * img;
     public:
         explicit SpatialDensitySampler(Image & spatialDensityImage);
-        unsigned getImportanceAt(quasi_sampler::Point2D pt) override;
+        unsigned getImportanceAt(quasisampler::Point2D pt) override;
     };
 }
 
