@@ -24,7 +24,11 @@ void Spectrum::occlude(float ox) {
 }
 
 void Spectrum::filterAperture(float aperture, float focalDistance) {
-
+    for (int i = samples.size() - 1; i >= 0; i--) {
+        if (std::abs(samples[i].y + focalDistance * samples[i].x) > pi / 2) {
+            samples.erase(samples.begin() + i);
+        }
+    }
 }
 
 float Spectrum::getVariance(float focalDistance) {
@@ -34,6 +38,19 @@ float Spectrum::getVariance(float focalDistance) {
         acc += v * v;
     }
     return acc / samples.size();
+}
+
+float Spectrum::getMaximumBandwidth() {
+    if (samples.size() > 0) {
+        float maximum = std::abs(samples[0].y);
+        for (int i = 1; i < samples.size(); i++) {
+            maximum = std::max(maximum, samples[i].y);
+        }
+        return maximum;
+    }
+    else {
+        return 0;
+    }
 }
 
 void Spectrum::saveImage(const std::string & name) {

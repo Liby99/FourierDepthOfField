@@ -18,6 +18,7 @@ namespace recartyar {
         void filterAperture(float aperture, float focalDistance);
 
         float getVariance(float focalDistance);
+        float getMaximumBandwidth();
 
         void saveImage(const std::string & name);
     };

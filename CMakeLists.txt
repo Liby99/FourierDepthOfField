@@ -8,6 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++14")
 # Include GLM
 add_subdirectory(include/glm EXCLUDE_FROM_ALL)
 include_directories(include/glm/)
+include_directories(include/quasi_sampler/)
 
 # =========================================================================== #
 

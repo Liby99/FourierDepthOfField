@@ -26,8 +26,9 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
 //    }
 //    cocImg.save("cubes_coc_new.bmp");
 
-    std::vector<Spectrum> spectra;
-    propagateSpectra(scn, img, itscts, cocs, spectra);
+    std::vector<int> lensDensity;
+    std::vector<float> spatialDensity;
+    propagateSpectra(scn, img, itscts, cocs, lensDensity, spatialDensity);
 }
 
 void FDOFTracer::generatePrimaryRays(Scene & scn, Image & img, std::vector<RaySample> & samples) {
@@ -110,12 +111,13 @@ bool occluderCmp(const vec2 & o1, const vec2 & o2) {
     return o1.x > o2.x;
 }
 
-void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs, std::vector<Spectrum> & spectra) {
+void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs, std::vector<int> & lensDensity, std::vector<float> & spatialDensity) {
 
     // Cache the camera
     Camera & cam = scn.getCamera();
     float h = glm::tan(cam.fovy() / 2) * cam.focalDistance() * 2;
     float ox = h / img.height;
+    float fhfvowh = cam.fovy() * cam.fovy() * cam.aspect() / (img.width * img.height);
 
     std::vector<float> occluderBuffer[img.width * img.height];
 
@@ -177,6 +179,8 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
                 prev = occluders[o];
             }
 
+            int ns, ps;
+
             if (itsct.hit || occluders.size() > 0) {
 
                 // If hit, transport to hit position
@@ -186,12 +190,21 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
 
                 // Get variance
                 float variance = spctm.getVariance(cam.focalDistance());
-                int ns = (int) glm::ceil(this->k * std::pow(variance, 0.66667f));
-                img.setColor(i, j, rgb(ns / 50.0f));
+                ns = (int) glm::ceil(this->k * std::pow(variance, 0.66667f));
+
+                // Get Maximum Band Width
+                spctm.filterAperture(cam.aperture(), cam.focalDistance());
+                float mb = spctm.getMaximumBandwidth();
+                ps = mb * mb;
             }
             else {
 
+                ns = 0;
+                ps = 0;
             }
+
+            lensDensity.push_back(ns);
+            spatialDensity.push_back(ps);
         }
     }
 }
