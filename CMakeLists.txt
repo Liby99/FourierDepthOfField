@@ -8,6 +8,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++14")
 # Include GLM
 add_subdirectory(include/glm EXCLUDE_FROM_ALL)
 include_directories(include/glm/)
+
+# Include Quasi Sampler
+add_library(quasi_sampler INTERFACE)
+target_include_directories(quasi_sampler INTERFACE include/quasi_sampler)
 include_directories(include/quasi_sampler/)
 
 # =========================================================================== #
@@ -17,14 +21,14 @@ execute_process(
     COMMAND python ${CMAKE_CURRENT_LIST_DIR}/script/generate_header.py recartyar ${CMAKE_CURRENT_LIST_DIR}/src/extern/
 )
 
-# Set Include Directory to Extern
+# Set Include Directory to Extern and Include
 include_directories(src/extern)
 
 # Compile all the cpp files and link to `animator` library along with NanoGui
 file(GLOB fdof_sources src/intern/*.cpp src/intern/*/*.cpp src/intern/*/*/*.cpp src/extern/*.h src/extern/*/*.h src/extern/*/*/*.h)
 set(fdof ${fdof_sources})
 add_library(fdof ${fdof})
-target_link_libraries(fdof glm)
+target_link_libraries(fdof glm quasi_sampler)
 
 # Compile all the test files
 file(GLOB test_sources test/*.cpp test/*/*.cpp test/*/*/*.cpp)

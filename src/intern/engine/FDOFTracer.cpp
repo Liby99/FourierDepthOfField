@@ -17,18 +17,18 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
     std::vector<int> cocs;
     traceCircleOfConfusion(scn, img, itscts, cocs);
 
-    // Generate Circle Of Confusion Image (Bounded by 50)
-//    Image cocImg(img.width, img.height);
-//    for (int i = 0; i < img.width; i++) {
-//        for (int j = 0; j < img.height; j++) {
-//            cocImg.setColor(i, j, rgb(cocs[j * img.width + i] / 50.0f));
-//        }
-//    }
-//    cocImg.save("cubes_coc_new.bmp");
+    Image lensDensity(img.width, img.height);
+    Image spatialDensity(img.width, img.height);
+    propagateSpectra(scn, img, itscts, cocs, spatialDensity, lensDensity);
 
-    std::vector<int> lensDensity;
-    std::vector<float> spatialDensity;
-    propagateSpectra(scn, img, itscts, cocs, lensDensity, spatialDensity);
+//    SpatialDensitySampler sds(spatialDensity);
+//
+//    Image temp(img.width, img.height);
+//    std::vector<quasi_sampler::Point2D> sppts = sds.getSamplingPoints();
+//    for (int i = 0; i < sppts.size(); i++) {
+//        temp.setColor(sppts[i].x, sppts[i].y, rgb::WHITE);
+//    }
+//    temp.save("sampling_points.bmp");
 }
 
 void FDOFTracer::generatePrimaryRays(Scene & scn, Image & img, std::vector<RaySample> & samples) {
@@ -78,11 +78,6 @@ bool FDOFTracer::checkOcclusion(Camera & cam, Intersection & i1, Intersection & 
     // Check the hit status
     if (i1.hit && i2.hit) {
 
-        // If neighbor is further than current then the current is not occluded
-//        if (i2.t > i1.t) {
-//            return false;
-//        }
-
         // Calculate the occlusion
         vec3 p = i1.position, q = i2.position;
         float dp = glm::dot(p - c, f), dq = glm::dot(q - c, f);
@@ -92,13 +87,8 @@ bool FDOFTracer::checkOcclusion(Camera & cam, Intersection & i1, Intersection & 
     }
     else if (i1.hit) {
 
-        // If current is hit but the neighbor is not hit then not occluded
+        // If current is hit but the neighbor is not hit then occluded
         return true;
-    }
-    else if (i2.hit) {
-
-
-        return false;
     }
     else {
 
@@ -111,7 +101,7 @@ bool occluderCmp(const vec2 & o1, const vec2 & o2) {
     return o1.x > o2.x;
 }
 
-void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs, std::vector<int> & lensDensity, std::vector<float> & spatialDensity) {
+void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs, Image & spatialDensity, Image & lensDensity) {
 
     // Cache the camera
     Camera & cam = scn.getCamera();
@@ -203,8 +193,8 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
                 ps = 0;
             }
 
-            lensDensity.push_back(ns);
-            spatialDensity.push_back(ps);
+            spatialDensity.setColor(i, j, rgb(ps));
+            lensDensity.setColor(i, j, rgb(ns));
         }
     }
 }

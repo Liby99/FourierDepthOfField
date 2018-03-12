@@ -2,6 +2,7 @@
 #define FDOF_TRACER_H
 
 #include "engine/PathTracer.h"
+#include "engine/SpatialDensitySampler.h"
 #include "utility/Spectrum.h"
 
 namespace recartyar {
@@ -19,7 +20,7 @@ namespace recartyar {
         float getCircleOfConfusion(Camera & cam, Intersection & itsct);
         void traceCircleOfConfusion(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs);
         bool checkOcclusion(Camera & cam, Intersection & i1, Intersection & i2);
-        void propagateSpectra(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs, std::vector<int> & lensDensity, std::vector<float> & spatialDensity);
+        void propagateSpectra(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs, Image & spatialDensity, Image & lensDensity);
     };
 }
 
