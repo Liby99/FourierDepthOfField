@@ -6,6 +6,7 @@
 #include "scene/Camera.h"
 #include "scene/BoxTree.h"
 #include "scene/Scene.h"
+#include "engine/QuasiSampler.h"
 #include "engine/PathTracer.h"
 #include "engine/DepthTracer.h"
 #include "engine/RenderEngine.h"
