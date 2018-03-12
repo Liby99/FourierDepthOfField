@@ -15,6 +15,9 @@ namespace recartyar {
         explicit Spectrum(int num);
         void transport(float dist);
         void occlude(float ox);
+        void filterAperture(float aperture, float focalDistance);
+
+        float getVariance(float focalDistance);
 
         void saveImage(const std::string & name);
     };

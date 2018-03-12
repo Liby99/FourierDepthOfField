@@ -93,12 +93,7 @@ bool FDOFTracer::checkOcclusion(Camera & cam, Intersection & i1, Intersection & 
         return false;
     }
     else if (i2.hit) {
-
-        // If current is not hit but the neighbor is hit then calculate the occlusion
-        vec3 q = i2.position, d = i1.getRay().direction;
-        float dq = glm::dot(q - c, f);
-        vec3 pp = c + d * dq / glm::dot(d, f);
-        return glm::length(q - pp) < cam.aperture();
+        return true;
     }
     else {
 
@@ -107,7 +102,13 @@ bool FDOFTracer::checkOcclusion(Camera & cam, Intersection & i1, Intersection & 
     }
 }
 
+bool occluderCmp(const vec2 & o1, const vec2 & o2) {
+    return o1.x > o2.x;
+}
+
 void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs, std::vector<Spectrum> & spectra) {
+
+    float k = 1.0f;
 
     // Cache the camera
     Camera & cam = scn.getCamera();
@@ -132,7 +133,7 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
             for (int l = j - coc; l < j + coc; l++) {
                 for (int k = i - coc; k < i + coc; k++) {
                     float d = glm::length(vec2(i, j) - vec2(k, l));
-                    if (k >= 0 && k < img.width && l >= 0 && l < img.height && d <= coc) {
+                    if (k >= 0 && k < img.width && l >= 0 && l < img.height && !(i == k && j == l) && d <= coc) {
 
                         // Cache the index of the neighbor
                         int nbIndex = l * img.width + k;
@@ -151,12 +152,34 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
 
             // Generate the spectrum and propagate it
             Spectrum spctm = Spectrum(100);
-            float prev = itsct.t;
-            for (int m = 0; m < occluders.size(); m++) {
-                spctm.transport(occluders[m] - prev);
-                prev = occluders[m];
-                spctm.occlude(ox);
+            if (!occluders.empty()) {
+                float prev = itsct.t;
+                for (int m = 0; m < occluders.size(); m++) {
+                    spctm.transport(occluders[m] - prev);
+                    prev = occluders[m];
+                    spctm.occlude(1);
+                }
+                spctm.transport(-occluders[occluders.size() - 1]);
             }
+            else {
+                if (itsct.hit) {
+                    spctm.transport(-itsct.t);
+                }
+                else {
+                    spctm.transport(-cam.focalDistance());
+                }
+            }
+
+            float variance = spctm.getVariance(cam.focalDistance());
+            int ns = (int) glm::ceil(k * std::pow(variance, 0.66667f));
+            img.setColor(i, j, rgb(ns / 10.0f));
+
+//            if (i == 237 && j == 100) {
+//                std::cout << itsct.t << ": " << spctm.getVariance(cam.focalDistance()) << std::endl;
+//            }
+
+            // Apply aperture filter
+//            spctm.filterAperture(cam.aperture(), cam.focalDistance());
 
             // Temporary
 //            if (occluders.size() > 0 && Sampler::random() < 0.01f) {

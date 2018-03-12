@@ -10,7 +10,7 @@ int main() {
     scn.background = Color(0.5, 0.6, 0.8);
     scn.getCamera().setPosition(vec3(-0.1, 0.3, 2));
     scn.getCamera().setFocalDistance(2);
-    scn.getCamera().setAperture(0.1);
+    scn.getCamera().setAperture(0.05);
     
     DirectLight dl;
     dl.color = Color(0.8, 0.8, 0.8);
