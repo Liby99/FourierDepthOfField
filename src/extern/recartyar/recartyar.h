@@ -14,6 +14,7 @@
 #include "engine/DepthTracer.h"
 #include "engine/FDOFBenchmark.h"
 #include "engine/RenderEngine.h"
+#include "engine/PathTracerBenchmark.h"
 #include "engine/RaySample.h"
 #include "engine/FDOFTracer.h"
 #include "engine/DiscontinuityTracer.h"

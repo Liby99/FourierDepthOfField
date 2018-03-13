@@ -3,8 +3,9 @@
 using namespace recartyar;
 
 int main() {
-    PathTracer pt;
-    pt.setSuperSampling(100);
+    
+    PathTracerBenchmark pt(50);
+    
     Scene scn;
     scn.background = Color(0.7, 0.8, 0.9);
     scn.getCamera().setPosition(vec3(-3, 2, 6));
@@ -28,6 +29,7 @@ int main() {
     flr.transform.setPosition(vec3(0, -0.5, 0));
     flr.setMaterial(lbt);
     scn.addObject(flr);
+    
     Image img(640, 480);
     pt.render(scn, img);
     img.save("dragon_small.bmp");
