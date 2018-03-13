@@ -6,7 +6,7 @@ int main() {
     
     FDOFTracer ft(10);
     ft.importance = 10;
-    ft.energy = 50000;
+    ft.energy = 40000;
     
     Scene scn;
     scn.background = Color(0.5, 0.6, 0.8);

@@ -31,8 +31,8 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
     Image lensDensity(img.width, img.height);
     Image spatialDensity(img.width, img.height);
     propagateSpectra(scn, img, itscts, cocs, spatialDensity, lensDensity);
-    spatialDensity.blur(11);
-    lensDensity.blur(11);
+    spatialDensity.blur(15);
+    lensDensity.blur(15);
     
     std::cout << "Generating Samples... " << std::endl;
 
