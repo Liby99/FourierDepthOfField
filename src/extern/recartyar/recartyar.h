@@ -12,6 +12,7 @@
 #include "engine/QuasiSampler.h"
 #include "engine/PathTracer.h"
 #include "engine/DepthTracer.h"
+#include "engine/FDOFBenchmark.h"
 #include "engine/RenderEngine.h"
 #include "engine/RaySample.h"
 #include "engine/FDOFTracer.h"
