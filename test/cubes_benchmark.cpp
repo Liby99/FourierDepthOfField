@@ -46,6 +46,9 @@ public:
     }
     
     void postProcessing(Scene & scn, Image & img, std::vector<RaySample> & samples) {
+        
+        img.save("intermediate.bmp");
+        
         auto start = std::chrono::system_clock::now();
         
         FDOFTracer::postProcessing(scn, img, samples);
@@ -79,7 +82,7 @@ public:
 int main() {
     
     PathTracerBenchmark pt(150);
-    FDOFBenchmark ft(10, 40000, 10);
+    FDOFBenchmark ft(4, 20000, 50);
     
     Scene scn;
     scn.background = Color(0.5, 0.6, 0.8);
@@ -112,11 +115,11 @@ int main() {
     ft.render(scn, fdofImage);
     fdofImage.save("cubes_fdof.bmp");
     
-    std::cout << "---------- PATH TRACER ----------" << std::endl;
-    
-    Image ptImage(640, 480);
-    pt.render(scn, ptImage);
-    ptImage.save("cubes_path_trace.bmp");
+    // std::cout << "---------- PATH TRACER ----------" << std::endl;
+    //
+    // Image ptImage(640, 480);
+    // pt.render(scn, ptImage);
+    // ptImage.save("cubes_path_trace.bmp");
     
     for (int i = 0; i < cubes.size(); i++) {
         delete cubes[i];

@@ -46,7 +46,7 @@ void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample>
     #pragma omp parallel for collapse(2)
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
-    
+            
             int index = j * width + i;
             if (img.addCounts[index] == 0) {
                 vec2 pos(i, j);
@@ -127,10 +127,10 @@ void FDOFTracer::traceCircleOfConfusion(Scene & scn, Image & img, std::vector<In
 
 bool FDOFTracer::checkOcclusion(Camera & cam, Intersection & i1, Intersection & i2) {
     vec3 c = cam.position(), f = glm::normalize(cam.target() - cam.position());
-
+    
     // Check the hit status
     if (i1.hit && i2.hit) {
-
+        
         // Calculate the occlusion
         vec3 p = i1.position, q = i2.position;
         float dp = glm::dot(p - c, f), dq = glm::dot(q - c, f);
@@ -139,46 +139,46 @@ bool FDOFTracer::checkOcclusion(Camera & cam, Intersection & i1, Intersection & 
         return glm::length(q - pp) < ap;
     }
     else if (i1.hit) {
-
+        
         // If current is hit but the neighbor is not hit then occluded
         return true;
     }
     else {
-
+        
         // If both are not hit then not occluded
         return false;
     }
 }
 
 void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersection> & itscts, std::vector<int> & cocs, Image & spatialDensity, Image & lensDensity) {
-
+    
     // Cache the camera
     Camera & cam = scn.getCamera();
     float h = glm::tan(cam.fovy() / 2) * cam.focalDistance() * 2;
     float ox = h / img.height;
     float fhfvowh = cam.fovy() * cam.fovy() * cam.aspect() / (img.width * img.height);
-
+    
     std::vector<float> occluderBuffer[img.width * img.height];
-
+    
     // Build up occluder list
     #pragma omp parallel for collapse(2)
     for (int j = 0; j < img.height; j++) {
         for (int i = 0; i < img.width; i++) {
-
+            
             int currIndex = j * img.width + i;
             int coc = cocs[currIndex];
             Intersection & itsct = itscts[currIndex];
-
+            
             // First check if a discontinuity occurs in this pixel
             bool flag = false;
             for (int l = j - 1; l <= j + 1; l++) {
                 for (int k = i - 1; k <= i + 1; k++) {
                     if (k >= 0 && k < img.width && l >= 0 && l < img.height && !(l == j && k == i)) {
-
+                        
                         // Get the neighbor intersection
                         int nbIndex = l * img.width + k;
                         Intersection & nbItsct = itscts[nbIndex];
-
+                        
                         // Check if there's occlusion. If is then go out.
                         if (checkOcclusion(cam, itsct, nbItsct)) {
                             flag = true;
@@ -190,7 +190,7 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
                     break;
                 }
             }
-
+            
             // Then make the discontinuity influence a circle region given by radius of circle of confusion
             if (flag) {
                 for (int l = j - coc; l < j + coc; l++) {
@@ -205,23 +205,23 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
             }
         }
     }
-
+    
     // Finally propagate the spectrum at each image point
     #pragma omp parallel for collapse(2)
     for (int j = 0; j < img.height; j++) {
         for (int i = 0; i < img.width; i++) {
-
+            
             // Cache the data
             int currIndex = j * img.width + i;
             Intersection & itsct = itscts[currIndex];
             std::vector<float> & occluders = occluderBuffer[currIndex];
-
+            
             // Initialize a spectrum
             Spectrum spctm(100);
-
+            
             // Sort the occluders
             std::sort(occluders.begin(), occluders.end(), std::less<>());
-
+            
             // Propagate the spectrum
             float prev = 0;
             for (int o = 0; o < occluders.size(); o++) {
@@ -229,26 +229,26 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
                 spctm.occlude(3);
                 prev = occluders[o];
             }
-
+            
             // Initiate lens and spatial density to 1
             int ns = 1, ps = 1;
             if (itsct.hit || occluders.size() > 0) {
-
+                
                 // If hit, transport to hit position
                 if (itsct.hit) {
                     spctm.transport(prev - itsct.t);
                 }
-
+                
                 // Get variance
                 float variance = spctm.getVariance(cam.focalDistance());
                 ns = (int) glm::ceil(this->k * std::pow(variance, 0.66667f));
-
+                
                 // Get Maximum Band Width
                 spctm.filterAperture(cam.aperture(), cam.focalDistance());
                 float mb = spctm.getMaximumBandwidth();
                 ps = importance * mb * mb;
             }
-
+            
             // Set the color to spatial density and lens density
             spatialDensity.setColor(i, j, rgb(ps * energy));
             lensDensity.setColor(i, j, rgb(ns));
