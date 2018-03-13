@@ -106,7 +106,9 @@ bool BoxTreeObjectNode::intersect(Ray & ray, Intersection & intersection) {
         
         // Since this is the leaf, check through all the triangled
         for (int i = 0; i < triangles.size(); i++) {
-            hit = hit || triangles[i]->intersect(ray, intersection);
+            if (triangles[i]->intersect(ray, intersection)) {
+                hit = true;
+            }
         }
         return hit;
     }

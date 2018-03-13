@@ -32,6 +32,7 @@ void PathTracer::generateSamples(Scene & scn, Image & img, std::vector<RaySample
 Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
     Object & obj = itsct.getObject();
     if (obj.hasMaterial()) {
+
         Material & mat = obj.getMaterial();
         
         // First calculate emission
@@ -42,7 +43,7 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
         if (p.second != Color::BLACK) {
             p.first.increment();
             p.first.depth = itsct.getRay().depth + 1;
-            b =  p.second * RenderEngine::getColor(scn, p.first);
+            b = p.second * RenderEngine::getColor(scn, p.first);
         }
         
         // Finally compute light reflection
@@ -55,11 +56,13 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
                 l = mat.brdf(itsct, ref) * lgt.getColor(itsct, sditsct);
             }
         }
-        
+
         // Add up all the color
         return e + b + l;
     }
     else {
+
+        // If no material then return black
         return Color::BLACK;
     }
 }

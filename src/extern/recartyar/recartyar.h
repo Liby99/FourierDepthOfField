@@ -1,3 +1,4 @@
+#include "image/Image.h"
 #include "object/MeshObject.h"
 #include "object/Cube.h"
 #include "object/BoxTreeObject.h"
