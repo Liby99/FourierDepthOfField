@@ -52,8 +52,6 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
 }
 
 void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample> & samples) {
-    
-    img.save("hahahahah.bmp");
 
     std::cout << "Stage 3: Reconstructing... " << std::endl;
     
