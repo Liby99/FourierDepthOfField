@@ -7,26 +7,18 @@ FDOFTracer::FDOFTracer() : FDOFTracer(1.0f) {}
 FDOFTracer::FDOFTracer(float k) : PathTracer(), k(k), energy(10000), importance(4) {}
 
 void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> &samples) {
-
-    std::cout << "Stage 1: Generating Samples... " << std::endl;
-
+    
     // First Generate Primary Samples
     std::vector<RaySample> primSmpls;
     generatePrimaryRays(scn, img, primSmpls);
-
-    std::cout << "Tracing Intersections... " << std::endl;
-
+    
     // Trace Intersections
     std::vector<Intersection> itscts;
     traceIntersections(scn, primSmpls, itscts);
     
-    std::cout << "Extracting Circle of Confusion... " << std::endl;
-    
     // Get circle of confusion
     traceCircleOfConfusion(scn, img, itscts, cocs);
     
-    std::cout << "Populating Spectra... " << std::endl;
-
     // Propagate lens density and spatial density
     Image lensDensity(img.width, img.height);
     Image spatialDensity(img.width, img.height);
@@ -34,8 +26,6 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
     spatialDensity.blur(15);
     lensDensity.blur(15);
     
-    std::cout << "Generating Samples... " << std::endl;
-
     // Trace sampling points
     int width = img.width, height = img.height, hw = width / 2, hh = height / 2;
     SpatialDensitySampler sds(spatialDensity);
@@ -47,13 +37,9 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
             samples.push_back(RaySample(pt.x, pt.y, imgsp, aptsp));
         }
     }
-    
-    std::cout << "Stage 2: Rendering... " << std::endl;
 }
 
 void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample> & samples) {
-
-    std::cout << "Stage 3: Reconstructing... " << std::endl;
     
     // Then loop through all the pixels to reconstruct
     int width = img.width, height = img.height;

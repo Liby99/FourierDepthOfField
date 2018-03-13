@@ -12,7 +12,7 @@ namespace recartyar {
         RenderEngine();
         int depth();
         void setDepth(int depth);
-        void render(Scene & scn, Image & img);
+        virtual void render(Scene & scn, Image & img);
     protected:
         virtual void generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples);
         virtual void renderWithSample(Scene & scn, Image & img, std::vector<RaySample> & samples);
