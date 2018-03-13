@@ -8,6 +8,8 @@ FDOFTracer::FDOFTracer(float k) : PathTracer(), k(k), energy(10000), importance(
 
 void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> &samples) {
     
+    Camera & cam = scn.getCamera();
+    
     // First Generate Primary Samples
     std::vector<RaySample> primSmpls;
     generatePrimaryRays(scn, img, primSmpls);
@@ -29,12 +31,16 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
     // Trace sampling points
     int width = img.width, height = img.height, hw = width / 2, hh = height / 2;
     SpatialDensitySampler sds(spatialDensity);
-    for (auto pt : sds.getSamplingPoints()) {
-        int ns = (int) lensDensity.getColor((int) pt.x, (int) pt.y).r;
+    std::vector<quasisampler::Point2D> sps = sds.getSamplingPoints();
+    for (int p = 0; p < sps.size(); p++) {
+        quasisampler::Point2D & pt = sps[p];
+        int x = pt.x, y = pt.y, ns = (int) lensDensity.getColor(x, y).r;
         for (int i = 0; i < ns; i++) {
             vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle();
-            vec2 imgsp = vec2(float(pt.x - hw + sp.x) / hw, float(pt.y - hh + sp.y) / hh);
-            samples.push_back(RaySample(pt.x, pt.y, imgsp, aptsp));
+            vec2 imgsp = vec2(float(x - hw + sp.x) / hw, float(y - hh + sp.y) / hh);
+            // samples.push_back(RaySample(pt.x, pt.y, imgsp, aptsp));
+            Ray r = cam.getRay(imgsp, aptsp);
+            img.addColor(x, y, RenderEngine::getColor(scn, r));
         }
     }
 }
