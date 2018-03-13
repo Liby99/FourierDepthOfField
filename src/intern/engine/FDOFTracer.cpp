@@ -59,6 +59,7 @@ void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample>
     
     // Then loop through all the pixels to reconstruct
     int width = img.width, height = img.height;
+    #pragma omp parallel for collapse(2)
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
     
@@ -176,6 +177,7 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
     std::vector<float> occluderBuffer[img.width * img.height];
 
     // Build up occluder list
+    #pragma omp parallel for collapse(2)
     for (int j = 0; j < img.height; j++) {
         for (int i = 0; i < img.width; i++) {
 
@@ -221,6 +223,7 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
     }
 
     // Finally propagate the spectrum at each image point
+    #pragma omp parallel for collapse(2)
     for (int j = 0; j < img.height; j++) {
         for (int i = 0; i < img.width; i++) {
 
