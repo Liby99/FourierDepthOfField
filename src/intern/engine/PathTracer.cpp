@@ -2,7 +2,9 @@
 
 using namespace recartyar;
 
-PathTracer::PathTracer() : RenderEngine(), mSpp(4) {}
+PathTracer::PathTracer() : PathTracer(4) {}
+
+PathTracer::PathTracer(int spp) : RenderEngine(), mSpp(spp) {}
 
 int PathTracer::superSampling() {
     return mSpp;

@@ -19,7 +19,7 @@ public:
         
         auto end = std::chrono::system_clock::now();
         std::chrono::duration<double> elapsed_seconds = end-start;
-        std::cout << "Total Elapsed time: " << elapsed_seconds.count() << "s" << std::endl;
+        std::cout << "FDOF Total Elapsed time: " << elapsed_seconds.count() << "s" << std::endl;
     }
     
     void generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples) {
@@ -33,6 +33,9 @@ public:
     }
     
     void renderWithSample(Scene & scn, Image & img, std::vector<RaySample> & samples) {
+    
+        std::cout << "Sample Amount: " << samples.size() << std::endl;
+        
         auto start = std::chrono::system_clock::now();
         
         FDOFTracer::renderWithSample(scn, img, samples);
@@ -49,12 +52,33 @@ public:
         
         auto end = std::chrono::system_clock::now();
         std::chrono::duration<double> elapsed_seconds = end-start;
-        std::cout << "Reconstruction Elapsed time: " << elapsed_seconds.count() << "s" << std::endl;;
+        std::cout << "Reconstruction Elapsed time: " << elapsed_seconds.count() << "s" << std::endl;
+    }
+};
+
+class PathTracerBenchmark : public PathTracer {
+public:
+    PathTracerBenchmark(int spp) : PathTracer(spp) {}
+    
+    void render(Scene & scn, Image & img) {
+        auto start = std::chrono::system_clock::now();
+        
+        PathTracer::render(scn, img);
+        
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds = end-start;
+        std::cout << "Path Trace Elapsed time: " << elapsed_seconds.count() << "s" << std::endl;
+    }
+    
+    void renderWithSample(Scene & scn, Image & img, std::vector<RaySample> & samples) {
+        std::cout << "Sample Amount: " << samples.size() << std::endl;
+        PathTracer::renderWithSample(scn, img, samples);
     }
 };
 
 int main() {
     
+    PathTracerBenchmark pt(150);
     FDOFBenchmark ft(10, 40000, 10);
     
     Scene scn;
@@ -82,10 +106,17 @@ int main() {
         cubes.push_back(cube);
     }
     
-    Image img(640, 480);
-    ft.render(scn, img);
-    img.save("cubes_fdof.bmp");
-    system("open cubes_fdof.bmp");
+    std::cout << "---------- FDOF TRACER ----------" << std::endl;
+    
+    Image fdofImage(640, 480);
+    ft.render(scn, fdofImage);
+    fdofImage.save("cubes_fdof.bmp");
+    
+    std::cout << "---------- PATH TRACER ----------" << std::endl;
+    
+    Image ptImage(640, 480);
+    pt.render(scn, ptImage);
+    ptImage.save("cubes_path_trace.bmp");
     
     for (int i = 0; i < cubes.size(); i++) {
         delete cubes[i];

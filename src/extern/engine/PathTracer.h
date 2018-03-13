@@ -11,6 +11,7 @@ namespace recartyar {
     public:
         int mSpp;
         PathTracer();
+        PathTracer(int spp);
         int superSampling();
         void setSuperSampling(int spp);
     protected:
