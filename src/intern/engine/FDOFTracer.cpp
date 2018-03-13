@@ -8,23 +8,33 @@ FDOFTracer::FDOFTracer(float k) : PathTracer(), k(k), energy(10000), importance(
 
 void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> &samples) {
 
-    std::cout << "Generating Samples... " << std::endl;
+    std::cout << "Stage 1: Generating Samples... " << std::endl;
 
     // First Generate Primary Samples
     std::vector<RaySample> primSmpls;
     generatePrimaryRays(scn, img, primSmpls);
 
+    std::cout << "Tracing Intersections... " << std::endl;
+
     // Trace Intersections
     std::vector<Intersection> itscts;
     traceIntersections(scn, primSmpls, itscts);
-
+    
+    std::cout << "Extracting Circle of Confusion... " << std::endl;
+    
     // Get circle of confusion
     traceCircleOfConfusion(scn, img, itscts, cocs);
+    
+    std::cout << "Populating Spectra... " << std::endl;
 
     // Propagate lens density and spatial density
     Image lensDensity(img.width, img.height);
     Image spatialDensity(img.width, img.height);
     propagateSpectra(scn, img, itscts, cocs, spatialDensity, lensDensity);
+    spatialDensity.blur(11);
+    lensDensity.blur(11);
+    
+    std::cout << "Generating Samples... " << std::endl;
 
     // Trace sampling points
     int width = img.width, height = img.height, hw = width / 2, hh = height / 2;
@@ -37,40 +47,52 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
             samples.push_back(RaySample(pt.x, pt.y, imgsp, aptsp));
         }
     }
+    
+    std::cout << "Stage 2: Rendering... " << std::endl;
 }
 
 void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample> & samples) {
+    
+    img.save("hahahahah.bmp");
 
-    std::cout << "Reconstructing... " << std::endl;
-
-    // First populate the samples
-    int width = img.width, height = img.height;
-    std::vector<std::pair<vec2, Color>> imgSamples;
-    for (int j = 0; j < height; j++) {
-        for (int i = 0; i < width; i++) {
-            int index = j * width + i;
-            if (img.addCounts[index] != 0) {
-                imgSamples.push_back(std::make_pair(vec2(i, j), img.getColor(i, j)));
-            }
-        }
-    }
+    std::cout << "Stage 3: Reconstructing... " << std::endl;
     
     // Then loop through all the pixels to reconstruct
+    int width = img.width, height = img.height;
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
+    
             int index = j * width + i;
             if (img.addCounts[index] == 0) {
                 vec2 pos(i, j);
-                std::sort(imgSamples.begin(), imgSamples.end(), [pos] (std::pair<vec2, Color> p1, std::pair<vec2, Color> p2) {
-                    float d1 = glm::length(p1.first - pos),
-                          d2 = glm::length(p2.first - pos);
-                    return d1 > d2;
-                });
                 Color c;
-                for (int k = 0; k < 10; k++) {
-                    float d = glm::length(imgSamples[k].first - pos);
-                    c += imgSamples[k].second * gaussianWeight(d, cocs[index]);
+                
+                int counter = 0;
+                float totalWeight = 0, radius = cocs[index] + 1, factor = 2;
+                while (counter == 0) {
+                    for (int l = j - radius; l < j + radius; l++) {
+                        for (int k = i - radius; k < i + radius; k++) {
+                            int nbIndex = l * width + k;
+                            float d = glm::length(vec2(k, l) - pos);
+                            if (k >= 0 && k < width && l >= 0 && l < height &&
+                                    d <= radius && img.addCounts[nbIndex] > 0) {
+                                float weight = std::exp(-std::pow(d, factor));
+                                if (weight > 0) {
+                                    Color cc = img.getColor(k, l);
+                                    c += cc * weight;
+                                    totalWeight += weight;
+                                    counter++;
+                                }
+                            }
+                        }
+                    }
+                    factor /= 1.5;
+                    radius *= 2;
                 }
+                c.r /= totalWeight;
+                c.g /= totalWeight;
+                c.b /= totalWeight;
+                
                 img.setColor(i, j, c);
             }
         }
@@ -248,5 +270,6 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
 }
 
 float FDOFTracer::gaussianWeight(float d, float variance) {
+    // std::cout << "Dist: " << d << ", variance: " << variance << std::endl;
     return std::exp(-d * d / (2 * variance)) / std::sqrt(2 * pi * variance);
 }

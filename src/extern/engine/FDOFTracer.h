@@ -8,14 +8,7 @@
 namespace recartyar {
     class FDOFTracer : public PathTracer {
     private:
-        class Tile {
-        public:
-            vec2 upperLeft, bottomRight;
-            Tile * up, right, bottom, left;
-            std::vector<
-            Tile(vec2 upperLeft, vec2 bottomRight);
 
-        };
     public:
         float k, energy, importance;
         std::vector<int> cocs;
