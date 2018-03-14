@@ -33,11 +33,13 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
     SpatialDensitySampler sds(spatialDensity);
     std::vector<quasisampler::Point2D> sps = sds.getSamplingPoints();
     for (int p = 0; p < sps.size(); p++) {
+        
         quasisampler::Point2D & pt = sps[p];
         int x = pt.x, y = pt.y, ns = (int) lensDensity.getColor(x, y).r;
         for (int i = 0; i < ns; i++) {
             vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle();
             vec2 imgsp = vec2(float(x - hw + sp.x) / hw, float(y - hh + sp.y) / hh);
+            
             // samples.push_back(RaySample(pt.x, pt.y, imgsp, aptsp));
             Ray r = cam.getRay(imgsp, aptsp);
             img.addColor(x, y, RenderEngine::getColor(scn, r));
@@ -59,7 +61,8 @@ void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample>
                 Color c;
                 
                 int counter = 0;
-                float totalWeight = 0, radius = cocs[index] + 1, factor = 2;
+                float totalWeight = 0, radius = cocs[index] + 1;
+                // std::vector<std::pair<float, Color>>
                 while (counter == 0) {
                     for (int l = j - radius; l < j + radius; l++) {
                         for (int k = i - radius; k < i + radius; k++) {
@@ -67,7 +70,7 @@ void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample>
                             float d = glm::length(vec2(k, l) - pos);
                             if (k >= 0 && k < width && l >= 0 && l < height &&
                                     d <= radius && img.addCounts[nbIndex] > 0) {
-                                float weight = std::exp(-std::pow(d, factor));
+                                float weight = std::exp(-std::pow(d, 2) / radius);
                                 if (weight > 0) {
                                     Color cc = img.getColor(k, l);
                                     c += cc * weight;
@@ -77,7 +80,6 @@ void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample>
                             }
                         }
                     }
-                    factor /= 1.5;
                     radius *= 2;
                 }
                 c.r /= totalWeight;
