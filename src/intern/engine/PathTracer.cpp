@@ -18,32 +18,27 @@ void PathTracer::generateSamples(Scene & scn, Image & img, std::vector<RaySample
     int width = img.width, height = img.height, hw = width / 2, hh = height / 2, total = width * height;
     Camera & cam = scn.getCamera();
     cam.setAspect(float(width) / float(height));
-    // for (int j = 0; j < height; j++) {
-    //     for (int i = 0; i < width; i++) {
-    //         for (int k = 0; k < mSpp; k++) {
-    //             vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle(),
-    //                 imgsp = vec2(float(i - hw + sp.x) / hw, float(j - hh + sp.y) / hh);
-    //
-    //             // samples.push_back(RaySample(i, j, imgsp, aptsp));
-    //
-    //             Ray r = cam.getRay(imgsp, aptsp);
-    //             img.addColor(i, j, RenderEngine::getColor(scn, r));
-    //         }
-    //     }
-    // }
-    
-    #pragma omp parallel for
-    for (int p = 0; p < total; p++) {
-        int i = p % width, j = p / width;
-        for (int k = 0; k < mSpp; k++) {
-            
-            vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle(),
-            imgsp = vec2(float(i - hw + sp.x) / hw, float(j - hh + sp.y) / hh);
-
-            Ray r = cam.getRay(imgsp, aptsp);
-            img.addColor(i, j, RenderEngine::getColor(scn, r));
+    for (int j = 0; j < height; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int k = 0; k < mSpp; k++) {
+                vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle(), imgsp = vec2(float(i - hw + sp.x) / hw, float(j - hh + sp.y) / hh);
+                samples.push_back(RaySample(i, j, imgsp, aptsp));
+            }
         }
     }
+    
+    // #pragma omp parallel for
+    // for (int p = 0; p < total; p++) {
+    //     int i = p % width, j = p / width;
+    //     for (int k = 0; k < mSpp; k++) {
+    //
+    //         vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle(),
+    //         imgsp = vec2(float(i - hw + sp.x) / hw, float(j - hh + sp.y) / hh);
+    //
+    //         Ray r = cam.getRay(imgsp, aptsp);
+    //         img.addColor(i, j, RenderEngine::getColor(scn, r));
+    //     }
+    // }
 }
 
 Color PathTracer::getColor(Scene & scn, Intersection & itsct) {

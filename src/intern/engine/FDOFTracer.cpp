@@ -28,35 +28,18 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
     spatialDensity.blur(15);
     lensDensity.blur(15);
     
-    std::cout << "Finished Generating Samples" << std::endl;
-    
     // Trace sampling points
     int width = img.width, height = img.height, hw = width / 2, hh = height / 2;
     SpatialDensitySampler sds(spatialDensity);
     std::vector<quasisampler::Point2D> sps = sds.getSamplingPoints();
-    
-    int counter = 0;
     for (int p = 0; p < sps.size(); p++) {
-        counter += (int) lensDensity.getColor(sps[p].x, sps[p].y).r;
-    }
-    std::cout << "Sample Amount: " << counter << std::endl;
-
-    #pragma omp parallel for
-    for (int p = 0; p < sps.size(); p++) {
-        
         quasisampler::Point2D & pt = sps[p];
         int x = pt.x, y = pt.y, ns = (int) lensDensity.getColor(x, y).r;
         for (int i = 0; i < ns; i++) {
-            vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle();
-            vec2 imgsp = vec2(float(x - hw + sp.x) / hw, float(y - hh + sp.y) / hh);
-            
-            // samples.push_back(RaySample(pt.x, pt.y, imgsp, aptsp));
-            Ray r = cam.getRay(imgsp, aptsp);
-            img.addColor(x, y, RenderEngine::getColor(scn, r));
-            
+            vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle(), imgsp = vec2(float(x - hw + sp.x) / hw, float(y - hh + sp.y) / hh);
+            samples.push_back(RaySample(pt.x, pt.y, imgsp, aptsp));
         }
     }
-    
 }
 
 void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample> & samples) {
