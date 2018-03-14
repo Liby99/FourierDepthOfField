@@ -142,5 +142,5 @@ already making sense.
 - Week 10: Do benchmark and result demonstration, write project report and do
 presentation.
 
-[d1]: https://github.com/Liby99/FourierDepthOfField/raw/master/docs/res/dragon_1.bmp "Dragon 1"
-[d2]: https://github.com/Liby99/FourierDepthOfField/raw/master/docs/res/dragon_2.bmp "Dragon 2"
+[d1]: https://github.com/Liby99/FourierDepthOfField/raw/master/docs/res/milestone/dragon_1.bmp "Dragon 1"
+[d2]: https://github.com/Liby99/FourierDepthOfField/raw/master/docs/res/milestone/dragon_2.bmp "Dragon 2"

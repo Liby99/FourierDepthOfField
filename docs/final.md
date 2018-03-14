@@ -15,3 +15,29 @@
 * Nicolas Holzschuch & François Sillion, INRIA, Grenoble University, CNRS
 
 ## Final Report Abstract
+
+## Algorithms
+
+### Stage 1: Light Field Propagation and Scene Analysis
+
+### Stage 2: Path Tracing
+
+### Stage 3: Reconstruction
+
+## Result
+
+### Cube Scene
+
+### Dragon Scene
+
+## Benchmark
+
+### Cube Scene
+
+### Dragon Scene
+
+## Comparison to Original Work
+
+## Limitations
+
+## Future Work
