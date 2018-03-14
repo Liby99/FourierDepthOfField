@@ -49,6 +49,8 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
 
 void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample> & samples) {
     
+    const int NEIGHBOR_COUNT = 25;
+    
     // Then loop through all the pixels to reconstruct
     int width = img.width, height = img.height;
     #pragma omp parallel for collapse(2)
@@ -59,32 +61,37 @@ void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample>
             if (img.addCounts[index] == 0) {
                 vec2 pos(i, j);
                 Color c;
-                
-                int counter = 0;
-                float totalWeight = 0, radius = cocs[index] + 1;
-                // std::vector<std::pair<float, Color>>
-                while (counter == 0) {
+
+                // First get the nearest k neighbors
+                int totalNeighbors = (int) std::pow(cocs[index], 1.2) + 1;
+                float radius = 3, loop = 0;
+                std::vector<std::pair<float, Color>> neighbors;
+                while (neighbors.size() < totalNeighbors) {
                     for (int l = j - radius; l < j + radius; l++) {
                         for (int k = i - radius; k < i + radius; k++) {
                             int nbIndex = l * width + k;
                             float d = glm::length(vec2(k, l) - pos);
-                            if (k >= 0 && k < width && l >= 0 && l < height &&
-                                    d <= radius && img.addCounts[nbIndex] > 0) {
-                                float weight = std::exp(-std::pow(d, 2) / radius);
-                                if (weight > 0) {
-                                    Color cc = img.getColor(k, l);
-                                    c += cc * weight;
-                                    totalWeight += weight;
-                                    counter++;
-                                }
+                            if (k >= 0 && k < width && l >= 0 && l < height && img.addCounts[nbIndex] > 0 &&
+                                    d <= radius && (loop == 0 || d > radius / 2.0f)) {
+                                neighbors.emplace_back(std::make_pair(d, img.getColor(k, l)));
                             }
                         }
                     }
                     radius *= 2;
+                    loop++;
                 }
-                c.r /= totalWeight;
-                c.g /= totalWeight;
-                c.b /= totalWeight;
+                
+                std::sort(neighbors.begin(), neighbors.end(), [] (std::pair<float, Color> p1, std::pair<float, Color> p2) {
+                    return p1.first < p2.first;
+                });
+
+                float totalWeight = 0, maxRadius = neighbors[totalNeighbors - 1].first;
+                for (int p = 0; p < totalNeighbors; p++) {
+                    float weight = (float) std::exp(-std::pow(neighbors[p].first, 2) / (2 * maxRadius));
+                    c += neighbors[p].second * weight;
+                    totalWeight += weight;
+                }
+                c /= totalWeight;
                 
                 img.setColor(i, j, c);
             }

@@ -114,6 +114,17 @@ Color & Color::operator/=(int count) {
     return *this;
 }
 
+Color Color::operator/(float div) {
+    return Color(r / div, g / div, b / div);
+}
+
+Color & Color::operator/=(float div) {
+    r /= div;
+    g /= div;
+    b /= div;
+    return *this;
+}
+
 Color::operator std::string() {
     return "rgb(" + std::to_string(getIntR()) + ", " + std::to_string(getIntG()) + ", " + std::to_string(getIntB()) + ")";
 }

@@ -60,6 +60,8 @@ namespace recartyar {
         Color & operator*=(float scale);
         Color operator/(int count);
         Color & operator/=(int count);
+        Color operator/(float div);
+        Color & operator/=(float div);
         operator std::string();
         
         static Color parse(int c);

@@ -134,6 +134,8 @@ bool MeshObject::loadPly(const char * filename) {
     // Close file
     fclose(f);
     printf("Loaded %lu vertices and %lu triangles from file '%s'\n", vertices.size(), triangles.size(), filename);
+
+    return true;
 }
 
 void MeshObject::smooth() {
