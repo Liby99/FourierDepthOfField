@@ -28,10 +28,20 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
     spatialDensity.blur(15);
     lensDensity.blur(15);
     
+    std::cout << "Finished Generating Samples" << std::endl;
+    
     // Trace sampling points
     int width = img.width, height = img.height, hw = width / 2, hh = height / 2;
     SpatialDensitySampler sds(spatialDensity);
     std::vector<quasisampler::Point2D> sps = sds.getSamplingPoints();
+    
+    int counter = 0;
+    for (int p = 0; p < sps.size(); p++) {
+        counter += (int) lensDensity.getColor(sps[p].x, sps[p].y).r;
+    }
+    std::cout << "Sample Amount: " << counter << std::endl;
+
+    #pragma omp parallel for
     for (int p = 0; p < sps.size(); p++) {
         
         quasisampler::Point2D & pt = sps[p];
@@ -43,13 +53,13 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
             // samples.push_back(RaySample(pt.x, pt.y, imgsp, aptsp));
             Ray r = cam.getRay(imgsp, aptsp);
             img.addColor(x, y, RenderEngine::getColor(scn, r));
+            
         }
     }
+    
 }
 
 void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample> & samples) {
-    
-    const int NEIGHBOR_COUNT = 25;
     
     // Then loop through all the pixels to reconstruct
     int width = img.width, height = img.height;
@@ -63,7 +73,7 @@ void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample>
                 Color c;
 
                 // First get the nearest k neighbors
-                int totalNeighbors = (int) std::pow(cocs[index], 1.2) + 1;
+                int totalNeighbors = (int) std::pow(cocs[index], 1.2) + 1; // Heuristic: use coc ^ 1.2 many neighbor count
                 float radius = 3, loop = 0;
                 std::vector<std::pair<float, Color>> neighbors;
                 while (neighbors.size() < totalNeighbors) {

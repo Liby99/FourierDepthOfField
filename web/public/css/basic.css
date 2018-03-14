@@ -1,0 +1,122 @@
+body {
+    margin: 0 auto;
+    margin-left: 250px;
+    padding: 0 100px;
+    min-width: 768px;
+    font-family: sans-serif;
+    font-size: 13px;
+    color: rgba(100, 100, 100, 1);
+}
+
+img {
+    image-rendering: crisp-edges;
+}
+
+a, a:visited {
+    cursor: pointer;
+    text-decoration: none;
+    color: rgba(110, 190, 255, 1);
+}
+
+ul {
+    padding-left: 15px;
+}
+
+.btn {
+    transition: all 0.2s;
+    display: block;
+    text-align: center;
+    border-radius: 3px;
+    color: rgba(255, 255, 255, 1) !important;
+    background-color: rgba(110, 190, 255, 0.8);
+    border: 1px solid rgba(105, 185, 250, 1);
+    line-height: 30px;
+}
+
+.btn:hover {
+    background-color: rgba(110, 190, 255, 0.9);
+}
+
+.btn:active {
+    background-color: rgba(105, 185, 250, 1);
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.flex {
+    display: flex;
+}
+
+main {
+    
+}
+
+section {
+    padding: 20px;
+}
+
+section h1, section h2 {
+    padding: 10px;
+    border-bottom: 1px solid rgba(230, 230, 230, 1);
+    font-weight: normal;
+}
+
+section > section > div > h1,
+section > section > div > h2,
+section > section > div > h3,
+section > section > div > h4,
+section > section > div > h5,
+section > section > div > h6 {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(230, 230, 230, 1);
+    font-weight: normal;
+}
+
+section > div {
+    display: block;
+    padding: 0 30px;
+    line-height: 24px;
+}
+
+section section {
+    padding: 10px 20px;
+}
+
+section section h2 {
+    font-size: 17px;
+}
+
+section code {
+    padding: 0 8px;
+    border-radius: 3px;
+    background-color: rgba(245, 245, 245, 1);
+    border: 1px solid rgba(230, 230, 230, 1);
+}
+
+section pre {
+    padding: 10px 20px;
+    border-radius: 3px;
+    background-color: rgba(245, 245, 245, 1);
+    border: 1px solid rgba(230, 230, 230, 1);
+}
+
+section img {
+    align-self: center;
+}
+
+section blockquote {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: rgba(110, 190, 255, 0.1);
+    border-left: 2px solid rgba(110, 190, 255, 1);
+}
+
+section table {
+    margin: 0 auto;
+}

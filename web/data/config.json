@@ -1,0 +1,13 @@
+{
+    "debug": false,
+    "name": "Fourier Depth Of Field",
+    "port": 9055,
+    "session_secret": "keeling-session",
+    "engine": "ejs",
+    "default_page": "index",
+    "error_page": "error",
+    "public_directory": "public",
+    "ajax_directory": "ajax",
+    "router_directory": "router",
+    "schedule_directory": "schedule"
+}
