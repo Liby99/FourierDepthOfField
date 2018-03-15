@@ -4,9 +4,9 @@ using namespace recartyar;
 
 FDOFTracer::FDOFTracer() : FDOFTracer(1.0f) {}
 
-FDOFTracer::FDOFTracer(float k) : PathTracer(), k(k), energy(10000), importance(4) {}
+FDOFTracer::FDOFTracer(float k) : PathTracer(), k(k), energy(10000), importance(4), lensDensity(0, 0), spatialDensity(0, 0) {}
 
-void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> &samples) {
+void FDOFTracer::preProcessing(Scene &scn, Image &img) {
     
     Camera & cam = scn.getCamera();
     
@@ -22,27 +22,18 @@ void FDOFTracer::generateSamples(Scene &scn, Image &img, std::vector<RaySample> 
     traceCircleOfConfusion(scn, img, itscts, cocs);
     
     // Propagate lens density and spatial density
-    Image lensDensity(img.width, img.height);
-    Image spatialDensity(img.width, img.height);
+    lensDensity.resize(img.width, img.height);
+    spatialDensity.resize(img.width, img.height);
     propagateSpectra(scn, img, itscts, cocs, spatialDensity, lensDensity);
     spatialDensity.blur(15);
     lensDensity.blur(15);
-    
-    // Trace sampling points
-    int width = img.width, height = img.height, hw = width / 2, hh = height / 2;
+
+    // Get sampling points
     SpatialDensitySampler sds(spatialDensity);
-    std::vector<quasisampler::Point2D> sps = sds.getSamplingPoints();
-    for (int p = 0; p < sps.size(); p++) {
-        quasisampler::Point2D & pt = sps[p];
-        int x = pt.x, y = pt.y, ns = (int) lensDensity.getColor(x, y).r;
-        for (int i = 0; i < ns; i++) {
-            vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle(), imgsp = vec2(float(x - hw + sp.x) / hw, float(y - hh + sp.y) / hh);
-            samples.push_back(RaySample(pt.x, pt.y, imgsp, aptsp));
-        }
-    }
+    samplingPoints = sds.getSamplingPoints();
 }
 
-void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample> & samples) {
+void FDOFTracer::postProcessing(Scene & scn, Image & img) {
     
     // Then loop through all the pixels to reconstruct
     int width = img.width, height = img.height;
@@ -90,6 +81,34 @@ void FDOFTracer::postProcessing(Scene & scn, Image & img, std::vector<RaySample>
             }
         }
     }
+}
+
+void FDOFTracer::initiateGenerator(Scene & scn, Image & img) {
+    currP = 0;
+    currK = 0;
+    currNs = 0;
+    hw = img.width / 2;
+    hh = img.height / 2;
+}
+
+RaySample FDOFTracer::getNextSample(Scene & scn, Image & img) {
+    if (currK < currNs - 1) {
+        currK++;
+    }
+    else {
+        currP++;
+        currK = 0;
+    }
+    quasisampler::Point2D & pt = samplingPoints[currP];
+    int x = int(pt.x), y = int(pt.y);
+    currNs = (int) lensDensity.getColor(x, y).r;
+    vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle();
+    vec2 imgsp = vec2((x - hw + sp.x) / hw, (y - hh + sp.y) / hh);
+    return { x, y, imgsp, aptsp };
+}
+
+bool FDOFTracer::hasNextSample(Scene & scn, Image & img) {
+    return currK < currNs - 1 || currP < samplingPoints.size() - 1;
 }
 
 void FDOFTracer::generatePrimaryRays(Scene & scn, Image & img, std::vector<RaySample> & samples) {

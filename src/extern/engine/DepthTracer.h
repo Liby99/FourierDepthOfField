@@ -7,15 +7,20 @@
 namespace recartyar {
     class DepthTracer : public RenderEngine {
     public:
-        float mNear;
-        float mFar;
+        float mNear, mFar;
+    protected:
+        int currI, currJ;
+        float hw, hh;
+    public:
         DepthTracer();
         float near();
         void setNear(float n);
         float far();
         void setFar(float f);
-        virtual void generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples);
-        virtual Color getColor(Scene & scn, Ray & ray);
+        void initiateGenerator(Scene & scn, Image & img) override;
+        RaySample getNextSample(Scene & scn, Image & img) override;
+        bool hasNextSample(Scene & scn, Image & img) override;
+        Color getColor(Scene & scn, Ray & ray) override;
     };
 }
 

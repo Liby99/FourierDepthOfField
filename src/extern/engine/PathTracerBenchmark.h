@@ -9,9 +9,9 @@
 namespace recartyar {
     class PathTracerBenchmark : public PathTracer {
     public:
-        PathTracerBenchmark(int spp);
+        explicit PathTracerBenchmark(int spp);
         void render(Scene & scn, Image & img) override;
-        void renderWithSample(Scene & scn, Image & img, std::vector<RaySample> & samples) override;
+        int getSampleAmount(Image & img);
     };
 }
 

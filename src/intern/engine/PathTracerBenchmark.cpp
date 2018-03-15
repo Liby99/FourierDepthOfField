@@ -8,6 +8,8 @@ void PathTracerBenchmark::render(Scene & scn, Image & img) {
     
     auto start = std::chrono::system_clock::now();
     
+    std::cout << "Path Tracing " << getSampleAmount(img) << " samples..." << std::endl;
+    
     PathTracer::render(scn, img);
     
     auto end = std::chrono::system_clock::now();
@@ -15,9 +17,6 @@ void PathTracerBenchmark::render(Scene & scn, Image & img) {
     std::cout << "Path Trace Elapsed time: " << elapsed_seconds.count() << "s" << std::endl;
 }
 
-void PathTracerBenchmark::renderWithSample(Scene & scn, Image & img, std::vector<RaySample> & samples) {
-    
-    std::cout << "Sample Amount: " << samples.size() << std::endl;
-    
-    PathTracer::renderWithSample(scn, img, samples);
+int PathTracerBenchmark::getSampleAmount(Image & img) {
+    return img.width * img.height * mSpp;
 }

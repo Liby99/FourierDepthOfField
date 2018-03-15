@@ -7,16 +7,36 @@
 
 namespace recartyar {
     class FDOFTracer : public PathTracer {
-    private:
+    public:
+
+        // FDOF Parameters
+        float k, energy, importance;
+
+    protected:
+
+        // Generator used parameters
+        int currP, currK, currNs;
+        float hw, hh;
+        Image lensDensity, spatialDensity;
+        std::vector<quasisampler::Point2D> samplingPoints;
+        std::vector<int> cocs;
 
     public:
-        float k, energy, importance;
-        std::vector<int> cocs;
+
+        // Public override functions
         FDOFTracer();
         explicit FDOFTracer(float k);
-        void generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples) override;
-        void postProcessing(Scene &scn, Image &img, std::vector<RaySample> &samples) override;
+        void preProcessing(Scene & scn, Image & img) override;
+        void postProcessing(Scene & scn, Image & img) override;
+
     protected:
+
+        // Generator methods
+        void initiateGenerator(Scene & scn, Image & img) override;
+        RaySample getNextSample(Scene & scn, Image & img) override;
+        bool hasNextSample(Scene & scn, Image & img) override;
+
+        // Helper prepass methods
         void generatePrimaryRays(Scene &scn, Image &img, std::vector<RaySample> &samples);
         void traceIntersections(Scene & scn, std::vector<RaySample> & samples, std::vector<Intersection> & itscts);
         float getCircleOfConfusion(Camera & cam, Intersection & itsct);

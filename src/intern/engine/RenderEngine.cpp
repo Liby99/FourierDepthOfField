@@ -13,27 +13,39 @@ void RenderEngine::setDepth(int d) {
 }
 
 void RenderEngine::render(Scene & scn, Image & img) {
-    std::vector<RaySample> samples;
-    generateSamples(scn, img, samples);
-    renderWithSample(scn, img, samples);
-    postProcessing(scn, img, samples);
+    preProcessing(scn, img);
+    renderWithSample(scn, img);
+    postProcessing(scn, img);
 }
 
-void RenderEngine::generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples) {
+void RenderEngine::preProcessing(Scene & scn, Image & img) {
     // Do nothing
 }
 
-void RenderEngine::renderWithSample(Scene & scn, Image & img, std::vector<RaySample> & samples) {
+void RenderEngine::renderWithSample(Scene & scn, Image & img) {
+    initiateGenerator(scn, img);
     Camera & cam = scn.getCamera();
-    #pragma omp parallel for
-    for (int i = 0; i < samples.size(); i++) {
-        Ray ray = cam.getRay(samples[i].imageSample, samples[i].apertureSample);
-        img.addColor(samples[i].i, samples[i].j, getColor(scn, ray));
+    while (hasNextSample(scn, img)) {
+        RaySample sp = getNextSample(scn, img);
+        Ray ray = cam.getRay(sp.imageSample, sp.apertureSample);
+        img.addColor(sp.i, sp.j, getColor(scn, ray));
     }
 }
 
-void RenderEngine::postProcessing(Scene &scn, Image &img, std::vector<RaySample> &samples) {
+void RenderEngine::postProcessing(Scene &scn, Image &img) {
     // Do nothing
+}
+
+void RenderEngine::initiateGenerator(Scene & scn, Image & img) {
+    // Do nothing
+}
+
+RaySample RenderEngine::getNextSample(Scene & scn, Image & img) {
+    return { 0, 0, vec2(0, 0) };
+}
+
+bool RenderEngine::hasNextSample(Scene & scn, Image & img) {
+    return false;
 }
 
 Color RenderEngine::getColor(Scene & scn, Ray & ray) {

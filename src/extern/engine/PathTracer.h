@@ -10,14 +10,20 @@ namespace recartyar {
     class PathTracer : public RenderEngine {
     public:
         int mSpp;
+    protected:
+        int currI, currJ, currK;
+        float hw, hh;
+    public:
         PathTracer();
-        PathTracer(int spp);
+        explicit PathTracer(int spp);
         int superSampling();
         void setSuperSampling(int spp);
     protected:
-        virtual void generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples);
-        virtual Color getColor(Scene & scn, Intersection & itsct);
-        virtual Light & getRandomLight(Scene & scn);
+        void initiateGenerator(Scene & scn, Image & img) override;
+        RaySample getNextSample(Scene & scn, Image & img) override;
+        bool hasNextSample(Scene & scn, Image & img) override;
+        Color getColor(Scene & scn, Intersection & itsct) override;
+        Light & getRandomLight(Scene & scn);
     };
 }
 

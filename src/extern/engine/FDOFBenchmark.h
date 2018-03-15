@@ -9,10 +9,11 @@ namespace recartyar {
     class FDOFBenchmark : public FDOFTracer {
     public:
         FDOFBenchmark(float k, float energy, float importance);
-        void render(Scene & scn, Image & img);
-        void generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples);
-        void renderWithSample(Scene & scn, Image & img, std::vector<RaySample> & samples);
-        void postProcessing(Scene & scn, Image & img, std::vector<RaySample> & samples);
+        void render(Scene & scn, Image & img) override;
+        void preProcessing(Scene & scn, Image & img) override;
+        void renderWithSample(Scene & scn, Image & img) override;
+        void postProcessing(Scene & scn, Image & img) override;
+        int getSampleAmount();
     };
 }
 

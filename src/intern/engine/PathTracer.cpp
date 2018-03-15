@@ -14,31 +14,31 @@ void PathTracer::setSuperSampling(int spp) {
     mSpp = spp;
 }
 
-void PathTracer::generateSamples(Scene & scn, Image & img, std::vector<RaySample> & samples) {
-    int width = img.width, height = img.height, hw = width / 2, hh = height / 2, total = width * height;
-    Camera & cam = scn.getCamera();
-    cam.setAspect(float(width) / float(height));
-    for (int j = 0; j < height; j++) {
-        for (int i = 0; i < width; i++) {
-            for (int k = 0; k < mSpp; k++) {
-                vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle(), imgsp = vec2(float(i - hw + sp.x) / hw, float(j - hh + sp.y) / hh);
-                samples.push_back(RaySample(i, j, imgsp, aptsp));
-            }
+void PathTracer::initiateGenerator(Scene & scn, Image & img) {
+    currI = 0, currJ = 0, currK = 0;
+}
+
+RaySample PathTracer::getNextSample(Scene & scn, Image & img) {
+    if (currK < mSpp - 1) {
+        currK++;
+    }
+    else {
+        currK = 0;
+        if (currI < img.width - 1) {
+            currI++;
+        }
+        else {
+            currI = 0;
+            currJ++;
         }
     }
-    
-    // #pragma omp parallel for
-    // for (int p = 0; p < total; p++) {
-    //     int i = p % width, j = p / width;
-    //     for (int k = 0; k < mSpp; k++) {
-    //
-    //         vec2 sp = Sampler::random2D(), aptsp = Sampler::randomCircle(),
-    //         imgsp = vec2(float(i - hw + sp.x) / hw, float(j - hh + sp.y) / hh);
-    //
-    //         Ray r = cam.getRay(imgsp, aptsp);
-    //         img.addColor(i, j, RenderEngine::getColor(scn, r));
-    //     }
-    // }
+    vec2 sp = Sampler::random2D(), aptSp = Sampler::randomCircle();
+    vec2 imgsp = vec2((currI - hw + sp.x) / hw, (currJ - hh + sp.y) / hh);
+    return { currI, currJ, imgsp, aptSp };
+}
+
+bool PathTracer::hasNextSample(Scene & scn, Image & img) {
+    return currK < mSpp - 1 || currJ < img.height - 1 || currI < img.width - 1;
 }
 
 Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
