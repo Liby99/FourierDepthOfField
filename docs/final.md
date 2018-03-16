@@ -28,6 +28,15 @@ Field Reconstruction paper. But unfortunately we did only figure out how to do
 the Fourier Depth of Field one. So we abandoned the idea of also implementing
 that paper.
 
+<center>
+    <div style="width: 45%; display: inline-block;">
+        ![cubes_fdof_100_50000_2]
+    </div>
+    <div style="width: 45%; display: inline-block;">
+        ![dragon_fdof_100_20000_1]
+    </div>
+</center>
+
 ## Algorithms
 
 The algorithm is an A-Priori adaptive sampling algorithm that splat the samples
@@ -408,17 +417,116 @@ which leads to super bad artifacts.
 
 <center>![alt reconstructed][reconstruct]</center>
 
-## Result, Benchmark & Comparison to Original Work
+## Result & Benchmark
 
-For this project we mainly build two test scenes
+For this project we mainly build two test scenes. The first one is the cube
+scene and the second one is the dragon scene. We are then going to show our
+time benchmark and detailed comparison with ground truth image. For the cubes
+one our work is also comparable to the original work done by Soler et al, 2009.
+Here is our results.
 
 ### Cube Scene
 
+For the cubes one, we rendered some naive path traced images that has time
+comparable to the one done using our method. We also used path tracer to render
+a 1000 spp image that we can compare to.
+
+This is a table of what we get under different parameter setup:
+
+| Parameters | Before Reconstruction | After Reconstruction |
+|------------|-----------------------|----------------------|
+| k: 100 <br /> e: 10000 <br /> i: 1 | ![cubes_fdof_100_10000_1_itmdat] | ![cubes_fdof_100_10000_1] |
+| k: 50 <br /> e: 50000 <br /> i: 1 | ![cubes_fdof_50_50000_1_itmdat] | ![cubes_fdof_50_50000_1] |
+| k: 100 <br /> e: 50000 <br /> i: 2 | ![cubes_fdof_100_50000_2_itmdat] | ![cubes_fdof_100_50000_2] |
+
+You can see that when `e` is set to `10000`, the background is sampled very
+sparsely, resulting in the final image over-blurred in clear region. The bigger
+`e` is, the more samples are there in the scene. Meanwhile, the `k` value is
+also determine the accuracy of each pixel. By comparing the second one with the
+third one, we can see that the third one is perceivably smoother.
+
+In terms of time analysis, the first costs 46s, the second is also 50s, while
+the third one is taking much longer time, 131s.
+
+But then let's compare these results to the Path Traced Results. I did rendered
+a 1000 spp "Ground Truth" image:
+
+|       | FDOF (Our Method) | Path Trace (1000 spp) |
+|-------|-------------------|------------|
+| Image | ![cubes_fdof_100_50000_2] | ![cubes_gt_1000] |
+| Parameters | k: 100 <br /> e: 50000 <br /> i: 2 | spp: 1000 |
+| Total Sample Amount | 140500415 | 307200000 |
+| Render Time | 131.72s | 157.24s |
+| Detailed Render Time | Scene Analysis: 20.24s <br /> Path Tracing: 107.55s <br /> Reconstruction: 3.93s | Not Applicable |
+
+It is absolutely visible that in the foreground and background area path tracer
+still have lots of noise, while in FDOF there's very little (though it still
+has reconstruction artifacts). In the in-focus area, the regular Path Tracer is
+better since it shoots 1000 rays to the in-focus area but the FDOF tries to
+pay less attention to that part – in this case we are only shooting around 100
+samples (according to `k`).
+
+It is noticeable that even we have half the amount of the 1000 spp path traced
+one, we are still consuming a time pretty close to that. This is because almost
+all the samples we cast to the scene are going towards an area that has
+intersections. And even though the path tracer casts out 300M rays, most of them
+are going towards the empty area (in this particular image there are almost 50%
+of the pixels that are pure background color).
+
+Here is a detailed comparison of the small area between these two pictures:
+
+| FDOF (Our Method) | Path Trace (1000 spp) |
+|-------------------|------------|
+| <img src="res/final/cubes_detail_1_fdof.png" width="400px" /> | <img src="res/final/cubes_detail_1_gt.png" width="400px" /> |
+| <img src="res/final/cubes_detail_2_fdof.png" width="400px" /> | <img src="res/final/cubes_detail_2_gt.png" width="400px" /> |
+
 ### Dragon Scene
+
+We are also going to compare the results between dragons rendered by our method
+and the "Ground Truth" one rendered by simple Path Tracer (1000 spp).
+
+|       | FDOF (Our Method) | Path Trace (1000 spp) |
+|-------|-------------------|------------|
+| Image | ![dragon_fdof_100_20000_1] | ![dragon_gt_1000] |
+| Parameters | k: 100 <br /> e: 20000 <br /> i: 1 | spp: 1000 |
+| Total Sample Amount | 102156472 | 307200000 |
+| Render Time | 3012.73s | 5395.59s |
+| Detailed Render Time | Scene Analysis: 4.09s <br /> Path Tracing: 3003.97s <br /> Reconstruction: 4.67s | Not Applicable |
+
+Here is a detailed comparison of the high frequency area between these two
+pictures:
+
+| FDOF (Our Method) | Path Trace |
+|-------------------|------------|
+| <img src="res/final/dragon_detail_1_fdof.png" width="400px" /> | <img src="res/final/dragon_detail_1_gt.png" width="400px" /> |
+
+It is definitely perceivable that in the edge area, path tracer is producing
+more noise. Given that our method have actually taken less time, we definitely
+outperform the original method.
+
+Meanwhile, the reconstruction artifact is still visible when zoomed in. This is
+definitely a thing we need to future fix.
 
 ## Limitations
 
-## Future Work
+We do have some limitations in this method.
+
+1. Hard to predict the final sample amount. Before the full sample amount come
+out we need to wait for 10 to 20 seconds, and from there we can then adjust our
+parameters and do another analysis. While using Path Tracer you can infer the
+total sample amount just by multiplying width, height and spp together.
+
+2. The reconstruction artifact is hard to eliminate. We are still trying out
+the triangle and interpolation method. Hope it will work somehow.
+
+3. Doesn’t take into account for non-lambertian materials. Currently all the
+estimation is very conservative.
+
+## Future Works
+
+1. Finish the triangle and interpolation reconstruction method.
+2. Do spectrum generation to non-lambertian materials.
+3. Optimize sample generation speed and use parallel programming with batches.
 
 ## Conclusion
 
@@ -426,7 +534,8 @@ It is also noticeable that when we got stucked I sent out an email to prof.
 Soler and got replied from him. Saying that this is one of the earliest work
 so there are a lot of assumptions that are very conservative. From there on they
 have developed more precise algorithms to do better prediction on sample amount.
-But this is
+But this is a really good project to do and I really learnt a lot in terms of
+Fourier and Light Field Analysis.
 
 [coc]: res/final/coc.png
 [spectra]: res/final/spectra.png
@@ -435,3 +544,12 @@ But this is
 [samples]: res/final/samples.png
 [path_traced_samples]: res/final/path_traced_samples.png
 [reconstruct]: res/final/reconstructed.png
+[cubes_fdof_100_10000_1_itmdat]: res/final/cubes_fdof_50_50000_1_itmdat.png
+[cubes_fdof_100_10000_1]: res/final/cubes_fdof_50_50000_1.png
+[cubes_fdof_50_50000_1_itmdat]: res/final/cubes_fdof_50_50000_1_itmdat.png
+[cubes_fdof_50_50000_1]: res/final/cubes_fdof_50_50000_1.png
+[cubes_fdof_100_50000_2_itmdat]: res/final/cubes_fdof_100_50000_2_itmdat.png
+[cubes_fdof_100_50000_2]: res/final/cubes_fdof_100_50000_2.png
+[cubes_gt_1000]: res/final/cubes_gt_1000.png
+[dragon_fdof_100_20000_1]: res/final/dragon_fdof_100_20000_1.png
+[dragon_gt_1000]: res/final/dragon_gt_1000.png
