@@ -15,7 +15,7 @@ void PathTracer::setSuperSampling(int spp) {
 }
 
 void PathTracer::initiateGenerator(Scene & scn, Image & img) {
-    currI = 0, currJ = 0, currK = 0;
+    currI = 0, currJ = 0, currK = 0, hw = img.width / 2, hh = img.height / 2;
 }
 
 RaySample PathTracer::getNextSample(Scene & scn, Image & img) {

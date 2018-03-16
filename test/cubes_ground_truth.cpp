@@ -4,7 +4,7 @@ using namespace recartyar;
 
 int main() {
     
-    FDOFBenchmark ft(10, 1000, 1);
+    PathTracerBenchmark pt(1000);
     
     Scene scn;
     scn.background = Color(0.5, 0.6, 0.8);
@@ -32,9 +32,9 @@ int main() {
     }
     
     Image img(640, 480);
-    ft.render(scn, img);
-    img.save("cubes_fdof.bmp");
-    system("open cubes_fdof.bmp");
+    pt.render(scn, img);
+    img.save("cubes_gt.bmp");
+    system("open cubes_gt.bmp");
     
     for (int i = 0; i < cubes.size(); i++) {
         delete cubes[i];

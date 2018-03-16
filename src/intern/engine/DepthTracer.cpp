@@ -35,7 +35,7 @@ RaySample DepthTracer::getNextSample(Scene & scn, Image & img) {
         currI = 0;
         currJ++;
     }
-    vec2 imgsp = vec2(float(currI - hw + 0.5) / hw, float(currJ - hh + 0.5) / hh);
+    vec2 imgsp = vec2((currI - hw + 0.5f) / hw, (currJ - hh + 0.5f) / hh);
     return { currI, currJ, imgsp };
 }
 

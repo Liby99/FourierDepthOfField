@@ -8,6 +8,8 @@ FDOFTracer::FDOFTracer(float k) : PathTracer(), k(k), energy(10000), importance(
 
 void FDOFTracer::preProcessing(Scene &scn, Image &img) {
     
+    RenderEngine::preProcessing(scn, img);
+    
     Camera & cam = scn.getCamera();
     
     // First Generate Primary Samples

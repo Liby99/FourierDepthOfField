@@ -37,7 +37,7 @@ based on two observations:
 2. The in-focus regions doesn't require profuse sampling on the aperture.
 
 Based on these two observations, we want to analyze the image plane frequency
-distribution as well as 
+distribution as well as lens (aperture) frequency. And by using 
 
 ### Stage 1: Light Field Propagation and Scene Analysis
 

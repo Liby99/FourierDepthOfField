@@ -19,7 +19,7 @@ void RenderEngine::render(Scene & scn, Image & img) {
 }
 
 void RenderEngine::preProcessing(Scene & scn, Image & img) {
-    // Do nothing
+    scn.getCamera().setAspect(float(img.width) / float(img.height));
 }
 
 void RenderEngine::renderWithSample(Scene & scn, Image & img) {
