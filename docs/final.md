@@ -16,6 +16,8 @@
 
 ## Abstract
 
+![header]
+
 In this quarter we implemented the Fourier Depth of Field paper by prof. Cyril
 Soler from INRIA. In this implementation we are mainly focusing on ideas of
 how to use Fourier spectrum to analyze the aperture effect and do prediction
@@ -528,6 +530,7 @@ have developed more precise algorithms to do better prediction on sample amount.
 But this is a really good project to do and I really learnt a lot in terms of
 Fourier and Light Field Analysis.
 
+[header]: res/final/header.png
 [coc]: res/final/coc.png
 [spectra]: res/final/spectra.png
 [lens_density]: res/final/lens_density.png
