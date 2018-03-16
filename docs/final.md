@@ -430,7 +430,8 @@ But this is
 
 [coc]: res/final/coc.png
 [spectra]: res/final/spectra.png
-[lens_density]: res/final/
-[spatial_density]: res/final/
-[path_traced_samples]: res/final/
-[reconstruct]: res/final/
+[lens_density]: res/final/lens_density.png
+[spatial_density]: res/final/spatial_density.png
+[samples]: res/final/samples.png
+[path_traced_samples]: res/final/path_traced_samples.png
+[reconstruct]: res/final/reconstructed.png
