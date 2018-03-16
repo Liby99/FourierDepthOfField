@@ -80,5 +80,5 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
 }
 
 Light & PathTracer::getRandomLight(Scene & scn) {
-    return scn.getLight(int(Sampler::random() * scn.lightCount()));
+    return scn.getLight(int(glm::mod(Sampler::random(), 1.0f) * scn.lightCount()));
 }
