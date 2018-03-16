@@ -28,15 +28,6 @@ Field Reconstruction paper. But unfortunately we did only figure out how to do
 the Fourier Depth of Field one. So we abandoned the idea of also implementing
 that paper.
 
-<center>
-    <div style="width: 45%; display: inline-block;">
-        ![cubes_fdof_100_50000_2]
-    </div>
-    <div style="width: 45%; display: inline-block;">
-        ![dragon_fdof_100_20000_1]
-    </div>
-</center>
-
 ## Algorithms
 
 The algorithm is an A-Priori adaptive sampling algorithm that splat the samples
@@ -123,7 +114,7 @@ above, and we get exactly `cam.aperture()`.
 The following image shows the radius of circle of confusion for each pixel. The
 white values are mapped to 50 in pixels, while the black values are just 0.
 
-<center>![alt coc][coc]</center>
+![coc]
 
 #### 1.3. Propagate the Light Field Spectra
 
@@ -240,7 +231,7 @@ spectrum output to a image, and here you can see some of them got occluded a lot
 (meaning that it is very wide in spatial domain). And some of them got
 transported a lot while still kept its base shape.
 
-<center>![alt spectra][spectra]</center>
+![spectra]
 
 ##### 1.3.4 Lens Density
 
@@ -282,7 +273,7 @@ one, then a `k` of `100` would be absolutely needed.
 The following image shows a lens density plot for the image. The white area
 indicates high spectrum variance.
 
-<center>![alt lens_density][lens_density]</center>
+![lens_density]
 
 ##### 1.3.5 Obtain the Spatial Density
 
@@ -330,7 +321,7 @@ After this process, we will have the maximum bandwidth of each pixel. The
 following image shows the maximum bandwidth estimation. The white area indicates
 high bandwidth (thus high spatial density).
 
-<center>![alt spatial_density][spatial_density]</center>
+![spatial_density]
 
 ##### 1.3.6 Obtain the Sample Points
 
@@ -365,7 +356,7 @@ and non-hit points by setting `i` to `1` and promote empty area sampling by set
 The following image shows a sampling points graph. The white area means that
 we are going to shoot at least a sample to the scene.
 
-<center>![alt samples][samples]</center>
+![samples]
 
 ### 2: Path Tracing
 
@@ -382,7 +373,7 @@ After doing the path tracing, we obtain a image like this. You can see that for
 every white dot in the above generated samples image, there's a color associated
 to it now.
 
-<center>![alt path_traced_samples][path_traced_samples]</center>
+![path_traced_samples]
 
 ### 3: Reconstruction
 
@@ -415,7 +406,7 @@ generate from 1.3.6. If we don't have the importance a minimal of 1 or the
 `e` term is not big enough, then the background area will be very very sparse
 which leads to super bad artifacts.
 
-<center>![alt reconstructed][reconstruct]</center>
+![reconstruct]
 
 ## Result & Benchmark
 
