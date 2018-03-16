@@ -114,7 +114,7 @@ above, and we get exactly `cam.aperture()`.
 The following image shows the radius of circle of confusion for each pixel. The
 white values are mapped to 50 in pixels, while the black values are just 0.
 
-![alt coc](coc);
+![alt coc][coc]
 
 #### 1.3. Propagate the Light Field Spectra
 
