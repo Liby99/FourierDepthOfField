@@ -4,7 +4,7 @@ using namespace recartyar;
 
 int main() {
     
-    FDOFBenchmark ft(10, 1000, 1);
+    FDOFBenchmark ft(100, 50000, 1);
     
     Scene scn;
     scn.background = Color(0.5, 0.6, 0.8);

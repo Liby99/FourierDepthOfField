@@ -7,7 +7,7 @@ using namespace recartyar;
 int main() {
     
     PathTracerBenchmark pt(200);
-    FDOFBenchmark ft(25, 50000, 1);
+    FDOFBenchmark ft(50, 50000, 1);
     
     Scene scn;
     scn.background = Color(0.5, 0.6, 0.8);
