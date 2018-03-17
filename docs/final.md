@@ -30,7 +30,7 @@ Field Reconstruction paper. But unfortunately we did only figure out how to do
 the Fourier Depth of Field one. So we abandoned the idea of also implementing
 that paper.
 
-## Algorithms
+## Algorithms & Implementation
 
 The algorithm is an A-Priori adaptive sampling algorithm that splat the samples
 based on two observations:
@@ -403,6 +403,46 @@ it produces currently the best result, but still with some small unwanted
 artifact. I currently believe that 5 will be a little better for a more general
 case, given that the background is also sampled little denser.
 
+This is the code that is finding the closest `k` neighbors:
+
+``` c++
+while (neighbors.size() < totalNeighbors) {
+    for (int l = j - radius; l < j + radius; l++) {
+        for (int k = i - radius; k < i + radius; k++) {
+            int nbIndex = l * width + k;
+            float dist = length(vec2(k, l) - pos);
+            if (k >= 0 && k < width && l >= 0 && l < height && hasColor(nbIndex) && dist <= radius && (loop == 0 || dist > radius / 2.0f)) {
+                neighbors.emplace_back(make_pair(dist, img.getColor(k, l)));
+            }
+        }
+    }
+    radius = radius * 2;
+    loop++;
+}
+```
+
+After finding the closest neighbors we still need to sort it:
+
+``` c++
+sort(neighbors.begin(), neighbors.end(), [] (pair<float, Color> p1, pair<float, Color> p2) {
+    return p1.first < p2.first;
+});
+```
+
+We will do this for all the uncolored pixels against all the neighboring colored
+pixels. And then we do the reconstruction:
+
+``` c++
+Color c;
+float totalWeight = 0, maxRadius = neighbors[totalNeighbors - 1].first;
+for (int p = 0; p < totalNeighbors; p++) {
+    float weight = (float) exp(-pow(neighbors[p].first, 2) / (2 * maxRadius));
+    c += neighbors[p].second * weight;
+    totalWeight += weight;
+}
+c /= totalWeight;
+```
+
 Note that the reconstruction process is definitely related to the samples we
 generate from 1.3.6. If we don't have the importance a minimal of 1 or the
 `e` term is not big enough, then the background area will be very very sparse
@@ -489,7 +529,7 @@ and the "Ground Truth" one rendered by simple Path Tracer (1000 spp).
 Here is a detailed comparison of the high frequency area between these two
 pictures:
 
-| FDOF (Our Method) | Path Trace |
+| FDOF (Our Method) | Path Trace (1000 spp) |
 |-------------------|------------|
 | <img src="res/final/dragon_detail_1_fdof.png" width="400px" /> | <img src="res/final/dragon_detail_1_gt.png" width="400px" /> |
 
@@ -523,12 +563,17 @@ estimation is very conservative.
 
 ## Conclusion
 
-It is also noticeable that when we got stucked I sent out an email to prof.
-Soler and got replied from him. Saying that this is one of the earliest work
+It is also notable that when we got stucked I sent out an email to prof.
+Soler and got replied from him, saying that this is one of the earliest work
 so there are a lot of assumptions that are very conservative. From there on they
 have developed more precise algorithms to do better prediction on sample amount.
-But this is a really good project to do and I really learnt a lot in terms of
-Fourier and Light Field Analysis.
+I did thought if this project is too early a work to do and wonder if we should
+try to implement something new and more to the state of the art. But this is a
+really good project to do and I really learnt a lot in terms of Fourier and
+Light Field Analysis. Right now I do believe that this is one of the fundamental
+work that influenced lots of future work on Fourier Spectrum Scene Analysis, and
+since we are able to implement this, we might be much easier understanding the
+future works and their process.
 
 [header]: res/final/header.png
 [coc]: res/final/coc.png
