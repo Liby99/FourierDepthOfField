@@ -11,7 +11,7 @@ some very interesting results.
 ## Reports
 
 - [Milestone Report](https://github.com/Liby99/FourierDepthOfField/blob/master/docs/milestone.md)
-- [Milestone Report](https://github.com/Liby99/FourierDepthOfField/blob/master/docs/final.md)
+- [Final Report](https://github.com/Liby99/FourierDepthOfField/blob/master/docs/final.md)
 
 ## Installation
 
