@@ -1,36 +1,35 @@
 # Basic setups
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(FourierDepthOfField)
 
 # Basic flag
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++17")
+set(CMAKE_CXX_STANDARD 17)
 
+# Build tests by default
 if(NOT DEFINED ${FDOF_BUILD_TESTS})
     set(FDOF_BUILD_TESTS true)
 endif(NOT DEFINED ${FDOF_BUILD_TESTS})
 
 # Include GLM
-add_subdirectory(include/glm EXCLUDE_FROM_ALL)
 include_directories(include/glm/)
-
-# =========================================================================== #
+set(FDOF_EXTRA_INC "${CMAKE_CURRENT_LIST_DIR}/include/glm" PARENT_SCOPE)
 
 # Generate single header file using the script
-execute_process(
-    COMMAND python ${CMAKE_CURRENT_LIST_DIR}/script/generate_header.py fdof ${CMAKE_CURRENT_LIST_DIR}/src/extern/
+execute_process(COMMAND
+    python ${CMAKE_CURRENT_LIST_DIR}/script/generate_header.py fdof ${CMAKE_CURRENT_LIST_DIR}/src/extern/
 )
 
 # Set Include Directory to Extern and Include
 include_directories(src/extern)
 
 # Compile all the cpp files and link to `animator` library along with NanoGui
-file(GLOB fdof_sources src/intern/*.cpp src/intern/*/*.cpp src/intern/*/*/*.cpp src/extern/*.h src/extern/*/*.h src/extern/*/*/*.h)
+file(GLOB_RECURSE fdof_sources src/intern/*.cpp src/extern/*.h)
 set(fdof ${fdof_sources})
 add_library(fdof ${fdof})
-target_link_libraries(fdof glm)
+target_link_libraries(fdof)
 
+# Compile all the test files
 if(${FDOF_BUILD_TESTS})
-    # Compile all the test files
     file(GLOB test_sources test/*.cpp test/*/*.cpp test/*/*/*.cpp)
     foreach(test_source ${test_sources})
         string(REPLACE ".cpp" "" temp_path ${test_source})

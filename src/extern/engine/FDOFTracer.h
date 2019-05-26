@@ -34,7 +34,7 @@ namespace fdof {
         // Generator methods
         void initiateGenerator(Scene & scn, Image & img) override;
         RaySample getNextSample(Scene & scn, Image & img) override;
-        bool hasNextSample(Scene & scn, Image & img) override;
+        bool hasNextSample(Scene & scn, Image & img) const override;
 
         // Helper prepass methods
         void generatePrimaryRays(Scene &scn, Image &img, std::vector<RaySample> &samples);

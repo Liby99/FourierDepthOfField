@@ -25,10 +25,30 @@ void RenderEngine::preProcessing(Scene & scn, Image & img) {
 void RenderEngine::renderWithSample(Scene & scn, Image & img) {
     initiateGenerator(scn, img);
     Camera & cam = scn.getCamera();
-    while (hasNextSample(scn, img)) {
-        RaySample sp = getNextSample(scn, img);
-        Ray ray = cam.getRay(sp.imageSample, sp.apertureSample);
-        img.addColor(sp.i, sp.j, getColor(scn, ray));
+    std::vector<RaySample> samples(CHUNK_SIZE);
+    int amount = 0;
+    while (true) {
+
+        // First get the samples;
+        amount = 0;
+        while (hasNextSample(scn, img) && amount < CHUNK_SIZE) {
+            samples[amount++] = getNextSample(scn, img);
+        }
+
+        // Break if amount is 0
+        if (!amount) break;
+
+        // Then parallel through the chunk
+        #pragma omp parallel for
+        for (int i = 0; i < amount; i++) {
+            Ray ray = cam.getRay(samples[i].imageSample, samples[i].apertureSample);
+            samples[i].color = getColor(scn, ray);
+        }
+
+        // Finally accumulate the colors
+        for (int i = 0; i < amount; i++) {
+            img.addColor(samples[i].i, samples[i].j, samples[i].color);
+        }
     }
 }
 
@@ -44,11 +64,11 @@ RaySample RenderEngine::getNextSample(Scene & scn, Image & img) {
     return { 0, 0, vec2(0, 0) };
 }
 
-bool RenderEngine::hasNextSample(Scene & scn, Image & img) {
+bool RenderEngine::hasNextSample(Scene & scn, Image & img) const {
     return false;
 }
 
-Color RenderEngine::getColor(Scene & scn, Ray & ray) {
+Color RenderEngine::getColor(Scene & scn, Ray & ray) const {
     if (ray.depth < mDepth) {
         Intersection itsct(ray);
         if (scn.intersect(ray, itsct)) {
@@ -63,6 +83,6 @@ Color RenderEngine::getColor(Scene & scn, Ray & ray) {
     }
 }
 
-Color RenderEngine::getColor(Scene & scn, Intersection & itsct) {
+Color RenderEngine::getColor(Scene & scn, Intersection & itsct) const {
     return Color::BLACK;
 }

@@ -18,7 +18,7 @@ std::pair<Ray, Color> Lambert::reflect(Intersection & itsct) {
          norm = itsct.normal,
          udir = glm::normalize(glm::cross(norm, norm + magic)),
          vdir = glm::normalize(glm::cross(norm, udir));
-    Ray out = Ray(itsct.position, glm::normalize(udir * v * cos(u) + norm * sqrt(sp.y) + vdir * v * sin(u)));
+    Ray out = Ray(itsct.position, glm::normalize(udir * v * std::cos(u) + norm * std::sqrt(sp.y) + vdir * v * std::sin(u)));
     return std::make_pair(out, brdf(itsct, out));
 }
 

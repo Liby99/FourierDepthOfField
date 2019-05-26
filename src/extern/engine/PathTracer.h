@@ -16,14 +16,14 @@ namespace fdof {
     public:
         PathTracer();
         explicit PathTracer(int spp);
-        int superSampling();
+        int superSampling() const;
         void setSuperSampling(int spp);
     protected:
         void initiateGenerator(Scene & scn, Image & img) override;
         RaySample getNextSample(Scene & scn, Image & img) override;
-        bool hasNextSample(Scene & scn, Image & img) override;
-        Color getColor(Scene & scn, Intersection & itsct) override;
-        Light & getRandomLight(Scene & scn);
+        bool hasNextSample(Scene & scn, Image & img) const override;
+        Color getColor(Scene & scn, Intersection & itsct) const override;
+        Light & getRandomLight(Scene & scn) const;
     };
 }
 

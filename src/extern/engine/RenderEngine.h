@@ -8,6 +8,7 @@
 namespace fdof {
     class RenderEngine {
     public:
+        const int CHUNK_SIZE = 1000;
         int mDepth;
         RenderEngine();
         int depth();
@@ -19,9 +20,9 @@ namespace fdof {
         virtual void postProcessing(Scene & scn, Image & img);
         virtual void initiateGenerator(Scene & scn, Image & img);
         virtual RaySample getNextSample(Scene & scn, Image & img);
-        virtual bool hasNextSample(Scene & scn, Image & img);
-        virtual Color getColor(Scene & scn, Ray & ray);
-        virtual Color getColor(Scene & scn, Intersection & itsct);
+        virtual bool hasNextSample(Scene & scn, Image & img) const;
+        virtual Color getColor(Scene & scn, Ray & ray) const;
+        virtual Color getColor(Scene & scn, Intersection & itsct) const;
     };
 }
 

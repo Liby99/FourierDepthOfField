@@ -39,11 +39,11 @@ RaySample DepthTracer::getNextSample(Scene & scn, Image & img) {
     return { currI, currJ, imgsp };
 }
 
-bool DepthTracer::hasNextSample(Scene & scn, Image & img) {
+bool DepthTracer::hasNextSample(Scene & scn, Image & img) const {
     return currJ < img.height - 1 || currI < img.width - 1;
 }
 
-Color DepthTracer::getColor(Scene & scn, Ray & ray) {
+Color DepthTracer::getColor(Scene & scn, Ray & ray) const {
     Intersection itsct(ray);
     if (scn.intersect(ray, itsct)) {
         return Color(fmin(fmax((itsct.distToOrigin() - mNear) / (mFar - mNear), 0.0), 1.0));

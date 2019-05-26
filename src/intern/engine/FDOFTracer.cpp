@@ -110,7 +110,7 @@ RaySample FDOFTracer::getNextSample(Scene & scn, Image & img) {
     return { x, y, imgsp, aptsp };
 }
 
-bool FDOFTracer::hasNextSample(Scene & scn, Image & img) {
+bool FDOFTracer::hasNextSample(Scene & scn, Image & img) const {
     return currK < currNs - 1 || currP < samplingPoints.size() - 1;
 }
 

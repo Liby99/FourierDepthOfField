@@ -6,7 +6,7 @@ PathTracer::PathTracer() : PathTracer(4) {}
 
 PathTracer::PathTracer(int spp) : RenderEngine(), mSpp(spp) {}
 
-int PathTracer::superSampling() {
+int PathTracer::superSampling() const {
     return mSpp;
 }
 
@@ -37,11 +37,11 @@ RaySample PathTracer::getNextSample(Scene & scn, Image & img) {
     return { currI, currJ, imgsp, aptSp };
 }
 
-bool PathTracer::hasNextSample(Scene & scn, Image & img) {
+bool PathTracer::hasNextSample(Scene & scn, Image & img) const {
     return currK < mSpp - 1 || currJ < img.height - 1 || currI < img.width - 1;
 }
 
-Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
+Color PathTracer::getColor(Scene & scn, Intersection & itsct) const {
     Object & obj = itsct.getObject();
     if (obj.hasMaterial()) {
 
@@ -79,6 +79,6 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
     }
 }
 
-Light & PathTracer::getRandomLight(Scene & scn) {
+Light & PathTracer::getRandomLight(Scene & scn) const {
     return scn.getLight(int(glm::mod(Sampler::random(), 1.0f) * scn.lightCount()));
 }

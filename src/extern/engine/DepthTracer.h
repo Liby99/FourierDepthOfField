@@ -19,8 +19,8 @@ namespace fdof {
         void setFar(float f);
         void initiateGenerator(Scene & scn, Image & img) override;
         RaySample getNextSample(Scene & scn, Image & img) override;
-        bool hasNextSample(Scene & scn, Image & img) override;
-        Color getColor(Scene & scn, Ray & ray) override;
+        bool hasNextSample(Scene & scn, Image & img) const override;
+        Color getColor(Scene & scn, Ray & ray) const override;
     };
 }
 
