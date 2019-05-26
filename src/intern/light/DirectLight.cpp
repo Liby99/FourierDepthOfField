@@ -1,6 +1,6 @@
 #include "light/DirectLight.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 DirectLight::DirectLight() : DirectLight(vec3(-1, -1, -1)) {}
 

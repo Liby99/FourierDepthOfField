@@ -4,7 +4,7 @@
 #include "utility/Ray.h"
 #include "utility/Spectrum.h"
 
-namespace recartyar {
+namespace fdof {
     class SpectrumRay : public Ray {
     public:
         Spectrum * spectrum;

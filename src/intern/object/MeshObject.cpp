@@ -1,6 +1,6 @@
 #include "object/MeshObject.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 MeshObject::MeshObject() : Object() {}
 
@@ -48,13 +48,13 @@ void MeshObject::clearTriangles() {
 }
 
 bool MeshObject::loadPly(const char * filename) {
-    
+
     // Open file
     FILE * f = fopen(filename,"r");
     if (f == 0) {
         printf("ERROR: MeshObject::LoadPLY()- Can't open '%s'\n",filename);
     }
-    
+
     // Read header
     char tmp[256];
     int numverts = 0, numtris = 0;
@@ -82,14 +82,14 @@ bool MeshObject::loadPly(const char * filename) {
             break;
         }
     }
-    
+
     // Check position properly
     if (posprop == -1) {
         printf("ERROR: MeshObject::LoadPLY() - No vertex positions found\n");
         fclose(f);
         return false;
     }
-    
+
     // Read verts
     int i = 0;
     if (numverts > 0) {
@@ -125,12 +125,12 @@ bool MeshObject::loadPly(const char * filename) {
             addTriangle(i0, i1, i2);
         }
     }
-    
+
     // Smooth
     if (normprop < 0) {
         smooth();
     }
-    
+
     // Close file
     fclose(f);
     printf("Loaded %lu vertices and %lu triangles from file '%s'\n", vertices.size(), triangles.size(), filename);

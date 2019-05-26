@@ -6,7 +6,7 @@
 #include "utility/Sampler.h"
 #include "utility/Math.h"
 
-namespace recartyar {
+namespace fdof {
     class Spectrum {
     public:
 

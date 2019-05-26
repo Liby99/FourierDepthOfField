@@ -3,7 +3,7 @@
 
 #include "object/Object.h"
 
-namespace recartyar {
+namespace fdof {
     class Cube : public Object {
     public:
         float width;

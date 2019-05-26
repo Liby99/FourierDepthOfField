@@ -4,7 +4,7 @@
 #include <cmath>
 #include <glm/glm.hpp>
 
-namespace recartyar {
+namespace fdof {
 	const float pi = 3.14159265;
     typedef glm::vec2 vec2;
     typedef glm::vec3 vec3;

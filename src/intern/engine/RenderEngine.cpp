@@ -1,6 +1,6 @@
 #include "engine/RenderEngine.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 RenderEngine::RenderEngine() : mDepth(5) {};
 

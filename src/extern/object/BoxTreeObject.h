@@ -3,35 +3,35 @@
 
 #include "object/MeshObject.h"
 
-namespace recartyar {
-    
+namespace fdof {
+
     class BoxTreeObjectNode {
     protected:
-        
+
         // Left and right nodes if not leaf
         BoxTreeObjectNode * left;
         BoxTreeObjectNode * right;
-        
+
         // Variables
         std::vector<Triangle *> triangles;
         BoundingBox box;
         bool leafFlag;
-        
+
         // Protected constructor, only used for internal call
         BoxTreeObjectNode(std::vector<Triangle *> & tris, int start, int amount);
-        
+
     public:
-        
+
         // Constructor
         BoxTreeObjectNode(Triangle * tris);
         BoxTreeObjectNode(std::vector<Triangle *> & tris);
         ~BoxTreeObjectNode();
-        
+
         // Getter
         BoxTreeObjectNode & getLeft();
         BoxTreeObjectNode & getRight();
         BoundingBox & getBoundingBox();
-        
+
         // Helper Methods
         bool leftRightIntersect();
         bool isLeaf();
@@ -48,23 +48,23 @@ namespace recartyar {
 
     class BoxTreeObject : public MeshObject {
     protected:
-        
+
         BoxTreeObjectNode * root;
-        
+
         // Helper construct method
         void forceConstruct();
         void constructTree();
-        
+
         virtual bool updateIntersect(Ray & ray, Intersection & intersection);
         virtual void getBoundingVertices(std::vector<vec3> & verts);
-        
+
     public:
-        
+
         //
         BoxTreeObject();
         BoxTreeObject(const char * filename);
         ~BoxTreeObject();
-        
+
         void initiate();
     };
 }

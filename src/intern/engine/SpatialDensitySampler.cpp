@@ -1,6 +1,6 @@
 #include "engine/SpatialDensitySampler.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 SpatialDensitySampler::SpatialDensitySampler(Image & spatialDensityImage) :
         QuasiSampler(spatialDensityImage.width, spatialDensityImage.height) {

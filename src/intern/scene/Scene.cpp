@@ -1,6 +1,6 @@
 #include "scene/Scene.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 Scene::Scene() : boxTree(nullptr) {};
 
@@ -45,12 +45,12 @@ Object & Scene::getObject(int i) {
 }
 
 bool Scene::intersect(Ray & ray, Intersection & itsct) {
-    
+
     // Initiate box tree if not exists
     if (!boxTree) {
         boxTree = new BoxTree(objects);
     }
-    
+
     // Then traverse the box tree to get intersection
     return boxTree->intersect(ray, itsct);
 }

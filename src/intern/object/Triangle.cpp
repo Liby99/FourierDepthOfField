@@ -1,6 +1,6 @@
 #include "object/Triangle.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 vec3 Triangle::getBaryCentric(vec3 position) {
     vec3 result = vec3(0, 0, 0);
@@ -21,7 +21,7 @@ vec3 Triangle::getBaryCentric(vec3 position) {
 }
 
 bool Triangle::updateIntersect(Ray & ray, Intersection & intersection) {
-    
+
     // Pre cache the positions
     vec3 p0 = v0->getPosition();
     vec3 p1 = v1->getPosition();
@@ -29,37 +29,37 @@ bool Triangle::updateIntersect(Ray & ray, Intersection & intersection) {
     vec3 n0 = v0->getNormal();
     vec3 n1 = v1->getNormal();
     vec3 n2 = v2->getNormal();
-    
+
     // Same the variables
     vec3 normal = glm::cross(p1 - p0, p2 - p0);
-    
+
     // If three points are in a straight line, then intersection not exist
     if (normal.x == 0 && normal.y == 0 && normal.z == 0) {
         return false;
     }
     normal = normalize(normal);
-    
+
     // Calculate t
     float t = (glm::dot(p0, normal) - glm::dot(ray.origin, normal)) / glm::dot(ray.direction, normal);
-    
+
     // Pre cache the position of the intersection
     vec3 position = ray.getPoint(t);
     vec3 lambda = getBaryCentric(position);
-    
+
     // Check if t is greater then 0 and the position is inside the triangle and need update
     if (t > 0 &&
         lambda.x >= 0 && lambda.x <= 1 &&
         lambda.y >= 0 && lambda.y <= 1 &&
         lambda.z >= 0 && lambda.z <= 1) {
-            
+
         if (n0 != vec3() || n1 != vec3() || n2 != vec3()) {
             normal = lambda.x * n0 + lambda.y * n1 + lambda.z * n2;
             normal = glm::normalize(-normal);
         }
-        
+
         return intersection.update(t, position, normal);
     }
-    
+
     // Not intersected
     return false;
 }

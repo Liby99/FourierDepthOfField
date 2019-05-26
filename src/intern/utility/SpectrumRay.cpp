@@ -1,6 +1,6 @@
 #include "utility/SpectrumRay.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 SpectrumRay::SpectrumRay() : SpectrumRay(vec3(), vec3(0, 0, 1)) {}
 

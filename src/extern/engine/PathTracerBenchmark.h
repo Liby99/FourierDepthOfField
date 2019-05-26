@@ -6,7 +6,7 @@
 
 #include "engine/PathTracer.h"
 
-namespace recartyar {
+namespace fdof {
     class PathTracerBenchmark : public PathTracer {
     public:
         explicit PathTracerBenchmark(int spp);

@@ -5,7 +5,7 @@
 #include "image/Image.h"
 #include "engine/RaySample.h"
 
-namespace recartyar {
+namespace fdof {
     class RenderEngine {
     public:
         int mDepth;

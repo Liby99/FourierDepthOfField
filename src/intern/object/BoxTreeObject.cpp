@@ -1,6 +1,6 @@
 #include "object/BoxTreeObject.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 BoxTreeObjectNode::BoxTreeObjectNode(Triangle * tri) {
     box = BoundingBox(tri);
@@ -13,18 +13,18 @@ BoxTreeObjectNode::BoxTreeObjectNode(Triangle * tri) {
 BoxTreeObjectNode::BoxTreeObjectNode(std::vector<Triangle *> & tris) : BoxTreeObjectNode(tris, 0, tris.size()) {}
 
 BoxTreeObjectNode::BoxTreeObjectNode(std::vector<Triangle *> & tris, int start, int amount) {
-    
+
     // Construct Bounding Box
     box = BoundingBox();
     for (int i = start; i < start + amount; i++) {
         box.extend(*tris[i]);
     }
-    
+
     // Get the dimension data and midpoint from the bounding box
     vec3 dimension = box.getSize();
     int axis = maxAxis(dimension);
     float mid = box.getMinCorner()[axis] + dimension[axis] / 2.0f;
-    
+
     // Check the amount
     if (amount == 0) {
         leafFlag = false;
@@ -39,7 +39,7 @@ BoxTreeObjectNode::BoxTreeObjectNode(std::vector<Triangle *> & tris, int start, 
         right = new BoxTreeObjectNode(tris[start + 1]);
     }
     else {
-        
+
         // Put all the left triangles to the left of this part of array
         int curr = start;
         for (int i = start; i < start + amount; i++) {
@@ -48,11 +48,11 @@ BoxTreeObjectNode::BoxTreeObjectNode(std::vector<Triangle *> & tris, int start, 
                 curr++;
             }
         }
-        
+
         // Check if the left amount is 0 or all
         int la = curr - start;
         if (la == 0 || la == amount) {
-            
+
             // Then store all the triangles in the array
             for (int i = start; i < start + amount; i++) {
                 triangles.push_back(tris[i]);
@@ -60,7 +60,7 @@ BoxTreeObjectNode::BoxTreeObjectNode(std::vector<Triangle *> & tris, int start, 
             leafFlag = true;
         }
         else {
-            
+
             // Construct down to next level of nodes
             left = new BoxTreeObjectNode(tris, start, la);
             right = new BoxTreeObjectNode(tris, start + la, amount - la);
@@ -103,7 +103,7 @@ bool BoxTreeObjectNode::isLeaf() {
 bool BoxTreeObjectNode::intersect(Ray & ray, Intersection & intersection) {
     bool hit = false;
     if (isLeaf()) {
-        
+
         // Since this is the leaf, check through all the triangled
         for (int i = 0; i < triangles.size(); i++) {
             if (triangles[i]->intersect(ray, intersection)) {
@@ -113,24 +113,24 @@ bool BoxTreeObjectNode::intersect(Ray & ray, Intersection & intersection) {
         return hit;
     }
     else {
-        
+
         // Prepare all the variables
         BoundingBox & b1 = left->getBoundingBox(), & b2 = right->getBoundingBox();
         float t1 = 0, t2 = 0;
         bool i1 = b1.intersect(ray, t1), i2 = b2.intersect(ray, t2);
         if (t1 < t2) {
-            
+
             // First t1 then t2
             i1 = i1 && intersection.needUpdate(t1) && left->intersect(ray, intersection);
             i2 = i2 && intersection.needUpdate(t2) && right->intersect(ray, intersection);
         }
         else {
-            
+
             // First t2 then t1
             i2 = i2 && intersection.needUpdate(t2) && right->intersect(ray, intersection);
             i1 = i1 && intersection.needUpdate(t1) && left->intersect(ray, intersection);
         }
-        
+
         return i1 || i2;
     }
 }

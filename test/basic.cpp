@@ -1,6 +1,6 @@
-#include <recartyar/recartyar.h>
+#include <fdof/fdof.h>
 
-using namespace recartyar;
+using namespace fdof;
 
 int main() {
     PathTracer pt;

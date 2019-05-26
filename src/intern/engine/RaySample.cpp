@@ -1,6 +1,6 @@
 #include "engine/RaySample.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 RaySample::RaySample(int i, int j, vec2 imgsp) : RaySample(i, j, imgsp, vec2(0, 0)) {}
 

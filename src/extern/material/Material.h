@@ -8,7 +8,7 @@
 #include "utility/Intersection.h"
 #include "utility/Ray.h"
 
-namespace recartyar {
+namespace fdof {
     class Material {
     public:
         Material();

@@ -1,6 +1,6 @@
 #include "material/Material.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 Material::Material() {}
 

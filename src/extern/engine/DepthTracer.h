@@ -4,7 +4,7 @@
 #include <limits>
 #include "engine/RenderEngine.h"
 
-namespace recartyar {
+namespace fdof {
     class DepthTracer : public RenderEngine {
     public:
         float mNear, mFar;

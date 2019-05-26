@@ -1,6 +1,6 @@
 #include "material/Lambert.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 Lambert::Lambert() : Lambert(Color::WHITE) {}
 

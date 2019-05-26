@@ -1,6 +1,6 @@
 #include "scene/Camera.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 Camera::Camera() : Camera(vec3(0, 0, 1), vec3(0, 0, 0)) {}
 
@@ -60,7 +60,7 @@ Ray Camera::getRay(const vec2 & scsp) const {
 }
 
 Ray Camera::getRay(const vec2 & scsp, const vec2 & apsp) const {
-    
+
     // Setup camera variables
     vec3 w = glm::normalize(mTarget - mPosition);
     vec3 u = glm::normalize(glm::cross(w, mUp));

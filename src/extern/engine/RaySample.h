@@ -3,7 +3,7 @@
 
 #include "utility/Math.h"
 
-namespace recartyar {
+namespace fdof {
     class RaySample {
     public:
         int i, j;

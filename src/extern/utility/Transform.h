@@ -4,7 +4,7 @@
 #include "utility/Math.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-namespace recartyar {
+namespace fdof {
     class Transform {
     private:
         bool mCached;

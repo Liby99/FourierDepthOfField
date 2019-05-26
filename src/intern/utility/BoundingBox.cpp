@@ -1,7 +1,7 @@
 #include "utility/BoundingBox.h"
 #include "object/Object.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 BoundingBox::BoundingBox() {
     setMinCorner(vec3());
@@ -94,19 +94,19 @@ bool BoundingBox::intersect(Ray & ray) {
 }
 
 bool BoundingBox::intersect(Ray & ray, float t) {
-    
+
     // Calculate the intersections
     vec3 t1, t2;
     for (int i = 0; i < 3; ++i) {
         t1[i] = ((minCorner[i] - ray.origin[i]) / ray.direction[i]);
         t2[i] = ((maxCorner[i] - ray.origin[i]) / ray.direction[i]);
     }
-    
+
     // Calculate the t
     float tmin, tmax;
     tmin = fmaxf(fmaxf(fminf(t1[0], t2[0]), fminf(t1[1], t2[1])), fminf(t1[2], t2[2]));
     tmax = fminf(fminf(fmaxf(t1[0], t2[0]), fmaxf(t1[1], t2[1])), fmaxf(t1[2], t2[2]));
-    
+
     // Check t
     if (tmin > 0 && tmin <= tmax) {
         t = tmin;

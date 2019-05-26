@@ -1,6 +1,6 @@
-#include <recartyar/recartyar.h>
+#include <fdof/fdof.h>
 
-using namespace recartyar;
+using namespace fdof;
 
 int main() {
     PathTracer pt;
@@ -10,13 +10,13 @@ int main() {
     scn.getCamera().setPosition(vec3(-0.1, 0.3, 2));
     scn.getCamera().setFocalDistance(2);
     scn.getCamera().setAperture(0.1);
-    
+
     DirectLight dl;
     dl.color = Color(0.8, 0.8, 0.8);
-    
+
     scn.addLight(dl);
     Lambert lbt(Color(0.8, 0.8, 0.8));
-    
+
     std::vector<Cube *> cubes;
     for (int i = 0; i < 100; i++) {
         Cube * cube = new Cube(0.1, 0.1, 0.1);
@@ -29,12 +29,12 @@ int main() {
         scn.addObject(*cube);
         cubes.push_back(cube);
     }
-    
+
     Image img(640, 480);
     pt.render(scn, img);
     img.save("cubes.bmp");
     system("open cubes.bmp");
-    
+
     for (auto & cube : cubes) {
         delete cube;
     }

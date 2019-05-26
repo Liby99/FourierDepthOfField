@@ -1,6 +1,6 @@
 #include "utility/Intersection.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 Intersection::Intersection(Ray & ray) : ray(&ray), object(nullptr), hit(false) {}
 

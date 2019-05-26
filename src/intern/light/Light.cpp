@@ -1,6 +1,6 @@
 #include "light/Light.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 Light::Light() : Light(Color(1, 1, 1)) {}
 

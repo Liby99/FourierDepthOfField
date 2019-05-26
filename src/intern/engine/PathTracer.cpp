@@ -1,6 +1,6 @@
 #include "engine/PathTracer.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 PathTracer::PathTracer() : PathTracer(4) {}
 
@@ -46,10 +46,10 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
     if (obj.hasMaterial()) {
 
         Material & mat = obj.getMaterial();
-        
+
         // First calculate emission
         Color e = mat.emission(), b = Color::BLACK, l = Color::BLACK;
-        
+
         // Then calculate scene reflection
         std::pair<Ray, Color> p = mat.reflect(itsct);
         if (p.second != Color::BLACK) {
@@ -57,7 +57,7 @@ Color PathTracer::getColor(Scene & scn, Intersection & itsct) {
             p.first.depth = itsct.getRay().depth + 1;
             b = p.second * RenderEngine::getColor(scn, p.first);
         }
-        
+
         // Finally compute light reflection
         if (scn.hasLight()) {
             Light & lgt = getRandomLight(scn);

@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace recartyar {
+namespace fdof {
     class Random {
     private:
         static const uint64_t DEFAULT_SEED = 1234567;

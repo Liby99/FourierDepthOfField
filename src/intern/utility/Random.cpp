@@ -1,6 +1,6 @@
 #include "utility/Random.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 uint64_t Random::s = DEFAULT_SEED;
 uint64_t Random::cs = DEFAULT_SEED;

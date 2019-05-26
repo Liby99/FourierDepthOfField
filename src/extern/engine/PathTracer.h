@@ -6,7 +6,7 @@
 #include "image/Image.h"
 #include "utility/Sampler.h"
 
-namespace recartyar {
+namespace fdof {
     class PathTracer : public RenderEngine {
     public:
         int mSpp;

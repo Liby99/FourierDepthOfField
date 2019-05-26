@@ -3,7 +3,7 @@
 
 #include "material/Material.h"
 
-namespace recartyar {
+namespace fdof {
     class Lambert : public Material {
     public:
         Color color;

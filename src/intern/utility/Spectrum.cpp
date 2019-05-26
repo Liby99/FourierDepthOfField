@@ -1,6 +1,6 @@
 #include "utility/Spectrum.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 Spectrum::Spectrum(int num) {
     for (int i = 0; i < num; i++) {

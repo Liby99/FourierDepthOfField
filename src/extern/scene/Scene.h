@@ -11,21 +11,21 @@
 #include "utility/Ray.h"
 #include "utility/Color.h"
 
-namespace recartyar {
+namespace fdof {
     class Scene {
     public:
-        
+
         Color background;
         Camera camera;
         std::vector<Light *> lights;
         std::vector<Object *> objects;
         BoxTree * boxTree;
-        
+
         Scene();
-        
+
         void setBackground(Color & color);
         Color & getBackground();
-        
+
         Camera & getCamera();
         bool hasLight();
         int lightCount();
@@ -34,7 +34,7 @@ namespace recartyar {
         int objectCount();
         void addObject(Object & object);
         Object & getObject(int i);
-        
+
         bool intersect(Ray & ray, Intersection & itsct);
     };
 }

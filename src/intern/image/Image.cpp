@@ -1,6 +1,6 @@
 #include "image/Image.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 Image::Image(int width, int height) {
     initiate(width, height);
@@ -134,7 +134,7 @@ void Image::convolve(int * filter, int n, int normalization, int absval) {
 }
 
 bool Image::save(const char * filename) {
-    
+
     // Initiate
     int numPixels = width * height;
     int* intPixels = new int[numPixels];
@@ -143,7 +143,7 @@ bool Image::save(const char * filename) {
             intPixels[i + width * j] = getColor(i, j).toInt();
         }
     }
-    
+
     // Setup Header
     BitmapHeader head;
     head.fileSize = sizeof(BitmapHeader) + 2 + numPixels * sizeof(int);
@@ -154,7 +154,7 @@ bool Image::save(const char * filename) {
     head.height = height;
     head.colorPlanes = 1;
     head.bitsPerPixel = 32;
-    
+
     // Start to write files
     FILE * f = fopen(filename, "wb");
     if (f == 0) {

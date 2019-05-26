@@ -1,5 +1,7 @@
 *.DS_Store
 cmake-build-debug/
 .idea/
+target/
 build/
-deploy/
+
+.vscode

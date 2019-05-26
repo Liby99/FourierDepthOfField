@@ -3,7 +3,7 @@
 
 #include "light/Light.h"
 
-namespace recartyar {
+namespace fdof {
     class DirectLight : public Light {
     public:
         vec3 direction;

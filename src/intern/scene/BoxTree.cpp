@@ -1,6 +1,6 @@
 #include "scene/BoxTree.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 BoxTreeNode::BoxTreeNode(Object * obj) {
     box = BoundingBox(obj);

@@ -1,6 +1,6 @@
 #include "utility/Color.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 const float Color::MAX = 255.0f;
 const float Color::DEFAULT_R = 0;

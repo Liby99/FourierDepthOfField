@@ -3,10 +3,10 @@
 
 #include "utility/Ray.h"
 
-namespace recartyar {
-    
+namespace fdof {
+
     class Object;
-    
+
     class Intersection {
     public:
         Ray * ray;

@@ -5,7 +5,7 @@
 #include "utility/Ray.h"
 #include "utility/Intersection.h"
 
-namespace recartyar {
+namespace fdof {
     class Light {
     public:
         Color color;

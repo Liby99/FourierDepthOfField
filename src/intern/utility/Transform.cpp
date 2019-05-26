@@ -1,6 +1,6 @@
 #include "utility/Transform.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 Transform::Transform() : mPosition(vec3(0, 0, 0)), mRotation(vec3(0, 0, 0)), mScale(vec3(1, 1, 1)) {
     mCached = false;

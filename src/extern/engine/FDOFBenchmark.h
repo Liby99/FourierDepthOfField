@@ -5,7 +5,7 @@
 #include <ctime>
 #include "engine/FDOFTracer.h"
 
-namespace recartyar {
+namespace fdof {
     class FDOFBenchmark : public FDOFTracer {
     public:
         FDOFBenchmark(float k, float energy, float importance);

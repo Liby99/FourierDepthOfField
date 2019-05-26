@@ -5,7 +5,7 @@
 #include "engine/SpatialDensitySampler.h"
 #include "utility/Spectrum.h"
 
-namespace recartyar {
+namespace fdof {
     class FDOFTracer : public PathTracer {
     public:
 

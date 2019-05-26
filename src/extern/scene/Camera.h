@@ -3,7 +3,7 @@
 
 #include "utility/Ray.h"
 
-namespace recartyar {
+namespace fdof {
     class Camera {
     protected:
         vec3 mPosition;

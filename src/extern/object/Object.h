@@ -7,7 +7,7 @@
 #include "utility/BoundingBox.h"
 #include "material/Material.h"
 
-namespace recartyar {
+namespace fdof {
     class Object {
     public:
 

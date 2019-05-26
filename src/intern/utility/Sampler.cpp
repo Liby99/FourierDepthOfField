@@ -1,6 +1,6 @@
 #include "utility/Sampler.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 vec2 Sampler::gaussianWeight(vec2 r) {
     float a = 0.4f * sqrt(-2.0f * log(r.x));

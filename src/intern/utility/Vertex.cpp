@@ -1,6 +1,6 @@
 #include "utility/Vertex.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 Vertex::Vertex() {
     setPosition(vec3());

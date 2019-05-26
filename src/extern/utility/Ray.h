@@ -3,7 +3,7 @@
 
 #include "utility/Math.h"
 
-namespace recartyar {
+namespace fdof {
     class Ray {
     public:
         int depth;

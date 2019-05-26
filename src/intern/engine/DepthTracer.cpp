@@ -1,6 +1,6 @@
 #include "engine/DepthTracer.h"
 
-using namespace recartyar;
+using namespace fdof;
 
 DepthTracer::DepthTracer() : RenderEngine(), mNear(0.1f), mFar(100.0f) {}
 

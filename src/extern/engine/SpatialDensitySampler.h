@@ -4,7 +4,7 @@
 #include "engine/QuasiSampler.h"
 #include "image/Image.h"
 
-namespace recartyar {
+namespace fdof {
     class SpatialDensitySampler : public quasisampler::QuasiSampler {
     private:
         Image * img;
