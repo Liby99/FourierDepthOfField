@@ -7,7 +7,7 @@ Lambert::Lambert() : Lambert(Color::WHITE) {}
 Lambert::Lambert(Color color) : color(color), Material() {}
 
 Color Lambert::brdf(Intersection & itsct, Ray & out) {
-    float cosTheta = std::max(glm::dot(out.direction, itsct.normal), 0.0f);
+    float cosTheta = std::fmax(glm::dot(out.direction, itsct.normal), 0.0f);
     return color * cosTheta;
 }
 

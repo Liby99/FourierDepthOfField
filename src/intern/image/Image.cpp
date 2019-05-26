@@ -41,8 +41,8 @@ void Image::addColor(int x, int y, Color color) {
 void Image::blur(int n) {
 
     /* Your Work Here (Section 3.4.1) */
-    int filter[n * n];
-    float filter_[n * n];
+    std::vector<int> filter(n * n);
+    std::vector<float> filter_(n * n);
 
     int mid = n / 2;
     float min = std::numeric_limits<float>().max();
@@ -66,7 +66,7 @@ void Image::blur(int n) {
         }
     }
 
-    convolve(filter, n, sum, 0);
+    convolve(filter.data(), n, sum, 0);
 }
 
 void Image::convolve(int * filter, int n, int normalization, int absval) {

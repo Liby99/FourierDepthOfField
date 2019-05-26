@@ -2,7 +2,9 @@
 #define MATH_H
 
 #include <cmath>
+#include <limits>
 #include <glm/glm.hpp>
+#include <algorithm>
 
 namespace fdof {
 	const float pi = 3.14159265;

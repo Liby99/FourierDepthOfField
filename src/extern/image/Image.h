@@ -4,6 +4,8 @@
 #include "utility/Math.h"
 #include "utility/Color.h"
 
+#include <vector>
+
 namespace fdof {
 
     struct BitmapHeader {

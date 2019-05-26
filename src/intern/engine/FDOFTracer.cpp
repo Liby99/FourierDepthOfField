@@ -1,4 +1,5 @@
 #include "engine/FDOFTracer.h"
+#include <algorithm>
 
 using namespace fdof;
 
@@ -187,7 +188,7 @@ void FDOFTracer::propagateSpectra(Scene & scn, Image & img, std::vector<Intersec
     float ox = h / img.height;
     float fhfvowh = cam.fovy() * cam.fovy() * cam.aspect() / (img.width * img.height);
 
-    std::vector<float> occluderBuffer[img.width * img.height];
+    std::vector<std::vector<float>> occluderBuffer(img.width * img.height);
 
     // Build up occluder list
     #pragma omp parallel for collapse(2)
