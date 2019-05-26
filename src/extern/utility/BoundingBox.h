@@ -20,27 +20,51 @@ namespace fdof {
 
         // Constructor
         BoundingBox();
-        BoundingBox(vec3 minCorner, vec3 maxCorner);
+        BoundingBox(const vec3 &minCorner, const vec3 &maxCorner);
         BoundingBox(Object * obj);
 
-        float getWidth();
-        float getHeight();
-        float getLength();
-        vec3 getSize();
+        inline float getWidth() const {
+            return maxCorner.x - minCorner.x;
+        }
+
+        inline float getHeight() const {
+            return maxCorner.y - minCorner.y;
+        }
+
+        inline float getLength() const {
+            return maxCorner.z - minCorner.z;
+        }
+
+        inline vec3 getSize() const {
+            return vec3(getWidth(), getHeight(), getLength());
+        }
 
         // Basic getter
-        vec3 getMinCorner();
-        vec3 getMaxCorner();
-        vec3 getCenter();
+        inline const vec3 &getMinCorner() const {
+            return minCorner;
+        }
+
+        inline const vec3 &getMaxCorner() const {
+            return maxCorner;
+        }
+
+        inline vec3 getCenter() const {
+            return (minCorner + maxCorner) / 2.0f;
+        }
 
         // Basic setter
-        void setMinCorner(vec3 minCorner);
-        void setMaxCorner(vec3 maxCorner);
+        inline void setMinCorner(const vec3 &minCorner) {
+            this->minCorner = minCorner;
+        }
+
+        inline void setMaxCorner(const vec3 &maxCorner) {
+            this->maxCorner = maxCorner;
+        }
 
         // Extend the box to a new bound
-        void extend(vec3 v);
-        void extend(Object & object);
-        void extend(BoundingBox box);
+        void extend(const vec3 &v);
+        void extend(Object &object);
+        void extend(const BoundingBox &box);
 
         // Contains vector
         bool contains(vec3 vec);

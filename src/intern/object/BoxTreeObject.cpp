@@ -159,9 +159,8 @@ void BoxTreeObject::getBoundingVertices(std::vector<vec3> & verts) {
     verts.push_back(vec3(maxv.x, maxv.y, maxv.z));
 }
 
-bool BoxTreeObject::updateIntersect(Ray & ray, Intersection & intersection) {
-    constructTree();
-    BoundingBox box = root->getBoundingBox();
+bool BoxTreeObject::updateIntersect(Ray & ray, Intersection & intersection) const {
+    BoundingBox &box = root->getBoundingBox();
     if (box.intersect(ray)) {
         return root->intersect(ray, intersection);
     }

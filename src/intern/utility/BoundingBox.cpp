@@ -9,7 +9,7 @@ BoundingBox::BoundingBox() {
     initiated = false;
 }
 
-BoundingBox::BoundingBox(vec3 minCorner, vec3 maxCorner) {
+BoundingBox::BoundingBox(const vec3 &minCorner, const vec3 &maxCorner) {
     setMinCorner(minCorner);
     setMaxCorner(maxCorner);
     initiated = true;
@@ -19,43 +19,7 @@ BoundingBox::BoundingBox(Object * obj) {
     extend(*obj);
 }
 
-float BoundingBox::getWidth() {
-    return maxCorner.x - minCorner.x;
-}
-
-float BoundingBox::getHeight() {
-    return maxCorner.y - minCorner.y;
-}
-
-float BoundingBox::getLength() {
-    return maxCorner.z - minCorner.z;
-}
-
-vec3 BoundingBox::getSize() {
-    return vec3(getWidth(), getHeight(), getLength());
-}
-
-vec3 BoundingBox::getMinCorner() {
-    return minCorner;
-}
-
-vec3 BoundingBox::getMaxCorner() {
-    return maxCorner;
-}
-
-vec3 BoundingBox::getCenter() {
-    return (minCorner + maxCorner) / 2.0f;
-}
-
-void BoundingBox::setMinCorner(vec3 minCorner) {
-    this->minCorner = minCorner;
-}
-
-void BoundingBox::setMaxCorner(vec3 maxCorner) {
-    this->maxCorner = maxCorner;
-}
-
-void BoundingBox::extend(vec3 v) {
+void BoundingBox::extend(const vec3 &v) {
     if (!initiated) {
         minCorner = v;
         maxCorner = v;
@@ -71,7 +35,7 @@ void BoundingBox::extend(Object & object) {
     extend(object.getBoundingBox());
 }
 
-void BoundingBox::extend(BoundingBox box) {
+void BoundingBox::extend(const BoundingBox &box) {
     if (!initiated) {
         minCorner = box.minCorner;
         maxCorner = box.maxCorner;

@@ -13,7 +13,7 @@ namespace fdof {
         Cube(float width, float height, float length);
     protected:
         virtual void getBoundingVertices(std::vector<vec3> & bvs) override;
-        virtual bool updateIntersect(Ray & ray, Intersection & itsct) override;
+        virtual bool updateIntersect(Ray & ray, Intersection & itsct) const override;
     };
 }
 

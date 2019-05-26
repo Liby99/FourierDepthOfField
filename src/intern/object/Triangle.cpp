@@ -2,7 +2,7 @@
 
 using namespace fdof;
 
-vec3 Triangle::getBaryCentric(vec3 position) {
+vec3 Triangle::getBaryCentric(vec3 position) const {
     vec3 result = vec3(0, 0, 0);
     vec3 p0 = v0->getPosition();
     vec3 p1 = v1->getPosition();
@@ -20,7 +20,7 @@ vec3 Triangle::getBaryCentric(vec3 position) {
     return result;
 }
 
-bool Triangle::updateIntersect(Ray & ray, Intersection & intersection) {
+bool Triangle::updateIntersect(Ray & ray, Intersection & intersection) const {
 
     // Pre cache the positions
     vec3 p0 = v0->getPosition();

@@ -157,14 +157,14 @@ void MeshObject::smooth() {
     }
 }
 
-void MeshObject::getCorner(vec3 minCorner, vec3 maxCorner) {
+void MeshObject::getCorner(vec3 &minCorner, vec3 &maxCorner) {
     for (int i = 0; i < vertices.size(); i++) {
         minCorner = BoundingBox::minVec(minCorner, vertices[i]->getPosition());
         maxCorner = BoundingBox::maxVec(maxCorner, vertices[i]->getPosition());
     }
 }
 
-bool MeshObject::updateIntersect(Ray & ray, Intersection & intersection) {
+bool MeshObject::updateIntersect(Ray & ray, Intersection & intersection) const {
     bool hit = false;
     for (int i = 0; i < triangles.size(); i++) {
         if (triangles[i]->intersect(ray, intersection)) {

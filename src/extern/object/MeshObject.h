@@ -38,11 +38,11 @@ namespace fdof {
         std::vector<Triangle *> triangles;
 
         // Helper Corner Method
-        void getCorner(vec3 minCorner, vec3 maxCorner);
+        void getCorner(vec3 &minCorner, vec3 &maxCorner);
 
         // Intersect
-        bool updateIntersect(Ray & ray, Intersection & intersection) override;
         void getBoundingVertices(std::vector<vec3> & verts) override;
+        bool updateIntersect(Ray & ray, Intersection & intersection) const override;
     };
 }
 

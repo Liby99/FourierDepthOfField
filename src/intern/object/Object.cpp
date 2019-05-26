@@ -65,7 +65,7 @@ void Object::getBoundingVertices(std::vector<vec3> & bvs) {
     // Do nothing cause no vertex
 }
 
-bool Object::updateIntersect(Ray & ray, Intersection & itsct) {
+bool Object::updateIntersect(Ray & ray, Intersection & itsct) const {
     return false;
 }
 

@@ -28,7 +28,7 @@ namespace fdof {
     protected:
 
         virtual void getBoundingVertices(std::vector<vec3> & bvs);
-        virtual bool updateIntersect(Ray & ray, Intersection & itsct);
+        virtual bool updateIntersect(Ray & ray, Intersection & itsct) const;
 
         inline static vec3 transformHomogenous(const mat4 & m, const vec3 & v);
     };

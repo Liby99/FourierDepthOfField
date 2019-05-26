@@ -18,7 +18,7 @@ void Cube::getBoundingVertices(std::vector<vec3> & bvs) {
     bvs.push_back(vec3(-hw, -hh, -hl));
 }
 
-bool Cube::updateIntersect(Ray & ray, Intersection & itsct) {
+bool Cube::updateIntersect(Ray & ray, Intersection & itsct) const {
 
     float hw = width / 2, hh = height / 2, hl = length / 2;
 

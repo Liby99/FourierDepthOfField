@@ -55,8 +55,8 @@ namespace fdof {
         void forceConstruct();
         void constructTree();
 
-        virtual bool updateIntersect(Ray & ray, Intersection & intersection);
         virtual void getBoundingVertices(std::vector<vec3> & verts);
+        virtual bool updateIntersect(Ray & ray, Intersection & intersection) const;
 
     public:
 

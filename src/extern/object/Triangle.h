@@ -16,12 +16,12 @@ namespace fdof {
         Vertex * v2;
 
         // Helper methods
-        vec3 getBaryCentric(vec3 position);
+        vec3 getBaryCentric(vec3 position) const;
 
     protected:
 
         // Intersection with ray
-        bool updateIntersect(Ray & ray, Intersection & intersection) override;
+        bool updateIntersect(Ray & ray, Intersection & intersection) const override;
         void getBoundingVertices(std::vector<vec3> & verts) override;
 
     public:
