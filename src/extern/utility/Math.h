@@ -2,6 +2,7 @@
 #define MATH_H
 
 #include <cmath>
+#include <limits>
 #include <glm/glm.hpp>
 
 namespace fdof {
